@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Atlas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <header id="axis-bar">
+    <div id="wordmark">
+      <span>DATA</span>
+      <span>ATLAS</span>
+    </div>
+    <div id="axis-bar-inner">
+      <!-- populated by JS -->
+    </div>
+  </header>
+
+  <div id="main">
+    <nav id="list-panel">
+      <div id="list-header">
+        <span id="list-count"></span>
+      </div>
+      <ul id="entry-list">
+        <!-- populated by JS -->
+      </ul>
+    </nav>
+
+    <article id="view-panel">
+      <div id="view-content">
+        <div id="placeholder">
+          <h1>Data Atlas</h1>
+          <p>A reference work about data — what exists, what's hidden, and what should exist but doesn't.</p>
+          <p>Select an entry from the list, or filter by axis above.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+
+</div>
+
+<script type="module">
+
+// ── tiny markdown renderer (no external deps) ────────────────────────────────
+
+function renderMarkdown(md) {
+  // We'll use a simple sequential pass
+  const lines = md.split('\n');
+  let html = '';
+  let i = 0;
+  let inPara = false;
+  let inList = false;
+
+  const closePara = () => { if (inPara) { html += '</p>\n'; inPara = false; } };
+  const closeList = () => { if (inList) { html += '</ul>\n'; inList = false; } };
+
+  const inline = (text) => {
+    // bold
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // italic
+    text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // cross-links → [[slug]]
+    text = text.replace(/→\s*\[\[([^\]]+)\]\]/g, (_, slug) =>
+      `→ <a class="crosslink" href="#" data-slug="${slug}">${slug.replace(/-/g, ' ')}</a>`
+    );
+    // regular links
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return text;
+  };
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // headings
+    const hm = line.match(/^(#{1,6})\s+(.*)/);
+    if (hm) {
+      closePara(); closeList();
+      const level = hm[1].length;
+      html += `<h${level}>${inline(hm[2])}</h${level}>\n`;
+      i++; continue;
+    }
+
+    // horizontal rule
+    if (/^---+$/.test(line.trim())) {
+      closePara(); closeList();
+      html += '<hr>\n';
+      i++; continue;
+    }
+
+    // unordered list
+    const ulm = line.match(/^[-*]\s+(.*)/);
+    if (ulm) {
+      closePara();
+      if (!inList) { html += '<ul>\n'; inList = true; }
+      html += `<li>${inline(ulm[1])}</li>\n`;
+      i++; continue;
+    }
+
+    // blank line
+    if (line.trim() === '') {
+      closePara(); closeList();
+      i++; continue;
+    }
+
+    // paragraph
+    closeList();
+    if (!inPara) { html += '<p>'; inPara = true; }
+    else html += ' ';
+    html += inline(line.trim());
+    i++;
+  }
+  closePara(); closeList();
+  return html;
+}
+
+// ── frontmatter parser ───────────────────────────────────────────────────────
+
+function parseFrontmatter(text) {
+  const fm = {};
+  let body = text;
+
+  const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (match) {
+    const raw = match[1];
+    body = match[2];
+    for (const line of raw.split('\n')) {
+      const kv = line.match(/^(\w+):\s*(.*)/);
+      if (!kv) continue;
+      const [, key, val] = kv;
+      // array values like [a, b, c]
+      if (val.startsWith('[')) {
+        fm[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      } else {
+        fm[key] = val.trim();
+      }
+    }
+  }
+  return { fm, body };
+}
+
+// ── state ────────────────────────────────────────────────────────────────────
+
+const state = {
+  axes: [],
+  filters: {},   // { axisId: valueId | null }
+  entries: [],   // all pages loaded from content/
+  activeSlug: null,
+};
+
+// ── data loading ─────────────────────────────────────────────────────────────
+
+async function loadAxes() {
+  const res = await fetch('../data/axis.json');
+  const data = await res.json();
+  state.axes = data.axes;
+  state.axes.forEach(ax => { state.filters[ax.id] = null; });
+}
+
+// Discover pages by fetching a manifest (index.json) or falling back to
+// a hardcoded list if no manifest exists yet.
+async function loadEntries() {
+  // Try manifest first
+  let slugs = [];
+  try {
+    const res = await fetch('../data/pages/index.json');
+    if (res.ok) {
+      slugs = await res.json();
+    }
+  } catch (_) { /* no manifest */ }
+
+  if (slugs.length === 0) {
+    // Try content/ directory manifest
+    try {
+      const res = await fetch('../content/index.json');
+      if (res.ok) {
+        slugs = await res.json();
+      }
+    } catch (_) { /* no manifest */ }
+  }
+
+  if (slugs.length === 0) {
+    // Last resort: known files
+    slugs = ['cgm-readings', 'alpr-location-logs', 'acoustic-gunshot-detection-shotspotter'];
+  }
+
+  const entries = [];
+  await Promise.all(slugs.map(async (slug) => {
+    // try data/pages/ first, then content/
+    for (const base of ['../data/pages/', '../content/']) {
+      try {
+        const res = await fetch(`${base}${slug}.md`);
+        if (!res.ok) continue;
+        const text = await res.text();
+        const { fm } = parseFrontmatter(text);
+        entries.push({
+          slug: fm.slug || slug,
+          title: fm.title || slug,
+          summary: fm.summary || '',
+          status: fm.status || null,
+          origin: fm.origin || null,
+          scale: fm.scale || null,
+          llm_impact: fm.llm_impact || null,
+          domains: fm.domains || [],
+          _raw: text,
+          _base: base,
+        });
+        break;
+      } catch (_) { /* skip */ }
+    }
+  }));
+
+  // stable sort by title
+  entries.sort((a, b) => a.title.localeCompare(b.title));
+  state.entries = entries;
+}
+
+// ── rendering ────────────────────────────────────────────────────────────────
+
+function getStatusColor(statusId) {
+  for (const ax of state.axes) {
+    if (ax.id === 'status') {
+      const v = ax.values.find(v => v.id === statusId);
+      if (v && v.color) return v.color;
+    }
+  }
+  return '#aaa';
+}
+
+function renderAxisBar() {
+  const container = document.getElementById('axis-bar-inner');
+  container.innerHTML = '';
+
+  for (const axis of state.axes) {
+    const row = document.createElement('div');
+    row.className = 'axis-row';
+
+    const label = document.createElement('span');
+    label.className = 'axis-label';
+    label.textContent = axis.label;
+    row.appendChild(label);
+
+    const buttons = document.createElement('div');
+    buttons.className = 'axis-buttons';
+
+    for (const val of axis.values) {
+      const btn = document.createElement('button');
+      btn.className = 'axis-btn';
+      btn.textContent = val.label;
+      btn.dataset.axis = axis.id;
+      btn.dataset.value = val.id;
+      btn.title = val.description;
+
+      if (state.filters[axis.id] === val.id) {
+        btn.classList.add('active');
+        if (axis.id === 'status' && val.color) {
+          btn.style.setProperty('--status-color', val.color);
+          btn.classList.add('status-colored');
+        }
+      }
+
+      btn.addEventListener('click', () => {
+        if (state.filters[axis.id] === val.id) {
+          state.filters[axis.id] = null;
+        } else {
+          state.filters[axis.id] = val.id;
+        }
+        renderAxisBar();
+        renderList();
+      });
+
+      buttons.appendChild(btn);
+    }
+
+    row.appendChild(buttons);
+
+    // description of the selected value, inline after the buttons
+    const selectedVal = axis.values.find(v => v.id === state.filters[axis.id]);
+    if (selectedVal) {
+      const desc = document.createElement('span');
+      desc.className = 'axis-desc';
+      desc.textContent = selectedVal.description;
+      buttons.appendChild(desc);
+    }
+
+    row.appendChild(buttons);
+    container.appendChild(row);
+  }
+}
+
+function filteredEntries() {
+  return state.entries.filter(entry => {
+    for (const [axisId, valueId] of Object.entries(state.filters)) {
+      if (!valueId) continue;
+      if (entry[axisId] !== valueId) return false;
+    }
+    return true;
+  });
+}
+
+function renderList() {
+  const ul = document.getElementById('entry-list');
+  const countEl = document.getElementById('list-count');
+  ul.innerHTML = '';
+
+  const entries = filteredEntries();
+  countEl.textContent = `${entries.length} dataset${entries.length !== 1 ? 's' : ''}`;
+
+  for (const entry of entries) {
+    const li = document.createElement('li');
+    li.className = 'entry-item';
+    if (entry.slug === state.activeSlug) li.classList.add('active');
+
+    const titleEl = document.createElement('span');
+    titleEl.className = 'entry-title';
+    titleEl.textContent = entry.title;
+
+    const meta = document.createElement('span');
+    meta.className = 'entry-meta';
+
+    if (entry.status) {
+      const dot = document.createElement('span');
+      dot.className = 'status-dot';
+      dot.style.background = getStatusColor(entry.status);
+      dot.title = entry.status;
+      meta.appendChild(dot);
+    }
+
+    li.appendChild(titleEl);
+    li.appendChild(meta);
+
+    li.addEventListener('click', () => loadEntry(entry.slug));
+    ul.appendChild(li);
+  }
+}
+
+async function loadEntry(slug) {
+  state.activeSlug = slug;
+  renderList();
+
+  const entry = state.entries.find(e => e.slug === slug);
+  if (!entry) return;
+
+  const viewEl = document.getElementById('view-content');
+  viewEl.innerHTML = '<div class="loading">Loading…</div>';
+
+  const { fm, body } = parseFrontmatter(entry._raw);
+
+  // build chips
+  const axisChips = state.axes
+    .map(ax => {
+      const val = fm[ax.id];
+      if (!val) return '';
+      const color = ax.id === 'status' ? getStatusColor(val) : null;
+      const style = color ? ` style="border-color:${color};color:${color}"` : '';
+      return `<span class="chip"${style}>${ax.label}: ${val}</span>`;
+    })
+    .join('');
+
+  const llmChip = fm.llm_impact
+    ? `<span class="chip chip-llm">LLM: ${fm.llm_impact}</span>` : '';
+
+  const domainChips = (Array.isArray(fm.domains) ? fm.domains : [])
+    .map(d => `<span class="chip chip-domain">${d}</span>`).join('');
+
+  const html = `
+    <div class="entry-header">
+      <h1 class="entry-title-large">${fm.title || slug}</h1>
+      <p class="entry-summary">${fm.summary || ''}</p>
+      <div class="chips">${axisChips}${llmChip}${domainChips}</div>
+    </div>
+    <div class="entry-body">${renderMarkdown(body)}</div>
+  `;
+
+  viewEl.innerHTML = html;
+
+  // bind cross-links
+  viewEl.querySelectorAll('a.crosslink').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = a.dataset.slug;
+      const found = state.entries.find(e => e.slug === target);
+      if (found) loadEntry(target);
+      else {
+        viewEl.innerHTML += `<p class="crosslink-missing">Entry "${target}" not yet in the atlas.</p>`;
+      }
+    });
+  });
+}
+
+// ── init ─────────────────────────────────────────────────────────────────────
+
+async function init() {
+  await loadAxes();
+  await loadEntries();
+  renderAxisBar();
+  renderList();
+}
+
+init().catch(console.error);
+
+</script>
+</body>
+</html>
