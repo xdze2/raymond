@@ -21,7 +21,7 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROMPT_TEMPLATE="$SCRIPT_DIR/prompts/make_list.txt"
-OUTPUT_DIR="$SCRIPT_DIR/data/lists"
+OUTPUT_DIR="$SCRIPT_DIR/data/catalogue"
 OUTPUT_FILE="$OUTPUT_DIR/list_${ORIGIN}_${STATUS}_${SCALE}_${DOMAIN}.jsonl"
 
 if [[ ! -f "$PROMPT_TEMPLATE" ]]; then

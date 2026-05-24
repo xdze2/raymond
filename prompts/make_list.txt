@@ -47,7 +47,7 @@ Include obscure or non-obvious examples alongside well-known ones.
 
 For each dataset, output a single JSON object on its own line (JSONL format):
 
-{"slug": "kebab-case-identifier", "title": "Full Descriptive Title", "summary": "One sentence: what is recorded, who produces it, who controls it.", "has_page": false}
+{"slug": "kebab-case-identifier", "title": "Full Descriptive Title", "summary": "One sentence: what is recorded, who produces it, who controls it.", "origin": "{origin}", "status": "{status}", "scale": "{scale}", "has_page": false}
 
 Rules:
 - slug: lowercase, hyphens only, no special characters, specific enough to be globally unique
@@ -60,6 +60,6 @@ Rules:
 
 EXAMPLE OUTPUT (for origin=sensor, status=buried, scale=individual, domain=medical):
 
-{"slug": "cgm-readings-dexcom-abbott", "title": "Continuous Glucose Monitor Readings (Dexcom / Abbott)", "summary": "Sub-minute interstitial glucose time-series from wearable biosensors worn by diabetic patients, held by Dexcom and Abbott on their cloud platforms.", "has_page": false}
-{"slug": "nicu-physiological-waveforms", "title": "NICU Physiological Waveforms", "summary": "High-resolution heart rate, oxygen saturation, and respiratory streams from neonatal ICU bedside monitors, rarely archived beyond the clinical episode.", "has_page": false}
-{"slug": "implanted-cardiac-device-logs", "title": "Implanted Cardiac Device Logs (Medtronic / Abbott)", "summary": "Continuous arrhythmia detection and pacing event logs from implanted pacemakers and defibrillators, held on Medtronic Carelink and Abbott platforms.", "has_page": false}
+{"slug": "cgm-readings-dexcom-abbott", "title": "Continuous Glucose Monitor Readings (Dexcom / Abbott)", "summary": "Sub-minute interstitial glucose time-series from wearable biosensors worn by diabetic patients, held by Dexcom and Abbott on their cloud platforms.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
+{"slug": "nicu-physiological-waveforms", "title": "NICU Physiological Waveforms", "summary": "High-resolution heart rate, oxygen saturation, and respiratory streams from neonatal ICU bedside monitors, rarely archived beyond the clinical episode.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
+{"slug": "implanted-cardiac-device-logs", "title": "Implanted Cardiac Device Logs (Medtronic / Abbott)", "summary": "Continuous arrhythmia detection and pacing event logs from implanted pacemakers and defibrillators, held on Medtronic Carelink and Abbott platforms.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
