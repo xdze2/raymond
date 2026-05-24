@@ -22,6 +22,7 @@
         <nav id="list-panel">
           <div id="list-header">
             <span id="list-count"></span>
+            <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
           </div>
           <ul id="entry-list">
             <!-- populated by JS -->
@@ -181,6 +182,7 @@
         filters: {}, // { axisId: valueId | null }
         entries: [], // all entries, merged from catalogue + pages
         activeSlug: null,
+        pagesOnly: false,
       };
 
       // ── data loading ─────────────────────────────────────────────────────────────
@@ -344,6 +346,7 @@
 
       function filteredEntries() {
         return state.entries.filter((entry) => {
+          if (state.pagesOnly && !entry.page_url) return false;
           for (const [axisId, valueId] of Object.entries(state.filters)) {
             if (!valueId) continue;
             if (entry[axisId] !== valueId) return false;
@@ -488,6 +491,12 @@
         await loadEntries();
         renderAxisBar();
         renderList();
+
+        document.getElementById("toggle-pages").addEventListener("click", (e) => {
+          state.pagesOnly = !state.pagesOnly;
+          e.currentTarget.classList.toggle("active", state.pagesOnly);
+          renderList();
+        });
       }
 
       init().catch(console.error);
