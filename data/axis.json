@@ -1,0 +1,95 @@
+{
+  "axes": [
+    {
+      "id": "origin",
+      "label": "Origin",
+      "description": "How the data came to exist — the mechanism of its production.",
+      "values": [
+        {
+          "id": "sensor",
+          "label": "Sensor",
+          "description": "Produced by a physical measurement device: cameras, microphones, accelerometers, biosensors. The world writes the data directly."
+        },
+        {
+          "id": "exhaust",
+          "label": "Exhaust",
+          "description": "A byproduct of activity, not intentionally recorded as data. Transaction logs, metadata, DNS queries, click streams. The data exists because a system ran, not because anyone chose to capture it."
+        },
+        {
+          "id": "declared",
+          "label": "Declared",
+          "description": "Someone chose to submit it. Surveys, registries, self-reports, administrative filings. The data reflects what people or institutions say, not what they do."
+        },
+        {
+          "id": "derived",
+          "label": "Derived",
+          "description": "Produced by processing other datasets. Model outputs, aggregates, inferences, synthetic data. The data is downstream of other data."
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "description": "The current condition of the dataset — whether it is accessible, hidden, lost, or not yet real.",
+      "values": [
+        {
+          "id": "active",
+          "label": "Active",
+          "color": "#2f9e44",
+          "description": "Being generated and held now. Access may be restricted, but the data exists and is current."
+        },
+        {
+          "id": "buried",
+          "label": "Buried",
+          "color": "#e03131",
+          "description": "Exists but is inaccessible — controlled by a gatekeeper, suppressed, classified, or locked behind proprietary systems. The data is real; reaching it is the problem."
+        },
+        {
+          "id": "missing",
+          "label": "Missing",
+          "color": "#f08c00",
+          "description": "Should exist but doesn't. No one collected it, or collection was never mandated. The absence is a choice, often a political one."
+        },
+        {
+          "id": "emerging",
+          "label": "Emerging",
+          "color": "#1971c2",
+          "description": "Newly possible — a dataset that couldn't exist before due to technology, regulation, or scale, and is now beginning to be generated."
+        },
+        {
+          "id": "eroding",
+          "label": "Eroding",
+          "color": "#868e96",
+          "description": "Exists now but is being lost: short retention windows, discontinued sensors, decaying physical records, deliberate deletion. The window to capture it is closing."
+        }
+      ]
+    },
+    {
+      "id": "scale",
+      "label": "Scale",
+      "description": "The unit of resolution — what one record in the dataset describes.",
+      "values": [
+        {
+          "id": "individual",
+          "label": "Individual",
+          "description": "One record = one person, one body, one device carried by a person. The data can identify or profile a specific human being."
+        },
+        {
+          "id": "organizational",
+          "label": "Organizational",
+          "description": "One record = one company, institution, vehicle, or other non-human entity. Aggregated above the person, below the population."
+        },
+        {
+          "id": "systemic",
+          "label": "Systemic",
+          "description": "One record = a city, a market, a network, a policy domain. The data describes how a system behaves, not any single actor within it."
+        },
+        {
+          "id": "planetary",
+          "label": "Planetary",
+          "description": "One record = a global or environmental measurement. Climate, ocean, atmosphere, species. The subject is Earth or a major system of it."
+        }
+      ]
+    }
+  ]
+}

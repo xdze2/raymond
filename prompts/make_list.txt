@@ -1,0 +1,65 @@
+You are a researcher for the Data Atlas — a wiki cataloguing every significant dataset in the world: how data comes into existence, who controls it, what it reveals, and how its accessibility is changing.
+
+Your task is to generate a list of datasets matching a specific coordinate in the atlas.
+
+---
+
+COORDINATES:
+
+  origin: {origin}
+  status: {status}
+  scale:  {scale}
+  domain: {domain}
+
+AXIS DEFINITIONS:
+
+  origin — how the data came to exist:
+    sensor   → produced by a physical measurement device (cameras, microphones, biosensors, satellites)
+    exhaust  → byproduct of activity, not intentionally recorded (logs, metadata, transaction traces, click streams)
+    declared → someone chose to submit it (surveys, registries, self-reports, administrative filings)
+    derived  → produced by processing other datasets (model outputs, aggregates, inferences)
+
+  status — current condition of the dataset:
+    active   → being generated and held now
+    buried   → exists but inaccessible — gatekeeper-controlled, proprietary, or classified
+    missing  → should exist but doesn't; the absence is a choice, often political
+    emerging → newly possible due to technology, regulation, or scale
+    eroding  → exists now but being lost — short retention, discontinued collection, deliberate deletion
+
+  scale — unit of resolution, what one record describes:
+    individual     → one person, one body, one personal device
+    organizational → one company, institution, vehicle, or non-human entity
+    systemic       → one city, market, network, or policy domain
+    planetary      → one global or environmental measurement
+
+  domain — the thematic field (open-ended, use your judgment within: {domain})
+
+---
+
+TASK:
+
+Generate 10 to 20 specific datasets that match all four coordinates above.
+
+Be specific — not "medical records" but "post-surgical infection rates by surgeon and hospital, held by CMS".
+Name real systems, companies, agencies, or technologies where known.
+Prefer concrete, nameable datasets over abstract categories.
+Include obscure or non-obvious examples alongside well-known ones.
+
+For each dataset, output a single JSON object on its own line (JSONL format):
+
+{"slug": "kebab-case-identifier", "title": "Full Descriptive Title", "summary": "One sentence: what is recorded, who produces it, who controls it.", "has_page": false}
+
+Rules:
+- slug: lowercase, hyphens only, no special characters, specific enough to be globally unique
+- title: descriptive, not generic — a reader should know exactly what this is
+- summary: one sentence, three facts — what/who produces/who controls
+- has_page: always false (pages are written separately)
+- Output only valid JSONL — one JSON object per line, no commentary, no numbering, no markdown
+
+---
+
+EXAMPLE OUTPUT (for origin=sensor, status=buried, scale=individual, domain=medical):
+
+{"slug": "cgm-readings-dexcom-abbott", "title": "Continuous Glucose Monitor Readings (Dexcom / Abbott)", "summary": "Sub-minute interstitial glucose time-series from wearable biosensors worn by diabetic patients, held by Dexcom and Abbott on their cloud platforms.", "has_page": false}
+{"slug": "nicu-physiological-waveforms", "title": "NICU Physiological Waveforms", "summary": "High-resolution heart rate, oxygen saturation, and respiratory streams from neonatal ICU bedside monitors, rarely archived beyond the clinical episode.", "has_page": false}
+{"slug": "implanted-cardiac-device-logs", "title": "Implanted Cardiac Device Logs (Medtronic / Abbott)", "summary": "Continuous arrhythmia detection and pacing event logs from implanted pacemakers and defibrillators, held on Medtronic Carelink and Abbott platforms.", "has_page": false}

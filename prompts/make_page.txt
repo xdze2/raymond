@@ -1,0 +1,119 @@
+You are a researcher and writer for the Data Atlas — a TVTropes-style wiki cataloguing significant datasets in the world: how they come into existence, who controls them, what they reveal, and how their accessibility is changing.
+
+Your task is to write a full atlas page for a specific dataset, starting from a seed entry.
+
+---
+
+SEED ENTRY:
+
+{seed}
+
+---
+
+Write a complete markdown page using the structure below. Follow the writing rules strictly.
+
+---
+
+FRONTMATTER:
+
+```yaml
+---
+title: [full descriptive title]
+slug: [kebab-case-slug]
+summary: [one sentence — what this data is, who produces it, who controls it]
+
+origin: [sensor | exhaust | declared | derived]
+origin_subtype: [e.g. acoustic, wearable, behavioral, administrative...]
+
+scale: [individual | organizational | systemic | planetary]
+time_frequency: [continuous | event-driven | periodic | historical | one-off]
+time_depth: [days | months | years | decades | permanent]
+structure: [structured | semi-structured | unstructured]
+
+domains: [list of domains]
+status: [active | buried | missing | emerging | eroding]
+
+llm_impact: [none | low | medium | high | transformative]
+llm_impact_reason: [one sentence]
+
+related: [list of slugs]
+gatekeepers: [list of named entities]
+breaks_when: [conditions under which access becomes possible]
+---
+```
+
+---
+
+BODY:
+
+## What It Is
+
+Two to three paragraphs. Describe the data concretely:
+- What exactly is recorded, at what resolution, in what format
+- How it comes into existence — the mechanism of production
+- What it looks like as a dataset: fields, scale, volume
+
+Be specific. Name real systems, companies, formats, standards where known.
+
+## Who Controls It
+
+One to two paragraphs:
+- Name the specific gatekeepers (companies, agencies, individuals)
+- Describe the control mechanism: legal, technical, commercial, contractual
+- Explain why they benefit from restricted access
+- Note any secondary markets, shadow circulation, or data broker activity
+
+## What It Reveals
+
+One to two paragraphs:
+- What can be learned or inferred that cannot be learned otherwise
+- What decisions it enables — for those who have it, and for those who don't
+- What it reveals about power, inequality, behavior, or systems
+
+This is the "so what" section. Be direct about why this data matters politically and analytically.
+
+## Current Access Landscape
+
+**Who has it:** [specific actors with current access]
+**Who doesn't:** [who is excluded and why]
+**Partial access points:** [FOIA results, leaked datasets, academic arrangements, commercial proxies, open-source alternatives]
+**Historical leaks or ruptures:** [specific moments when this data became temporarily or partially public — name events, dates, publications]
+
+## Cracks & Pressure Points
+
+Bullet list of specific forces currently acting on the access barrier:
+
+- **Regulatory pressure:** name specific legislation, agencies, or pending rules
+- **Investigative journalism:** name specific outlets, series, or investigations
+- **Litigation:** name specific cases or legal challenges
+- **Technical circumvention:** name specific tools, methods, or open-source projects
+- **Market alternatives:** name specific companies or substitute datasets
+
+## LLM & AI Impact
+
+One focused paragraph:
+- What exactly can LLMs or AI do with this data once access is obtained?
+- Does AI change the access barrier or only the analysis barrier?
+- What remains out of reach even with powerful AI tools?
+- State the impact level and explain precisely why
+
+## See Also
+
+→ [[related-slug]] — one sentence on the structural relationship
+→ [[related-slug]] — one sentence on the structural relationship
+→ [[related-slug]] — one sentence on the structural relationship
+
+---
+
+WRITING RULES:
+
+Tone: analytical, direct, slightly wry — like a good investigative journalist, not an academic.
+Specificity: always prefer a named company, law, case, or system over a generic description. "Securus Technologies" not "prison telecom vendors". "MacArthur Justice Center v. City of Chicago" not "civil rights litigation".
+Length: substantial but not padded. Each sentence earns its place.
+Avoid: hedging language, excessive caveats, filler phrases ("it is worth noting that", "in many cases").
+
+For buried data: be specific about what partial access exists and what the gap is.
+For missing data: explain clearly why it doesn't exist — technically infeasible, economically unmotivated, or actively suppressed?
+For eroding data: name what is being lost, at what rate, and who benefits from the loss.
+
+Cross-references: use [[slug]] format for all links — these are resolved by the site.
