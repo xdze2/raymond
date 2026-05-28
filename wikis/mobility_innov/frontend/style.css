@@ -202,6 +202,28 @@
   color: #fff;
 }
 
+.axis-clear {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  line-height: 1.5;
+  margin-left: 4px;
+  transition: color 80ms, border-color 80ms;
+}
+
+.axis-clear:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+
 .axis-desc {
   font-family: 'system-ui', sans-serif;
   font-size: 0.75rem;

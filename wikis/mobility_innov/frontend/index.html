@@ -23,9 +23,6 @@
             <span id="list-count"></span>
             <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
           </div>
-          <div id="active-filters" hidden>
-            <!-- populated by JS -->
-          </div>
           <ul id="entry-list">
             <!-- populated by JS -->
           </ul>
@@ -195,7 +192,7 @@
         const data = await res.json();
         state.axes = data.axes;
         state.axes.forEach((ax) => {
-          state.filters[ax.id] = null;
+          state.filters[ax.id] = new Set();
         });
       }
 
@@ -350,6 +347,8 @@
           const buttons = document.createElement("div");
           buttons.className = "axis-buttons";
 
+          const selected = state.filters[axis.id];
+
           for (const val of axis.values) {
             const btn = document.createElement("button");
             btn.className = "axis-btn";
@@ -358,7 +357,7 @@
             btn.dataset.value = val.id;
             btn.title = val.description;
 
-            if (state.filters[axis.id] === val.id) {
+            if (selected.has(val.id)) {
               btn.classList.add("active");
               if (axis.id === "status" && val.color) {
                 btn.style.setProperty("--status-color", val.color);
@@ -367,11 +366,8 @@
             }
 
             btn.addEventListener("click", () => {
-              if (state.filters[axis.id] === val.id) {
-                state.filters[axis.id] = null;
-              } else {
-                state.filters[axis.id] = val.id;
-              }
+              if (selected.has(val.id)) selected.delete(val.id);
+              else selected.add(val.id);
               renderAxisBar();
               renderList();
             });
@@ -379,17 +375,17 @@
             buttons.appendChild(btn);
           }
 
-          row.appendChild(buttons);
-
-          // description of the selected value, inline after the buttons
-          const selectedVal = axis.values.find(
-            (v) => v.id === state.filters[axis.id],
-          );
-          if (selectedVal) {
-            const desc = document.createElement("span");
-            desc.className = "axis-desc";
-            desc.textContent = selectedVal.description;
-            buttons.appendChild(desc);
+          if (selected.size > 0) {
+            const clear = document.createElement("button");
+            clear.className = "axis-clear";
+            clear.textContent = "clear";
+            clear.title = `Clear ${axis.label} filter`;
+            clear.addEventListener("click", () => {
+              selected.clear();
+              renderAxisBar();
+              renderList();
+            });
+            buttons.appendChild(clear);
           }
 
           row.appendChild(buttons);
@@ -400,9 +396,10 @@
       function filteredEntries() {
         return state.entries.filter((entry) => {
           if (state.pagesOnly && !entry.page_url) return false;
-          for (const [axisId, valueId] of Object.entries(state.filters)) {
-            if (!valueId) continue;
-            if (entry[axisId] !== valueId) return false;
+          for (const axisId of Object.keys(state.filters)) {
+            const selected = state.filters[axisId];
+            if (!selected.size) continue;
+            if (!selected.has(entry[axisId])) return false;
           }
           return true;
         });
