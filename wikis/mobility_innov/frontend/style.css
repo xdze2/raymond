@@ -354,6 +354,28 @@
   text-transform: none;
 }
 
+.select-similar {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  margin-left: 4px;
+  transition: color 80ms, border-color 80ms;
+}
+
+.select-similar:hover {
+  color: var(--text);
+  border-color: var(--text);
+  border-style: solid;
+}
+
 /* entry body prose */
 .entry-body {
   font-size: 0.97rem;

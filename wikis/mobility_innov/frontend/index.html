@@ -445,6 +445,22 @@
         }
       }
 
+      function selectSimilar(source) {
+        let any = false;
+        for (const ax of state.axes) {
+          const set = state.filters[ax.id];
+          set.clear();
+          const val = source[ax.id];
+          if (val) {
+            set.add(val);
+            any = true;
+          }
+        }
+        if (!any) return;
+        renderAxisBar();
+        renderList();
+      }
+
       async function loadEntry(slug) {
         state.activeSlug = slug;
         renderList();
@@ -473,10 +489,13 @@
       <div class="entry-header">
         <h1 class="entry-title-large">${entry.title}</h1>
         <p class="entry-summary">${entry.summary}</p>
-        <div class="chips">${axisChips}</div>
+        <div class="chips">${axisChips}<button class="select-similar" type="button">select similar</button></div>
       </div>
       <div class="entry-body entry-stub"><p>No page written yet.</p></div>
     `;
+          viewEl
+            .querySelector(".select-similar")
+            ?.addEventListener("click", () => selectSimilar(entry));
           return;
         }
 
@@ -534,12 +553,16 @@
     <div class="entry-header">
       <h1 class="entry-title-large">${fm.title || slug}</h1>
       <p class="entry-summary">${fm.summary || ""}</p>
-      <div class="chips">${axisChips}${extraChips}</div>
+      <div class="chips">${axisChips}${extraChips}<button class="select-similar" type="button">select similar</button></div>
     </div>
     <div class="entry-body">${infobox}${renderMarkdown(body)}</div>
   `;
 
         viewEl.innerHTML = html;
+
+        viewEl
+          .querySelector(".select-similar")
+          ?.addEventListener("click", () => selectSimilar(fm));
 
         viewEl.querySelectorAll("a.crosslink").forEach((a) => {
           a.addEventListener("click", (e) => {
