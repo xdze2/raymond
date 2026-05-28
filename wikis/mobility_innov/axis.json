@@ -1,3 +1,353 @@
 {
-  "axes": []
+  "axes": [
+    {
+      "id": "how",
+      "label": "How",
+      "description": "The primary lever of change — what kind of innovation is actually at work.",
+      "values": [
+        {
+          "id": "new_vehicle",
+          "label": "New vehicle",
+          "description": "A new physical form factor: Citroën Ami, Microlino, Toyota FT-Me. The innovation is the object itself."
+        },
+        {
+          "id": "new_propulsion",
+          "label": "New propulsion",
+          "description": "Electrification or repowering of an existing form: e-scooter, e-bike, retrofit kits. The shape is familiar; the drivetrain is not."
+        },
+        {
+          "id": "new_usage_model",
+          "label": "New usage model",
+          "description": "Shared, free-floating, subscription, short-term rental. Lime, Voi, Swapfiets. The vehicle may be ordinary; the way it reaches users is the lever."
+        },
+        {
+          "id": "regulatory_push",
+          "label": "Regulatory push",
+          "description": "The innovation IS the rule change: ZFE zones, speed limits, permit reform, new vehicle categories. Policy as product."
+        },
+        {
+          "id": "infrastructure",
+          "label": "Infrastructure",
+          "description": "Bike lanes, charging hubs, intermodal stations, parking reform. Built environment as the enabler."
+        },
+        {
+          "id": "software_platform",
+          "label": "Software / platform",
+          "description": "Apps, fleet management, routing, data analytics. Fluctuo, MaaS aggregators, dispatch software."
+        }
+      ]
+    },
+    {
+      "id": "why",
+      "label": "Why",
+      "description": "The primary driver — the problem or desire the innovation answers to.",
+      "values": [
+        {
+          "id": "decarbonation",
+          "label": "Decarbonation",
+          "description": "Reducing CO₂, meeting climate targets, electrifying transport."
+        },
+        {
+          "id": "congestion",
+          "label": "Congestion",
+          "description": "Fewer cars, less traffic, more efficient use of road space."
+        },
+        {
+          "id": "cost",
+          "label": "Cost",
+          "description": "Cheaper than owning or operating a private car — for users, for cities, or for fleets."
+        },
+        {
+          "id": "access",
+          "label": "Access",
+          "description": "Usable without a full licence: age 14+, disabled users, people excluded from conventional cars."
+        },
+        {
+          "id": "last_mile",
+          "label": "Last mile",
+          "description": "Bridging the gap between mass transit and the actual destination."
+        },
+        {
+          "id": "lifestyle",
+          "label": "Fun / lifestyle",
+          "description": "Desire and image, not utility. Buggy, Microlino, La Bagnole lean here."
+        },
+        {
+          "id": "health",
+          "label": "Health",
+          "description": "Active mobility — cycling, walking — as a public-health lever."
+        },
+        {
+          "id": "logistics",
+          "label": "Logistics",
+          "description": "Professional delivery, trades, services. Cargo bikes, microvans, last-mile fleets."
+        }
+      ]
+    },
+    {
+      "id": "who",
+      "label": "Who",
+      "description": "The target user — whose mobility problem the innovation addresses.",
+      "values": [
+        {
+          "id": "urban_daily",
+          "label": "Urban daily",
+          "description": "City commuters, dense-urban residents using the system every day."
+        },
+        {
+          "id": "periurban",
+          "label": "Periurban",
+          "description": "Suburbs, mid-density towns, agglomérations — often underserved by transit."
+        },
+        {
+          "id": "rural",
+          "label": "Rural",
+          "description": "Genuine countryside, low-density areas. La Bagnole sits here."
+        },
+        {
+          "id": "youth",
+          "label": "Youth",
+          "description": "14–18, pre-licence age. The L6e quadricycle category is built around them."
+        },
+        {
+          "id": "senior_pmr",
+          "label": "Senior / PMR",
+          "description": "Older users and people with reduced mobility. Toyota APM angle."
+        },
+        {
+          "id": "professional",
+          "label": "Professional",
+          "description": "Delivery riders, trades, mobile services — vehicles as work tools."
+        },
+        {
+          "id": "tourist",
+          "label": "Tourist",
+          "description": "Seasonal, short-trip use. Holiday rentals, resort fleets."
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "label": "Scope",
+      "description": "The type of actor behind the innovation.",
+      "values": [
+        {
+          "id": "startup",
+          "label": "Startup",
+          "description": "Early-stage company: Kilow, early Lime, Dott at launch."
+        },
+        {
+          "id": "scale_up",
+          "label": "Scale-up",
+          "description": "Post-Series B, operating at scale. Lime, Voi in their current form."
+        },
+        {
+          "id": "legacy_auto",
+          "label": "Legacy auto",
+          "description": "Incumbent carmakers: Toyota, Stellantis, Renault, their mobility spin-offs."
+        },
+        {
+          "id": "public_city",
+          "label": "Public / city",
+          "description": "Municipal operators and contracts: Vélib', city-run bike share, public tenders."
+        },
+        {
+          "id": "ngo_advocacy",
+          "label": "NGO / advocacy",
+          "description": "Industry bodies, advocacy groups, observatories. Mobilians, Observatoire national."
+        },
+        {
+          "id": "research",
+          "label": "Research",
+          "description": "Academic labs, think tanks, public-research mobility programs."
+        }
+      ]
+    },
+    {
+      "id": "form_factor",
+      "label": "Form factor",
+      "description": "The vehicle category — regulatory treatment differs sharply by category, so this matters.",
+      "values": [
+        {
+          "id": "edpm",
+          "label": "EDPM",
+          "description": "Engins de déplacement personnel motorisés: e-scooters, hoverboards, trottinettes électriques."
+        },
+        {
+          "id": "e_bike",
+          "label": "E-bike",
+          "description": "Pedal-assist bicycles and speed pedelecs."
+        },
+        {
+          "id": "cargo_bike",
+          "label": "Cargo bike",
+          "description": "Family cargo bikes and professional delivery cargo cycles."
+        },
+        {
+          "id": "quadricycle_l6e",
+          "label": "Quadricycle L6e",
+          "description": "Light quad, sans permis, capped at 45 km/h. Citroën Ami, Microlino."
+        },
+        {
+          "id": "quadricycle_l7e",
+          "label": "Quadricycle L7e",
+          "description": "Heavy quad, up to 80 km/h, B1 permit required. Fiat Topolino full-size variants."
+        },
+        {
+          "id": "moped_scooter",
+          "label": "Moped / scooter",
+          "description": "Two-wheel motorized vehicles, thermal or electric."
+        },
+        {
+          "id": "microvan",
+          "label": "Microvan",
+          "description": "Cargo quads, last-mile delivery boxes, small electric utility vehicles."
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "description": "Where the innovation sits in its lifecycle.",
+      "values": [
+        {
+          "id": "concept",
+          "label": "Concept",
+          "color": "#1971c2",
+          "description": "Announced or shown but not yet in production. Toyota FT-Me, some Mobilize concepts."
+        },
+        {
+          "id": "pilot",
+          "label": "Pilot",
+          "color": "#7048e8",
+          "description": "Small production run or limited deployment, testing the market. Early Kilow."
+        },
+        {
+          "id": "active_growing",
+          "label": "Active — growing",
+          "color": "#2f9e44",
+          "description": "In market, expanding. Fiat Topolino, Voi in Paris."
+        },
+        {
+          "id": "active_mature",
+          "label": "Active — mature",
+          "color": "#0ca678",
+          "description": "Established, stable, no longer in rapid growth. Citroën Ami, Vélib'."
+        },
+        {
+          "id": "struggling",
+          "label": "Struggling",
+          "color": "#f08c00",
+          "description": "Available but commercially weak or losing ground. Mobilize Duo, Microlino in volume terms."
+        },
+        {
+          "id": "abandoned",
+          "label": "Abandoned",
+          "color": "#868e96",
+          "description": "Withdrawn from the market or discontinued. Bird in France, Renault Twizy."
+        }
+      ]
+    },
+    {
+      "id": "geography",
+      "label": "Geography",
+      "description": "Territorial fit — solutions don't transfer 1:1 between contexts.",
+      "values": [
+        {
+          "id": "dense_urban",
+          "label": "Dense urban",
+          "description": "Paris intramuros and equivalent high-density cores."
+        },
+        {
+          "id": "mid_city",
+          "label": "Mid-city",
+          "description": "Lyon, Bordeaux, Rennes — medium-sized French cities."
+        },
+        {
+          "id": "periurban",
+          "label": "Periurban",
+          "description": "Agglomérations, communes rurbanisées, the band around mid- and large cities."
+        },
+        {
+          "id": "rural",
+          "label": "Rural",
+          "description": "Genuine low-density countryside use."
+        },
+        {
+          "id": "cross_border",
+          "label": "Cross-border",
+          "description": "EU-level plays: harmonized vehicle categories, cross-country operators, regulatory alignment."
+        }
+      ]
+    },
+    {
+      "id": "business_model",
+      "label": "Business model",
+      "description": "How the innovation sustains itself economically.",
+      "values": [
+        {
+          "id": "product_sale",
+          "label": "Product sale",
+          "description": "The user buys the vehicle outright."
+        },
+        {
+          "id": "subscription",
+          "label": "Subscription",
+          "description": "Monthly fee for ongoing access to a vehicle. Swapfiets model."
+        },
+        {
+          "id": "pay_per_use",
+          "label": "Pay per use",
+          "description": "Per-minute or per-trip pricing. Lime, Voi, free-floating fleets."
+        },
+        {
+          "id": "b2b_fleet",
+          "label": "B2B fleet",
+          "description": "Sold or leased to companies for staff or delivery fleets."
+        },
+        {
+          "id": "public_contract",
+          "label": "Public contract",
+          "description": "Won through a city tender. Paris bike-share and e-bike contracts."
+        },
+        {
+          "id": "subsidy_dependent",
+          "label": "Subsidy-dependent",
+          "description": "Relies on bonus écologique, purchase aids, or other public funding to make the unit economics work."
+        }
+      ]
+    },
+    {
+      "id": "regulation_posture",
+      "label": "Regulation posture",
+      "description": "How the innovation relates to the existing rule set — a genuinely discriminating dimension in this space.",
+      "values": [
+        {
+          "id": "regulation_enabled",
+          "label": "Enabled",
+          "description": "Exists because the rules allow it. The L6e quadricycle category is the textbook case."
+        },
+        {
+          "id": "regulation_neutral",
+          "label": "Neutral",
+          "description": "Largely unaffected by the regulatory frame either way."
+        },
+        {
+          "id": "regulation_challenging",
+          "label": "Challenging",
+          "description": "Pushes against existing rules, often deployed before they catch up. Early dockless scooters."
+        },
+        {
+          "id": "regulation_shaping",
+          "label": "Shaping",
+          "description": "Actively lobbying for or co-designing new categories and frameworks. Mobilians, city pilots, industry associations."
+        },
+        {
+          "id": "regulation_killed",
+          "label": "Killed",
+          "description": "Shut down or made unviable by a regulatory decision. Paris rental scooter ban is the canonical example."
+        }
+      ]
+    }
+  ]
 }
