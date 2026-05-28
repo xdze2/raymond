@@ -14,6 +14,12 @@ business_model: product_sale
 regulation_posture: regulation_enabled
 
 related: [citroen-ami, fiat-topolino, microlino, la-bagnole-kilow, mobilize-duo]
+
+meta:
+  author: claude-opus-4-7
+  author_type: llm
+  created: 2026-05-28
+  source_prompt: prompts/make_page.txt
 ---
 
 ## What It Is

@@ -14,6 +14,12 @@ business_model: public_contract
 regulation_posture: regulation_killed
 
 related: [paris-shared-ebike-contract-2025, velib-smovengo, tier-dott-merger-2024, observatoire-national-micromobilite, mobilians-trade-body]
+
+meta:
+  author: claude-opus-4-7
+  author_type: llm
+  created: 2026-05-28
+  source_prompt: prompts/make_page.txt
 ---
 
 ## What It Is
