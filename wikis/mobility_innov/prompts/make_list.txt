@@ -1,0 +1,3 @@
+TODO: write the per-axis list-generation prompt for mobility_innov.
+Use placeholders {axis_id} matching the axis ids declared in axis.json,
+plus any freeform slots declared in wiki.json.

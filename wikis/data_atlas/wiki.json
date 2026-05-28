@@ -1,0 +1,14 @@
+{
+  "id": "data_atlas",
+  "title": "Data Atlas",
+  "wordmark": ["DATA", "ATLAS"],
+  "tagline": "A reference work about data — what exists, what's hidden, and what should exist but doesn't.",
+  "placeholder_hint": "Select an entry from the list, or filter by axis above.",
+  "gen_axes": ["origin", "status", "scale"],
+  "freeform_axes": ["domain"],
+  "status_axis": "status",
+  "extra_chips": [
+    { "field": "llm_impact", "label": "LLM", "class": "chip-llm" },
+    { "field": "domains", "array": true, "class": "chip-domain" }
+  ]
+}

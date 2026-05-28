@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Atlas</title>
+    <title>Wiki</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="app">
       <header id="axis-bar">
         <div id="wordmark">
-          <span>DATA</span>
-          <span>ATLAS</span>
+          <!-- populated by JS -->
         </div>
         <div id="axis-bar-inner">
           <!-- populated by JS -->
@@ -32,12 +31,7 @@
         <article id="view-panel">
           <div id="view-content">
             <div id="placeholder">
-              <h1>Data Atlas</h1>
-              <p>
-                A reference work about data — what exists, what's hidden, and
-                what should exist but doesn't.
-              </p>
-              <p>Select an entry from the list, or filter by axis above.</p>
+              <!-- populated by JS -->
             </div>
           </div>
         </article>
@@ -178,6 +172,7 @@
       // ── state ────────────────────────────────────────────────────────────────────
 
       const state = {
+        wiki: {}, // wiki.json config
         axes: [],
         filters: {}, // { axisId: valueId | null }
         entries: [], // all entries, merged from catalogue + pages
@@ -187,8 +182,13 @@
 
       // ── data loading ─────────────────────────────────────────────────────────────
 
+      async function loadWiki() {
+        const res = await fetch("../wiki.json");
+        state.wiki = await res.json();
+      }
+
       async function loadAxes() {
-        const res = await fetch("../data/axis.json");
+        const res = await fetch("../axis.json");
         const data = await res.json();
         state.axes = data.axes;
         state.axes.forEach((ax) => {
@@ -200,14 +200,14 @@
         // 1. fetch set of slugs that have a full page
         let pageSlugs = new Set();
         try {
-          const res = await fetch("../data/pages/index.json");
+          const res = await fetch("../pages/index.json");
           if (res.ok) pageSlugs = new Set(await res.json());
         } catch (_) {}
 
         // 2. fetch all catalogue JSONL files
         let catalogueFiles = [];
         try {
-          const res = await fetch("../data/catalogue/index.json");
+          const res = await fetch("../catalogue/index.json");
           if (res.ok) catalogueFiles = await res.json();
         } catch (_) {}
 
@@ -216,7 +216,7 @@
         await Promise.all(
           catalogueFiles.map(async (filename) => {
             try {
-              const res = await fetch(`../data/catalogue/${filename}`);
+              const res = await fetch(`../catalogue/${filename}`);
               if (!res.ok) return;
               const text = await res.text();
               for (const line of text.split("\n")) {
@@ -230,7 +230,7 @@
                     map.set(entry.slug, {
                       ...entry,
                       page_url: pageSlugs.has(entry.slug)
-                        ? `../data/pages/${entry.slug}.md`
+                        ? `../pages/${entry.slug}.md`
                         : null,
                     });
                   }
@@ -244,22 +244,26 @@
         await Promise.all(
           [...pageSlugs].map(async (slug) => {
             try {
-              const res = await fetch(`../data/pages/${slug}.md`);
+              const res = await fetch(`../pages/${slug}.md`);
               if (!res.ok) return;
               const text = await res.text();
               const { fm } = parseFrontmatter(text);
-              map.set(slug, {
+              const entry = {
                 slug: fm.slug || slug,
                 title: fm.title || slug,
                 summary: fm.summary || "",
-                origin: fm.origin || null,
-                status: fm.status || null,
-                scale: fm.scale || null,
-                llm_impact: fm.llm_impact || null,
-                domains: fm.domains || [],
-                page_url: `../data/pages/${slug}.md`,
+                page_url: `../pages/${slug}.md`,
                 _raw: text,
-              });
+              };
+              // copy all known axis values from frontmatter
+              for (const ax of state.axes) {
+                entry[ax.id] = fm[ax.id] || null;
+              }
+              // copy extra-chip fields declared in wiki.json
+              for (const chip of state.wiki.extra_chips || []) {
+                entry[chip.field] = fm[chip.field] ?? (chip.array ? [] : null);
+              }
+              map.set(slug, entry);
             } catch (_) {}
           }),
         );
@@ -272,13 +276,59 @@
       // ── rendering ────────────────────────────────────────────────────────────────
 
       function getStatusColor(statusId) {
+        const statusAxisId = state.wiki.status_axis;
+        if (!statusAxisId) return "#aaa";
         for (const ax of state.axes) {
-          if (ax.id === "status") {
+          if (ax.id === statusAxisId) {
             const v = ax.values.find((v) => v.id === statusId);
             if (v && v.color) return v.color;
           }
         }
         return "#aaa";
+      }
+
+      function renderWordmark() {
+        const el = document.getElementById("wordmark");
+        el.innerHTML = "";
+        for (const word of state.wiki.wordmark || []) {
+          const span = document.createElement("span");
+          span.textContent = word;
+          el.appendChild(span);
+        }
+      }
+
+      function renderPlaceholder() {
+        const el = document.getElementById("placeholder");
+        const title = state.wiki.title || "Wiki";
+        const tagline = state.wiki.tagline || "";
+        const hint =
+          state.wiki.placeholder_hint ||
+          "Select an entry from the list, or filter by axis above.";
+        el.innerHTML = `
+          <h1>${title}</h1>
+          ${tagline ? `<p>${tagline}</p>` : ""}
+          <p>${hint}</p>
+        `;
+        document.title = title;
+      }
+
+      function renderExtraChips(source) {
+        return (state.wiki.extra_chips || [])
+          .map((chip) => {
+            const val = source[chip.field];
+            if (chip.array) {
+              const arr = Array.isArray(val) ? val : [];
+              const cls = chip.class || "chip-extra";
+              return arr
+                .map((v) => `<span class="chip ${cls}">${v}</span>`)
+                .join("");
+            }
+            if (!val) return "";
+            const cls = chip.class || "chip-extra";
+            const label = chip.label ? `${chip.label}: ` : "";
+            return `<span class="chip ${cls}">${label}${val}</span>`;
+          })
+          .join("");
       }
 
       function renderAxisBar() {
@@ -452,19 +502,13 @@
           })
           .join("");
 
-        const llmChip = fm.llm_impact
-          ? `<span class="chip chip-llm">LLM: ${fm.llm_impact}</span>`
-          : "";
-
-        const domainChips = (Array.isArray(fm.domains) ? fm.domains : [])
-          .map((d) => `<span class="chip chip-domain">${d}</span>`)
-          .join("");
+        const extraChips = renderExtraChips(fm);
 
         const html = `
     <div class="entry-header">
       <h1 class="entry-title-large">${fm.title || slug}</h1>
       <p class="entry-summary">${fm.summary || ""}</p>
-      <div class="chips">${axisChips}${llmChip}${domainChips}</div>
+      <div class="chips">${axisChips}${extraChips}</div>
     </div>
     <div class="entry-body">${renderMarkdown(body)}</div>
   `;
@@ -487,7 +531,10 @@
       // ── init ─────────────────────────────────────────────────────────────────────
 
       async function init() {
+        await loadWiki();
         await loadAxes();
+        renderWordmark();
+        renderPlaceholder();
         await loadEntries();
         renderAxisBar();
         renderList();

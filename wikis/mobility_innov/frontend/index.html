@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wiki</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="axis-bar">
+        <div id="wordmark">
+          <!-- populated by JS -->
+        </div>
+        <div id="axis-bar-inner">
+          <!-- populated by JS -->
+        </div>
+      </header>
+
+      <div id="main">
+        <nav id="list-panel">
+          <div id="list-header">
+            <span id="list-count"></span>
+            <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
+          </div>
+          <ul id="entry-list">
+            <!-- populated by JS -->
+          </ul>
+        </nav>
+
+        <article id="view-panel">
+          <div id="view-content">
+            <div id="placeholder">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <script type="module">
+      // ── tiny markdown renderer (no external deps) ────────────────────────────────
+
+      function renderMarkdown(md) {
+        // We'll use a simple sequential pass
+        const lines = md.split("\n");
+        let html = "";
+        let i = 0;
+        let inPara = false;
+        let inList = false;
+
+        const closePara = () => {
+          if (inPara) {
+            html += "</p>\n";
+            inPara = false;
+          }
+        };
+        const closeList = () => {
+          if (inList) {
+            html += "</ul>\n";
+            inList = false;
+          }
+        };
+
+        const inline = (text) => {
+          // bold
+          text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+          // italic
+          text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
+          // inline code
+          text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
+          // cross-links → [[slug]]
+          text = text.replace(
+            /→\s*\[\[([^\]]+)\]\]/g,
+            (_, slug) =>
+              `→ <a class="crosslink" href="#" data-slug="${slug}">${slug.replace(/-/g, " ")}</a>`,
+          );
+          // regular links
+          text = text.replace(
+            /\[([^\]]+)\]\(([^)]+)\)/g,
+            '<a href="$2" target="_blank" rel="noopener">$1</a>',
+          );
+          return text;
+        };
+
+        while (i < lines.length) {
+          const line = lines[i];
+
+          // headings
+          const hm = line.match(/^(#{1,6})\s+(.*)/);
+          if (hm) {
+            closePara();
+            closeList();
+            const level = hm[1].length;
+            html += `<h${level}>${inline(hm[2])}</h${level}>\n`;
+            i++;
+            continue;
+          }
+
+          // horizontal rule
+          if (/^---+$/.test(line.trim())) {
+            closePara();
+            closeList();
+            html += "<hr>\n";
+            i++;
+            continue;
+          }
+
+          // unordered list
+          const ulm = line.match(/^[-*]\s+(.*)/);
+          if (ulm) {
+            closePara();
+            if (!inList) {
+              html += "<ul>\n";
+              inList = true;
+            }
+            html += `<li>${inline(ulm[1])}</li>\n`;
+            i++;
+            continue;
+          }
+
+          // blank line
+          if (line.trim() === "") {
+            closePara();
+            closeList();
+            i++;
+            continue;
+          }
+
+          // paragraph
+          closeList();
+          if (!inPara) {
+            html += "<p>";
+            inPara = true;
+          } else html += " ";
+          html += inline(line.trim());
+          i++;
+        }
+        closePara();
+        closeList();
+        return html;
+      }
+
+      // ── frontmatter parser ───────────────────────────────────────────────────────
+
+      function parseFrontmatter(text) {
+        const fm = {};
+        let body = text;
+
+        const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+        if (match) {
+          const raw = match[1];
+          body = match[2];
+          for (const line of raw.split("\n")) {
+            const kv = line.match(/^(\w+):\s*(.*)/);
+            if (!kv) continue;
+            const [, key, val] = kv;
+            // array values like [a, b, c]
+            if (val.startsWith("[")) {
+              fm[key] = val
+                .slice(1, -1)
+                .split(",")
+                .map((s) => s.trim().replace(/^"|"$/g, ""));
+            } else {
+              fm[key] = val.trim();
+            }
+          }
+        }
+        return { fm, body };
+      }
+
+      // ── state ────────────────────────────────────────────────────────────────────
+
+      const state = {
+        wiki: {}, // wiki.json config
+        axes: [],
+        filters: {}, // { axisId: valueId | null }
+        entries: [], // all entries, merged from catalogue + pages
+        activeSlug: null,
+        pagesOnly: false,
+      };
+
+      // ── data loading ─────────────────────────────────────────────────────────────
+
+      async function loadWiki() {
+        const res = await fetch("../wiki.json");
+        state.wiki = await res.json();
+      }
+
+      async function loadAxes() {
+        const res = await fetch("../axis.json");
+        const data = await res.json();
+        state.axes = data.axes;
+        state.axes.forEach((ax) => {
+          state.filters[ax.id] = null;
+        });
+      }
+
+      async function loadEntries() {
+        // 1. fetch set of slugs that have a full page
+        let pageSlugs = new Set();
+        try {
+          const res = await fetch("../pages/index.json");
+          if (res.ok) pageSlugs = new Set(await res.json());
+        } catch (_) {}
+
+        // 2. fetch all catalogue JSONL files
+        let catalogueFiles = [];
+        try {
+          const res = await fetch("../catalogue/index.json");
+          if (res.ok) catalogueFiles = await res.json();
+        } catch (_) {}
+
+        const map = new Map(); // slug → entry, for deduplication
+
+        await Promise.all(
+          catalogueFiles.map(async (filename) => {
+            try {
+              const res = await fetch(`../catalogue/${filename}`);
+              if (!res.ok) return;
+              const text = await res.text();
+              for (const line of text.split("\n")) {
+                const trimmed = line.trim();
+                if (!trimmed) continue;
+                try {
+                  const entry = JSON.parse(trimmed);
+                  if (!entry.slug) continue;
+                  // page entry wins over catalogue seed if already present
+                  if (!map.has(entry.slug)) {
+                    map.set(entry.slug, {
+                      ...entry,
+                      page_url: pageSlugs.has(entry.slug)
+                        ? `../pages/${entry.slug}.md`
+                        : null,
+                    });
+                  }
+                } catch (_) {}
+              }
+            } catch (_) {}
+          }),
+        );
+
+        // 3. load full page entries — they override catalogue seeds
+        await Promise.all(
+          [...pageSlugs].map(async (slug) => {
+            try {
+              const res = await fetch(`../pages/${slug}.md`);
+              if (!res.ok) return;
+              const text = await res.text();
+              const { fm } = parseFrontmatter(text);
+              const entry = {
+                slug: fm.slug || slug,
+                title: fm.title || slug,
+                summary: fm.summary || "",
+                page_url: `../pages/${slug}.md`,
+                _raw: text,
+              };
+              // copy all known axis values from frontmatter
+              for (const ax of state.axes) {
+                entry[ax.id] = fm[ax.id] || null;
+              }
+              // copy extra-chip fields declared in wiki.json
+              for (const chip of state.wiki.extra_chips || []) {
+                entry[chip.field] = fm[chip.field] ?? (chip.array ? [] : null);
+              }
+              map.set(slug, entry);
+            } catch (_) {}
+          }),
+        );
+
+        state.entries = [...map.values()].sort((a, b) =>
+          a.title.localeCompare(b.title),
+        );
+      }
+
+      // ── rendering ────────────────────────────────────────────────────────────────
+
+      function getStatusColor(statusId) {
+        const statusAxisId = state.wiki.status_axis;
+        if (!statusAxisId) return "#aaa";
+        for (const ax of state.axes) {
+          if (ax.id === statusAxisId) {
+            const v = ax.values.find((v) => v.id === statusId);
+            if (v && v.color) return v.color;
+          }
+        }
+        return "#aaa";
+      }
+
+      function renderWordmark() {
+        const el = document.getElementById("wordmark");
+        el.innerHTML = "";
+        for (const word of state.wiki.wordmark || []) {
+          const span = document.createElement("span");
+          span.textContent = word;
+          el.appendChild(span);
+        }
+      }
+
+      function renderPlaceholder() {
+        const el = document.getElementById("placeholder");
+        const title = state.wiki.title || "Wiki";
+        const tagline = state.wiki.tagline || "";
+        const hint =
+          state.wiki.placeholder_hint ||
+          "Select an entry from the list, or filter by axis above.";
+        el.innerHTML = `
+          <h1>${title}</h1>
+          ${tagline ? `<p>${tagline}</p>` : ""}
+          <p>${hint}</p>
+        `;
+        document.title = title;
+      }
+
+      function renderExtraChips(source) {
+        return (state.wiki.extra_chips || [])
+          .map((chip) => {
+            const val = source[chip.field];
+            if (chip.array) {
+              const arr = Array.isArray(val) ? val : [];
+              const cls = chip.class || "chip-extra";
+              return arr
+                .map((v) => `<span class="chip ${cls}">${v}</span>`)
+                .join("");
+            }
+            if (!val) return "";
+            const cls = chip.class || "chip-extra";
+            const label = chip.label ? `${chip.label}: ` : "";
+            return `<span class="chip ${cls}">${label}${val}</span>`;
+          })
+          .join("");
+      }
+
+      function renderAxisBar() {
+        const container = document.getElementById("axis-bar-inner");
+        container.innerHTML = "";
+
+        for (const axis of state.axes) {
+          const row = document.createElement("div");
+          row.className = "axis-row";
+
+          const label = document.createElement("span");
+          label.className = "axis-label";
+          label.textContent = axis.label;
+          row.appendChild(label);
+
+          const buttons = document.createElement("div");
+          buttons.className = "axis-buttons";
+
+          for (const val of axis.values) {
+            const btn = document.createElement("button");
+            btn.className = "axis-btn";
+            btn.textContent = val.label;
+            btn.dataset.axis = axis.id;
+            btn.dataset.value = val.id;
+            btn.title = val.description;
+
+            if (state.filters[axis.id] === val.id) {
+              btn.classList.add("active");
+              if (axis.id === "status" && val.color) {
+                btn.style.setProperty("--status-color", val.color);
+                btn.classList.add("status-colored");
+              }
+            }
+
+            btn.addEventListener("click", () => {
+              if (state.filters[axis.id] === val.id) {
+                state.filters[axis.id] = null;
+              } else {
+                state.filters[axis.id] = val.id;
+              }
+              renderAxisBar();
+              renderList();
+            });
+
+            buttons.appendChild(btn);
+          }
+
+          row.appendChild(buttons);
+
+          // description of the selected value, inline after the buttons
+          const selectedVal = axis.values.find(
+            (v) => v.id === state.filters[axis.id],
+          );
+          if (selectedVal) {
+            const desc = document.createElement("span");
+            desc.className = "axis-desc";
+            desc.textContent = selectedVal.description;
+            buttons.appendChild(desc);
+          }
+
+          row.appendChild(buttons);
+          container.appendChild(row);
+        }
+      }
+
+      function filteredEntries() {
+        return state.entries.filter((entry) => {
+          if (state.pagesOnly && !entry.page_url) return false;
+          for (const [axisId, valueId] of Object.entries(state.filters)) {
+            if (!valueId) continue;
+            if (entry[axisId] !== valueId) return false;
+          }
+          return true;
+        });
+      }
+
+      function renderList() {
+        const ul = document.getElementById("entry-list");
+        const countEl = document.getElementById("list-count");
+        ul.innerHTML = "";
+
+        const entries = filteredEntries();
+        const total = state.entries.length;
+        const filtered = entries.length;
+        countEl.textContent = filtered === total
+          ? `${total} datasets`
+          : `${filtered} / ${total} datasets`;
+
+        for (const entry of entries) {
+          const li = document.createElement("li");
+          li.className = "entry-item";
+          if (entry.slug === state.activeSlug) li.classList.add("active");
+
+          const titleEl = document.createElement("span");
+          titleEl.className = "entry-title";
+          titleEl.textContent = entry.title;
+
+          const meta = document.createElement("span");
+          meta.className = "entry-meta";
+
+          if (entry.status) {
+            const dot = document.createElement("span");
+            dot.className = "status-dot";
+            dot.style.background = getStatusColor(entry.status);
+            dot.title = entry.status;
+            meta.appendChild(dot);
+          }
+
+          li.appendChild(titleEl);
+          li.appendChild(meta);
+
+          li.addEventListener("click", () => loadEntry(entry.slug));
+          ul.appendChild(li);
+        }
+      }
+
+      async function loadEntry(slug) {
+        state.activeSlug = slug;
+        renderList();
+
+        const entry = state.entries.find((e) => e.slug === slug);
+        if (!entry) return;
+
+        const viewEl = document.getElementById("view-content");
+        viewEl.innerHTML = '<div class="loading">Loading…</div>';
+
+        // catalogue-only entry: no page yet
+        if (!entry._raw && !entry.page_url) {
+          const axisChips = state.axes
+            .map((ax) => {
+              const val = entry[ax.id];
+              if (!val) return "";
+              const color = ax.id === "status" ? getStatusColor(val) : null;
+              const style = color
+                ? ` style="border-color:${color};color:${color}"`
+                : "";
+              return `<span class="chip"${style}>${ax.label}: ${val}</span>`;
+            })
+            .join("");
+
+          viewEl.innerHTML = `
+      <div class="entry-header">
+        <h1 class="entry-title-large">${entry.title}</h1>
+        <p class="entry-summary">${entry.summary}</p>
+        <div class="chips">${axisChips}</div>
+      </div>
+      <div class="entry-body entry-stub"><p>No page written yet.</p></div>
+    `;
+          return;
+        }
+
+        // load raw text if not already in memory (page_url set but _raw missing)
+        let raw = entry._raw;
+        if (!raw && entry.page_url) {
+          const res = await fetch(entry.page_url);
+          raw = await res.text();
+          entry._raw = raw;
+        }
+
+        const { fm, body } = parseFrontmatter(raw);
+
+        const axisChips = state.axes
+          .map((ax) => {
+            const val = fm[ax.id];
+            if (!val) return "";
+            const color = ax.id === "status" ? getStatusColor(val) : null;
+            const style = color
+              ? ` style="border-color:${color};color:${color}"`
+              : "";
+            return `<span class="chip"${style}>${ax.label}: ${val}</span>`;
+          })
+          .join("");
+
+        const extraChips = renderExtraChips(fm);
+
+        const html = `
+    <div class="entry-header">
+      <h1 class="entry-title-large">${fm.title || slug}</h1>
+      <p class="entry-summary">${fm.summary || ""}</p>
+      <div class="chips">${axisChips}${extraChips}</div>
+    </div>
+    <div class="entry-body">${renderMarkdown(body)}</div>
+  `;
+
+        viewEl.innerHTML = html;
+
+        viewEl.querySelectorAll("a.crosslink").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = a.dataset.slug;
+            const found = state.entries.find((e) => e.slug === target);
+            if (found) loadEntry(target);
+            else {
+              viewEl.innerHTML += `<p class="crosslink-missing">Entry "${target}" not yet in the atlas.</p>`;
+            }
+          });
+        });
+      }
+
+      // ── init ─────────────────────────────────────────────────────────────────────
+
+      async function init() {
+        await loadWiki();
+        await loadAxes();
+        renderWordmark();
+        renderPlaceholder();
+        await loadEntries();
+        renderAxisBar();
+        renderList();
+
+        document.getElementById("toggle-pages").addEventListener("click", (e) => {
+          state.pagesOnly = !state.pagesOnly;
+          e.currentTarget.classList.toggle("active", state.pagesOnly);
+          renderList();
+        });
+      }
+
+      init().catch(console.error);
+    </script>
+  </body>
+</html>

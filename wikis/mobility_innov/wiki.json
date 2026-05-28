@@ -1,0 +1,11 @@
+{
+  "id": "mobility_innov",
+  "title": "Mobility Innovations",
+  "wordmark": ["MOBILITY", "INNOV"],
+  "tagline": "",
+  "placeholder_hint": "Select an entry from the list, or filter by axis above.",
+  "gen_axes": [],
+  "freeform_axes": [],
+  "status_axis": null,
+  "extra_chips": []
+}
