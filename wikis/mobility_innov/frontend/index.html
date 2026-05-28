@@ -23,6 +23,9 @@
             <span id="list-count"></span>
             <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
           </div>
+          <div id="active-filters" hidden>
+            <!-- populated by JS -->
+          </div>
           <ul id="entry-list">
             <!-- populated by JS -->
           </ul>
@@ -174,7 +177,7 @@
       const state = {
         wiki: {}, // wiki.json config
         axes: [],
-        filters: {}, // { axisId: valueId | null }
+        filters: {}, // { axisId: Set<valueId> }
         entries: [], // all entries, merged from catalogue + pages
         activeSlug: null,
         pagesOnly: false,
@@ -504,13 +507,39 @@
 
         const extraChips = renderExtraChips(fm);
 
+        // best-effort load of the enrichment sidecar (image, license, wikipedia summary)
+        let enrichment = null;
+        try {
+          const res = await fetch(`../enrichments/${slug}.json`);
+          if (res.ok) enrichment = await res.json();
+        } catch (_) {}
+
+        let infobox = "";
+        if (enrichment && enrichment.image && enrichment.image.web_path) {
+          const img = enrichment.image;
+          const src = `../../../${img.web_path}`;
+          const lic = img.license_short
+            ? `<a href="${img.license_url}" target="_blank" rel="noopener">${img.license_short}</a>`
+            : "";
+          const artist = img.artist
+            ? img.artist.replace(/<[^>]+>/g, "") // strip Commons HTML
+            : "";
+          const credit = [artist, lic].filter(Boolean).join(" — ");
+          infobox = `
+            <aside class="infobox">
+              <img src="${src}" alt="${fm.title || slug}" />
+              ${credit ? `<div class="infobox-credit">${credit}</div>` : ""}
+            </aside>
+          `;
+        }
+
         const html = `
     <div class="entry-header">
       <h1 class="entry-title-large">${fm.title || slug}</h1>
       <p class="entry-summary">${fm.summary || ""}</p>
       <div class="chips">${axisChips}${extraChips}</div>
     </div>
-    <div class="entry-body">${renderMarkdown(body)}</div>
+    <div class="entry-body">${infobox}${renderMarkdown(body)}</div>
   `;
 
         viewEl.innerHTML = html;

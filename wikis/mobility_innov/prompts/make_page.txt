@@ -58,95 +58,34 @@ BODY:
 
 The page is **information-dense, bullet-driven, and fact-first**. Prose paragraphs only when a bullet list would lose meaning. Every bullet should carry a concrete fact: a date, a number, a named actor, a model, a regulation, a price.
 
+**Total page length target: 250–400 words.** Scannable in 30 seconds, rewards a 2-minute read. If a section has nothing concrete to add, leave it empty or omit it — do not pad.
+
 ## Snapshot
 
-A 4–6 bullet at-a-glance block. Each bullet ≤ 20 words. Cover:
+The reference layer — 6 to 10 bullets, each a single fact. This block combines the at-a-glance summary and the hard data. Cover, in order:
 
-- **What it is:** one-line definition (form factor, category, function)
-- **Who makes/runs it:** named entity, parent group, country
-- **Launched:** date or stage (concept, pilot, in-market)
-- **Key numbers:** price, range, top speed, volume, fleet size — whatever the headline figures are
-- **Where:** primary geography of deployment
-- **Status:** lifecycle position in one phrase
+- **What it is** — form factor, category, function, homologation (L6e, L7e, EDPM, etc.)
+- **Who runs it** — operator entity, parent group, country
+- **Launched** — date or stage
+- **Production** — factory, location (e.g. "Stellantis Kenitra plant, Morocco")
+- **Price** — base, key variants, currency, year
+- **Performance** — range, top speed, battery, weight, charging — whichever apply
+- **Volume / footprint** — units sold, fleet size, coverage area, with year
+- **Status** — lifecycle position in one phrase
 
-## What It Is
+Name standards explicitly (L6e, L7e, EDPM, ZFE, AM, B1). Currency, units, and year on every number that ages.
 
-Tight bullet list — 6 to 12 bullets — covering the concrete object or measure. For a vehicle: dimensions, motor power, battery, range, top speed, weight, homologation category, occupancy, charging, notable design choices. For a regulation: scope, trigger, effective date, penalties, exemptions. For a platform/service: vehicle type, app, fleet size, coverage area, pricing model, parking rules.
+## What Makes It Interesting
 
-Each bullet is a single fact or tight cluster of facts. Name standards (L6e, L7e, EDPM, ZFE, AM permit, B1 licence) explicitly.
-
-## Who Runs It
-
-Bullet list — 4 to 8 bullets — naming the actors and their roles:
-
-- **Parent / operator:** legal entity, country, ownership
-- **Production / industrial partner:** factory, location, supply chain notable facts
-- **Distribution:** dealer network, channel, direct-to-consumer
-- **Capital:** funding rounds, total raised, investors, valuation if known
-- **Regulator / counterpart:** ministry, city, agency that licenses or contracts the activity
-
-Use named entities. "Stellantis Kenitra plant (Morocco)" not "a North African factory".
-
-## Key Facts & Figures
-
-A dense bullet block of dates, numbers, and milestones. This is the **reference layer** of the page — the thing a reader scans to extract hard data. Include:
-
-- Launch dates, restyling dates, contract dates, ban dates
-- Unit sales, fleet sizes, market shares, year-on-year changes
-- Prices (base, options, variants) with currency and date
-- Range, speed, battery capacity, weight, charging time
-- Subsidies, fines, tariffs — amounts and applicability
-- Comparative figures vs. direct competitors
-
-Cite the year next to any figure that ages quickly. Round only when the source rounds.
-
-## What Makes It Unique / Interesting
-
-3 to 6 bullets — the editorial layer. Why does this entry exist in the wiki? What does it reveal that another entry in the same axis cell wouldn't? Possible angles:
-
-- An unusual industrial choice (made-in-France, shared platform, atypical material)
-- A regulatory exploit or first-mover position in a new category
-- A business-model inversion (free vehicle, paid subscription, hidden subsidy)
-- A design or engineering trick (symmetric body panels, doorless homologation, battery swap)
-- A political or cultural angle (referendum, ban, cultural icon, generational shift)
-- A counter-intuitive position on one of the axes — the cell it occupies that nobody else does
-
-This is the section that makes the entry worth reading rather than just looking up.
+3 to 5 bullets — the editorial layer. Why does this entry exist in the wiki? Possible angles: unusual industrial choice, regulatory exploit, business-model inversion, design trick, political angle, counter-intuitive axis position. This is the section that makes the entry worth reading rather than just looking up.
 
 ## Current Landscape
 
-Bullet list — 4 to 8 bullets — covering the state of play *right now*:
-
-- Volume / fleet / utilization with the latest available year
-- Pricing today, with variants
-- Direct competitors and where this entry sits vs. them
-- Recent events (last 12–24 months): launches, restyles, contracts, withdrawals, mergers
-- Coexistence or substitution with adjacent services / vehicles
+3 to 5 bullets — state of play right now: latest volume/fleet figure with year, current pricing, direct competitors and relative position, recent events (last 12–24 months), substitution dynamics.
 
 ## Pressure Points
 
-Bullet list of forces likely to move the entry over the next 1–3 years. Each bullet names a specific lever:
-
-- **Regulatory:** named law, directive, category change, city decision
-- **Subsidy / fiscal:** named scheme (bonus écologique, ZFE access, TVA, prime à la conversion)
-- **Competitive:** named incoming entrant or merger
-- **Capital:** financing round, IPO, acquisition risk
-- **Operational:** safety data, accident rates, parking conflicts
-- **Political cycle:** mayoral term, national election, EU mandate change
-
-Each bullet should describe what would have to happen for the entry's status to change.
-
-## Sources & Links
-
-A flat link list — the canonical references for the entry. Prefer:
-
-- Wikipedia page (EN and FR if both exist)
-- Official manufacturer / operator site
-- Regulator or ministry page (Ministère de la Transition écologique, EU directive page, city contract page)
-- A serious press piece (Les Échos, L'Argus, Automobile Propre, Reuters)
-- A trade-body or observatory reference (Mobilians, Observatoire national de la micromobilité, Fluctuo report)
-
-Format: `- [Label](URL) — one-line note on what's there`.
+3 to 5 bullets — forces likely to move the entry over the next 1–3 years. Each bullet names a specific lever (regulatory, subsidy, competitive, capital, operational, political cycle) and what would have to happen for status to change.
 
 ## See Also
 
@@ -168,7 +107,7 @@ WRITING RULES:
 
 **Currency, units, standards.** Always specify: €, km/h, kWh, kg, m. Always use the regulatory label (L6e, EDPM, ZFE, AM, B1).
 
-**Link out.** Every page should have at least one Wikipedia link and one official-source link in the `links:` frontmatter and the Sources section. Use real URLs only — never invent.
+**Link out.** Every page must have at least one Wikipedia link and one official-source link in the `links:` frontmatter. Use real URLs only — never invent.
 
 **Editorial honesty.** If a figure is contested, say so in one clause. If a number is a target rather than a result, say "target". If something is announced but not shipped, say "concept" or "announced".
 

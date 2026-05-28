@@ -1,0 +1,59 @@
+{
+  "slug": "citroen-ami",
+  "query": "Citroën Ami (2020)",
+  "wikipedia": {
+    "title": "Citroën Ami (electric vehicle)",
+    "url": "https://en.wikipedia.org/wiki/Citro%C3%ABn_Ami_(electric_vehicle)",
+    "extract": "The Citroën Ami is a two-door, battery-electric quadricycle marketed by the French brand Citroën since 2020. Designed by Pierre Leclercq and named after the model produced between 1961 and 1978, the production model was previewed by the \"Ami One\" concept car. Both the Ami and Ami One were developed simultaneously by Groupe PSA and Altran. The vehicle is manufactured at the Stellantis Kenitra plant in Kenitra, Morocco, equipped with a compact electric motor located at the front, providing 6 kilowatts driving the front wheels. The vehicle's diminutive size has been noted by car reviewers, with a journalist from The Telegraph describing being inside the Ami as \"being inside a Lego brick\"."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/2/26/2021_Citroen_Ami.jpg",
+    "local_path": null,
+    "web_path": "wikis/mobility_innov/media/citroen-ami/web_2021-citroen-ami.jpg",
+    "filename": "2021_Citroen_Ami.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/2021_Citroen_Ami.jpg",
+    "mime": "image/jpeg",
+    "width": 2998,
+    "height": 2060,
+    "license_short": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "artist": "John K",
+    "credit": "Discord server - With their permission",
+    "description": "2021 Citroen Ami taken in Valbonne, France"
+  },
+  "wikidata": {
+    "qid": "Q86733857",
+    "url": "https://www.wikidata.org/wiki/Q86733857",
+    "label": "Citroën Ami",
+    "description": "electric quadricycle",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 3231690,
+          "id": "Q3231690"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 609755,
+          "id": "Q609755"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 193692,
+          "id": "Q193692"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 17166766,
+          "id": "Q17166766"
+        }
+      ],
+      "official_website": [
+        "https://www.citroen.de/modelle/zukunftsmodelle/citroen-ami.html",
+        "https://www.citroen.it/ami",
+        "https://www.citroen.fr/ami"
+      ]
+    }
+  }
+}

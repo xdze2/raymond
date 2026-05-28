@@ -1,0 +1,52 @@
+{
+  "slug": "la-bagnole-kilow",
+  "query": "Kilow La Bagnole",
+  "wikipedia": {
+    "title": "Kilow La Bagnole",
+    "url": "https://en.wikipedia.org/wiki/Kilow_La_Bagnole",
+    "extract": "The Kilow La Bagnole is a light quadricycle L6e limited to 45 km/h (28 mph) or heavy quadricycle L7e limited to 80 km/h (50 mph). It was presented at the 2022 Paris Motor Show."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/43/La_Bagnole_Kilow_-_02.jpg",
+    "local_path": null,
+    "web_path": "wikis/mobility_innov/media/la-bagnole-kilow/web_la-bagnole-kilow-02.jpg",
+    "filename": "La_Bagnole_Kilow_-_02.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/La_Bagnole_Kilow_-_02.jpg",
+    "mime": "image/jpeg",
+    "width": 3540,
+    "height": 1991,
+    "license_short": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Y.Leclercq\" title=\"User:Y.Leclercq\">Y.Leclercq</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "description": "La Bagnole Kilow au Mondial de l'automobile de Paris 2024"
+  },
+  "wikidata": {
+    "qid": "Q130302219",
+    "url": "https://www.wikidata.org/wiki/Q130302219",
+    "label": "Kilow La Bagnole",
+    "description": "motor vehicle",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 360369,
+          "id": "Q360369"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 123692388,
+          "id": "Q123692388"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 193692,
+          "id": "Q193692"
+        }
+      ],
+      "official_website": [
+        "https://kilow.com/pages/la-bagnole"
+      ]
+    }
+  }
+}
