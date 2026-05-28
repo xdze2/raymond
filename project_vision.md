@@ -1,110 +1,114 @@
-# Data Atlas — Project Vision
+# Wikis — Project Vision
 
 ## What It Is
 
-A wiki of datasets. Not a data catalog, not a repository — a reference work about data as a subject, the way Wikipedia is a reference work about the world.
+A platform for building small, focused reference works. Each wiki is a TVTropes-style atlas of a single subject: every entry sits in a multi-axis space that makes entries comparable, browsable, and generatable.
 
-Each entry is a dataset: what it is, who controls it, what it reveals, and what stands between it and public knowledge. The atlas covers both datasets that exist and datasets that should exist but don't — a gap in the record is as worth documenting as the record itself.
+A wiki is not a catalog and not a database. It is a reference work *about* a subject, the way Wikipedia is a reference work about the world. The point is understanding through curation, cross-linking, and structural navigation — not exhaustive indexing.
 
-The closest analogies are Wikipedia (breadth, cross-linking, collaborative curation) and TVTropes (a taxonomy that becomes a lens, not just a label). The atlas is browsable the way those are — you arrive at one entry and leave through three others.
+The closest analogies are Wikipedia (breadth, cross-linking, collaborative curation) and TVTropes (a taxonomy that becomes a lens, not just a label). A wiki built on this platform is browsable the way those are — you arrive at one entry and leave through three others.
+
+Current wikis in this repo:
+
+- **`data_atlas`** — a wiki of datasets: what exists, what's buried, what's missing, what's eroding. Axes: origin, status, scale, plus open-ended domain.
+- **`mobility_innov`** — a wiki of mobility innovations. Axes in progress.
+
+New wikis are added by dropping a folder under `wikis/<name>/`.
 
 ## The Axis System
 
-Every entry is tagged along a set of axes that make datasets comparable across domains:
+Every entry in a wiki is tagged along a set of axes. The axes are the wiki's lens — they decide what becomes comparable across entries and what becomes invisible.
 
-**Origin** — how the data came to exist:
-- `sensor` — a physical measurement device
-- `exhaust` — a byproduct of activity, not intentionally recorded (transaction logs, DNS queries, metadata)
-- `declared` — someone chose to submit it (surveys, registries, self-reports)
-- `derived` — produced by processing other datasets
+A wiki's `axis.json` defines its bounded axes (closed sets of values, displayed as filter chips) and optionally one or more freeform axes (open-ended categorical slots like `domain`, used as prompt ingredients rather than navigation chips).
 
-**Scale** — the unit of resolution: individual, organizational, systemic, planetary
+Axes make the wiki navigable as a space rather than a list. In `data_atlas` you can ask: *what individual-scale sensor data is currently buried?* In `mobility_innov` the analogous question is shaped by that wiki's own axes. The axis set is the wiki's editorial point of view.
 
-**Time frequency** — continuous, event-driven, periodic, historical, one-off
+### Example: data_atlas axes
 
-**Status** — the most important axis:
-- `active` — being generated and held now
-- `buried` — exists but inaccessible, controlled, suppressed
-- `missing` — should exist but doesn't; the absence itself is meaningful
-- `emerging` — newly possible due to technology or policy change
-- `eroding` — being lost, degraded, or deleted
+- **Origin** — how the data came to exist: `sensor`, `exhaust`, `declared`, `derived`
+- **Scale** — the unit of resolution: `individual`, `organizational`, `systemic`, `planetary`
+- **Status** — the most important axis: `active`, `buried`, `missing`, `emerging`, `eroding`
+- **Domain** (freeform) — `medical`, `agriculture`, `finance`, `migration`, ...
 
-**LLM impact** — how AI tools change the analysis or access equation: none, low, medium, high, transformative
+The `status` axis is what makes `data_atlas` different from a data catalog: it documents absence and erosion as first-class objects, not just what's accessible today.
 
-The axes make the atlas navigable as a space rather than a list. You can ask: what individual-scale sensor data is currently buried? What datasets are eroding before anyone archived them?
+### Designing axes for a new wiki
 
-## The Status Axis Is the Point
-
-Standard data catalogs document what exists and where to get it. This atlas also documents what doesn't exist, what's being hidden, and what's disappearing.
-
-A "missing" entry — data that would exist if someone had chosen to collect it, or data that was never generated because no one with the means had the incentive — is a meaningful object. The absence of systematic police use-of-force data, the absence of food-additive health outcome tracking, the absence of independent audits of algorithmic sentencing tools: these are not gaps in the atlas, they are entries in it.
-
-An "eroding" entry — data that exists now but is being lost — is equally worth documenting. Paper records before digitization, short-retention surveillance logs, discontinued sensor networks. The atlas is a record of what the world chose to measure and what it chose not to.
+A good axis cuts the subject in a way that produces interesting intersections. The test: does combining values across axes surface entries a curator wouldn't write unprompted? If `axis_A × axis_B × axis_C` produces obvious cells *and* genuinely strange ones, the axes are doing real work.
 
 ## What an Entry Contains
 
-Each entry answers:
-- **What it is** — the data in concrete terms: what gets recorded, how, at what resolution
-- **Who controls it** — the actual chain of custody, not the nominal owner
-- **What it reveals** — what can be inferred from it, at individual and population scale
-- **Current access landscape** — who has it, who doesn't, how access has been gained historically
-- **Cracks and pressure points** — litigation, journalism, regulation, technical circumvention, market pressure
-- **LLM and AI impact** — what changes (and what doesn't) when powerful analysis tools meet access barriers
-- **Relations** — links to structurally similar datasets, counterparts, complements
+Each entry is prose, not a table. The shape varies per wiki — `data_atlas` entries describe a dataset's chain of custody and access landscape; `mobility_innov` entries describe an innovation's mechanism and current state. What stays constant:
 
-The format is prose, not a table. The goal is understanding, not indexing.
+- A concrete description of the thing
+- Who or what controls/produces/sustains it
+- What it reveals, enables, or forecloses
+- The current landscape — who has access, who doesn't, what's changing
+- Pressure points — litigation, journalism, regulation, technology, market forces
+- Relations — links to structurally similar entries, counterparts, complements
+
+The goal is understanding, not indexing. Each wiki's `prompts/make_page.txt` encodes its own version of this shape.
 
 ## Curation Over Completeness
 
-The atlas will never be complete. That's fine — Wikipedia isn't complete either.
+A wiki will never be complete. That's fine — Wikipedia isn't complete either.
 
-The value is in the curation: entries that accurately describe how data actually moves through institutions, who the real gatekeepers are, and what it would take to change that. A wrong or shallow entry is worse than no entry. The bar for inclusion is a full, accurate account of a dataset's life in the world — not just its technical specification.
+The value is in the curation: entries that accurately describe how the subject actually moves through the world. A wrong or shallow entry is worse than no entry. The bar for inclusion is a full, accurate account — not just a technical specification or a name on a list.
 
-This means the atlas will grow slowly and will be better for it.
+This means each wiki will grow slowly and will be better for it.
 
 ## UI Layout
 
-Three panels.
+Three panels, identical across wikis (the frontend is per-wiki for deployment, but the structure is the same).
 
-**Top — axis bar.** A horizontal filter strip, like the filter row on an e-commerce site. One row of buttons per axis: `origin`, `status`, `scale`, `time_frequency`, `llm_impact`. Clicking a value selects it (single-select per axis); the left panel updates immediately. Multiple axes can be active at once, narrowing the list by intersection. A "clear" affordance per axis resets it. The axis bar is the primary navigation surface — the way a reader orients themselves in the atlas.
+**Top — axis bar.** A horizontal filter strip, one row of buttons per bounded axis. Clicking a value selects it (single-select per axis); the left panel updates immediately. Multiple axes can be active at once, narrowing the list by intersection. A "clear" affordance per axis resets it. The axis bar is the primary navigation surface — the way a reader orients themselves in the wiki.
 
-**Left — entry list.** A narrow scrollable list of dataset titles matching the current axis selection. No search, no pagination — just a flat list. When no axis is selected, the full list is shown. Clicking an entry loads it in the central panel. The active entry is highlighted.
+**Left — entry list.** A narrow scrollable list of entry titles matching the current axis selection. No search, no pagination — just a flat list. When no axis is selected, the full list is shown. Clicking an entry loads it in the central panel. The active entry is highlighted.
 
-**Center — entry page.** The full content of the selected dataset entry, rendered from markdown. Title, summary, axis tags (displayed as small chips at the top), then the prose sections in order. Cross-links (`→ [[slug]]`) render as inline links that load the target entry in the same panel. The page is the destination; the left and top panels are how you get there.
+**Center — entry page.** The full content of the selected entry, rendered from markdown. Title, summary, axis tags (displayed as small chips at the top), then the prose sections in order. Cross-links (`→ [[slug]]`) render as inline links that load the target entry in the same panel. The page is the destination; the left and top panels are how you get there.
 
 The overall feel is closer to a documentation site (like Notion or Obsidian's published pages) than to Wikipedia's chrome. Navigation is structural, not search-driven.
 
 ## LLM Bootstrapping
 
-The axis grid is also a generation space. For each combination of `origin × status × scale × domain`, an LLM can be prompted to enumerate datasets that fit those coordinates — a brute-force sweep across the space to surface entries a human curator wouldn't think to write unprompted.
+The axis grid is also a generation space. For each combination of bounded-axis values (and optionally a freeform-axis ingredient like `domain`), an LLM is prompted to enumerate entries that fit those coordinates — a brute-force sweep across the space to surface entries a human curator wouldn't think to write unprompted.
 
-The combinations are the point. `sensor × buried × planetary` is obvious (satellite data, ocean sensors). `declared × missing × individual` is more interesting — what self-reported data should exist but doesn't? `exhaust × eroding × organizational` pushes the LLM into genuinely obscure territory. The grid forces exploration of corners.
+The combinations are the point. In `data_atlas`, `sensor × buried × planetary` is obvious (satellite data, ocean sensors); `declared × missing × individual` is more interesting — what self-reported data should exist but doesn't? `exhaust × eroding × organizational` pushes the LLM into genuinely obscure territory. The grid forces exploration of corners. Each wiki has its own equivalent corners.
 
-`domain` is unbounded and freeform — not a fixed taxonomy. New domains are added as needed: `medical`, `agriculture`, `finance`, `migration`, `infrastructure`. Each new domain spawns a new row of files without touching the schema. The domain slot is a prompt ingredient, not a controlled vocabulary.
+Freeform axes (like `domain`) are unbounded — not a fixed taxonomy. New values are added as needed and each new value spawns a new row of files without touching the schema. Freeform slots are prompt ingredients, not controlled vocabularies.
 
-The output of each LLM run is a JSONL file written to `data/catalogue/`. Each line is a candidate entry with axis values embedded, enough to appear in the list panel and be filtered immediately. A separate curation pass promotes promising entries to full `pages/` articles. Adding a new catalogue file requires only dropping the file and adding its name to `catalogue/index.json`.
+The output of each LLM run is a JSONL file written to `wikis/<wiki>/catalogue/`. Each line is a candidate entry with axis values embedded, enough to appear in the list panel and be filtered immediately. A separate curation pass promotes promising entries to full `pages/` articles. Adding a new catalogue file requires only dropping the file and adding its name to `catalogue/index.json` (via `update_index.sh`).
 
-## Data Structure
+## Repository Structure
 
 ```
-data/
-  axis.json
-  catalogue/
-    index.json
-    list_sensor_buried_individual_medical.jsonl
-    list_sensor_buried_individual_law-enforcement.jsonl
-    list_exhaust_active_organizational_finance.jsonl
-    list_declared_missing_systemic_agriculture.jsonl
+wikis/
+  data_atlas/
+    wiki.json          # title, wordmark, axes used by gen_list.sh, extra chips
+    axis.json          # axis definitions (id, label, values)
+    catalogue/
+      index.json
+      list_sensor_buried_individual_medical.jsonl
+      ...
+    pages/
+      index.json
+      acoustic-gunshot-detection-shotspotter.md
+      ...
+    prompts/
+      make_list.txt    # per-wiki framing for catalogue generation
+      make_page.txt    # per-wiki framing for full-page promotion
+    frontend/
+      index.html
+      style.css
+  mobility_innov/
     ...
-  pages/
-    index.json
-    acoustic-gunshot-detection-shotspotter.md
-    alpr-location-logs.md
-    cgm-readings.md
-    ...
+gen_list.sh            # generate a catalogue file via Claude CLI
+update_index.sh        # rebuild catalogue/index.json after adding files
 ```
 
-**`data/axis.json`** — defines the three bounded axes and their values. The domain axis is not listed here — it is open-ended.
+**`wikis/<wiki>/wiki.json`** — wiki-level metadata: title, wordmark, which axes are substituted into prompts (`gen_axes`), which are freeform ingredients (`freeform_axes`), optional `status_axis` for color-coded chips, and `extra_chips` for display.
+
+**`wikis/<wiki>/axis.json`** — defines the wiki's bounded axes and their values. Freeform axes are not listed here — they are open-ended.
 
 ```json
 {
@@ -114,56 +118,37 @@ data/
       "label": "Origin",
       "description": "How the data came to exist — the mechanism of its production.",
       "values": [
-        { "id": "sensor",   "label": "Sensor",   "description": "Produced by a physical measurement device: cameras, microphones, accelerometers, biosensors. The world writes the data directly." },
-        { "id": "exhaust",  "label": "Exhaust",  "description": "A byproduct of activity, not intentionally recorded as data. Transaction logs, metadata, DNS queries, click streams. The data exists because a system ran, not because anyone chose to capture it." },
-        { "id": "declared", "label": "Declared", "description": "Someone chose to submit it. Surveys, registries, self-reports, administrative filings. The data reflects what people or institutions say, not what they do." },
-        { "id": "derived",  "label": "Derived",  "description": "Produced by processing other datasets. Model outputs, aggregates, inferences, synthetic data. The data is downstream of other data." }
-      ]
-    },
-    {
-      "id": "status",
-      "label": "Status",
-      "description": "The current condition of the dataset — whether it is accessible, hidden, lost, or not yet real.",
-      "values": [
-        { "id": "active",   "label": "Active",   "color": "#2f9e44", "description": "Being generated and held now. Access may be restricted, but the data exists and is current." },
-        { "id": "buried",   "label": "Buried",   "color": "#e03131", "description": "Exists but is inaccessible — controlled by a gatekeeper, suppressed, classified, or locked behind proprietary systems. The data is real; reaching it is the problem." },
-        { "id": "missing",  "label": "Missing",  "color": "#f08c00", "description": "Should exist but doesn't. No one collected it, or collection was never mandated. The absence is a choice, often a political one." },
-        { "id": "emerging", "label": "Emerging", "color": "#1971c2", "description": "Newly possible — a dataset that couldn't exist before due to technology, regulation, or scale, and is now beginning to be generated." },
-        { "id": "eroding",  "label": "Eroding",  "color": "#868e96", "description": "Exists now but is being lost: short retention windows, discontinued sensors, decaying physical records, deliberate deletion. The window to capture it is closing." }
-      ]
-    },
-    {
-      "id": "scale",
-      "label": "Scale",
-      "description": "The unit of resolution — what one record in the dataset describes.",
-      "values": [
-        { "id": "individual",     "label": "Individual",     "description": "One record = one person, one body, one device carried by a person. The data can identify or profile a specific human being." },
-        { "id": "organizational", "label": "Organizational", "description": "One record = one company, institution, vehicle, or other non-human entity. Aggregated above the person, below the population." },
-        { "id": "systemic",       "label": "Systemic",       "description": "One record = a city, a market, a network, a policy domain. The data describes how a system behaves, not any single actor within it." },
-        { "id": "planetary",      "label": "Planetary",      "description": "One record = a global or environmental measurement. Climate, ocean, atmosphere, species. The subject is Earth or a major system of it." }
+        { "id": "sensor",   "label": "Sensor",   "description": "Produced by a physical measurement device." },
+        { "id": "exhaust",  "label": "Exhaust",  "description": "A byproduct of activity, not intentionally recorded as data." },
+        { "id": "declared", "label": "Declared", "description": "Someone chose to submit it." },
+        { "id": "derived",  "label": "Derived",  "description": "Produced by processing other datasets." }
       ]
     }
+    // ... more axes
   ]
 }
 ```
 
-**`data/catalogue/`** — the flat entry catalogue, split across multiple JSONL files. Each file is one LLM generation run. The filename is for human orientation only; the frontend does not parse it. `catalogue/index.json` lists all filenames to load.
+**`wikis/<wiki>/catalogue/`** — the flat entry catalogue, split across multiple JSONL files. Each file is one LLM generation run. The filename is for human orientation only; the frontend does not parse it. `catalogue/index.json` lists all filenames to load.
 
 Each line is a catalogue entry carrying its axis values directly:
 
 ```jsonl
 {"slug": "nicu-physiological-waveforms", "title": "NICU Physiological Waveforms", "summary": "High-resolution heart rate and oxygen saturation streams from neonatal ICU monitors, rarely archived beyond discharge.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
-{"slug": "implanted-cardiac-device-logs", "title": "Implanted Cardiac Device Logs", "summary": "Continuous arrhythmia and pacing event logs from pacemakers and defibrillators, held by Medtronic and Abbott device platforms.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
 ```
 
 The catalogue is the authoritative entry list. Deduplication is by `slug` — if a slug appears in multiple files, the first occurrence wins. A full page entry always overrides a catalogue stub.
 
-**`data/pages/index.json`** — a flat array of slugs that have a full prose page. The frontend cross-references this against the catalogue to attach `page_url` to matching entries. No per-entry HTTP probing needed.
+**`wikis/<wiki>/pages/index.json`** — a flat array of slugs that have a full prose page. The frontend cross-references this against the catalogue to attach `page_url` to matching entries. No per-entry HTTP probing needed.
 
-**`data/pages/slug.md`** — full prose entries, as described in "What an Entry Contains." Promoted manually from catalogue stubs after curation.
+**`wikis/<wiki>/pages/<slug>.md`** — full prose entries. Promoted manually from catalogue stubs after curation.
 
-The frontend loads `axis.json` and both index files once, then fetches all catalogue JSONL files in parallel. Filtering happens client-side against the merged entry map. Full page markdown is fetched on demand when an entry is clicked. No build step required — the files are the site.
+The frontend loads `wiki.json`, `axis.json`, and both index files once, then fetches all catalogue JSONL files in parallel. Filtering happens client-side against the merged entry map. Full page markdown is fetched on demand when an entry is clicked. No build step required — the files are the site.
 
 ## Tech Stack
 
-Static files as the database: markdown with frontmatter for structured fields, git-backed for version control and attribution. A minimal frontend (plain JS or Svelte) renders pages, filters via the axis bar, and navigates cross-links. No server, no CMS, no database engine — the repository is the database, the list files are the index.
+Static files as the database: markdown for prose entries, JSON for axes and indexes, JSONL for catalogue rows. Git-backed for version control and attribution. A minimal vanilla-JS frontend per wiki renders pages, filters via the axis bar, and navigates cross-links. No server, no CMS, no database engine — the repository is the database, the list files are the index.
+
+Generation is driven by `gen_list.sh`, which reads `wiki.json` to know which axes to substitute into `prompts/make_list.txt`, invokes the Claude CLI, and writes JSONL into the wiki's catalogue. `update_index.sh` rebuilds `catalogue/index.json` so the frontend picks up new files.
+
+Adding a new wiki is mechanical: a folder, a `wiki.json`, an `axis.json`, a prompt template, and a copy of the frontend. See [README.md](README.md) for the step-by-step.
