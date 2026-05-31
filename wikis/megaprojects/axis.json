@@ -55,16 +55,19 @@
       ]
     },
     {
-      "id": "failure_mode",
-      "label": "Failure mode",
-      "description": "Why it fell over. The editorial axis of the wiki.",
+      "id": "outcome",
+      "label": "Outcome",
+      "description": "How it ended — or how it defied expectations. Every entry must take a position here; this is the editorial axis. Projects with no clear verdict don't belong in the atlas.",
       "values": [
-        { "id": "technical",     "label": "Technical",      "description": "Couldn't be built, or worked badly: physics, materials, engineering wouldn't cooperate." },
-        { "id": "economic",      "label": "Economic",       "description": "Ran out of money. Cost overruns, market collapse, no buyers." },
-        { "id": "political",     "label": "Political",      "description": "Regime change, war, change of priorities killed it." },
-        { "id": "ecological",    "label": "Ecological",     "description": "Poisoned its own substrate or the surrounding environment. Aral Sea-class." },
-        { "id": "obsolete",      "label": "Obsolete",       "description": "Overtaken by technology or demand before it could pay off." },
-        { "id": "scandal_fraud", "label": "Scandal / fraud","description": "Corruption, fraud, or scandal — the thing was a lie or a crime as much as a project." }
+        { "id": "technical_failure",  "label": "Technical failure",   "description": "Couldn't be built, or worked badly: physics, materials, engineering wouldn't cooperate." },
+        { "id": "economic_failure",   "label": "Economic failure",    "description": "Ran out of money. Cost overruns, market collapse, no buyers." },
+        { "id": "political_failure",  "label": "Political failure",   "description": "Regime change, war, change of priorities killed it." },
+        { "id": "ecological_failure", "label": "Ecological failure",  "description": "Poisoned its own substrate or the surrounding environment. Aral Sea-class." },
+        { "id": "obsolete",           "label": "Obsolete",            "description": "Overtaken by technology or demand before it could pay off." },
+        { "id": "scandal_fraud",      "label": "Scandal / fraud",     "description": "Corruption, fraud, or scandal — the thing was a lie or a crime as much as a project." },
+        { "id": "against_all_odds",   "label": "Against all odds",    "description": "Predicted to fail — over budget, behind schedule, technically doomed — and somehow delivered. Sydney Opera House, Chunnel, Hubble after the servicing mission." },
+        { "id": "transformed_region", "label": "Transformed region",  "description": "Succeeded so completely it redefined the geography, economy, or science around it. The success itself is the story." },
+        { "id": "pyrrhic_success",    "label": "Pyrrhic success",     "description": "Technically delivered, but at a cost — human, ecological, financial — that overshadows the achievement. Or: succeeded at the wrong goal." }
       ]
     },
     {

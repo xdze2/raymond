@@ -1,15 +1,15 @@
 {
   "id": "megaprojects",
-  "title": "Failed Megaprojects",
-  "wordmark": ["FAILED", "MEGA"],
-  "tagline": "Things humanity started building at scale, then walked away from.",
+  "title": "Megaprojects",
+  "wordmark": ["MEGA", "PROJECT"],
+  "tagline": "Things humanity bet a civilization on — the ruins, the zombies, and the ones that actually paid off.",
   "placeholder_hint": "Pick an axis combination above, or click any card.",
   "gen_axes": [
     "domain",
     "era",
     "region",
     "political_system",
-    "failure_mode",
+    "outcome",
     "current_state"
   ],
   "freeform_axes": [],

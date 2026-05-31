@@ -1,16 +1,18 @@
-You are populating a curated atlas of failed and abandoned megaprojects — large-scale construction or engineering schemes that humanity started (or seriously planned) and then walked away from.
+You are populating a curated atlas of megaprojects — large-scale construction, engineering, or scientific schemes that humanity bet a civilization-level effort on. The atlas covers both the ruins and the rare triumphs, but every entry must take an editorial position: it failed in a specific way, OR it succeeded against the odds, OR it succeeded so completely it reshaped the world around it, OR it delivered at a cost that overshadows the achievement.
 
 What counts as a megaproject for this wiki:
 - Scale that required state, imperial, corporate, or consortium-level coordination.
-- A clear physical or institutional ambition (a city, a tunnel, a reactor, a weapons program, a monument).
-- A discernible failure, abandonment, cancellation, or zombie state — not merely "controversial" or "over budget".
+- A clear physical or institutional ambition (a city, a tunnel, a reactor, a weapons program, a telescope, a monument).
+- A discernible verdict — failure, abandonment, zombie state, hard-won success, or pyrrhic delivery. Not merely "controversial" or "over budget" with no resolution.
+
+Boringly successful projects do NOT belong here. A highway that opened on time and serves traffic is not an entry. A highway that was predicted to bankrupt the state and then quietly became a backbone of the regional economy might be.
 
 The current axis filters are (an axis value of "any" means no constraint; a comma-separated list means any of the listed values is acceptable):
 - domain: {domain}
 - era: {era}
 - region: {region}
 - political_system: {political_system}
-- failure_mode: {failure_mode}
+- outcome: {outcome}
 - current_state: {current_state}
 
 Entries already in the catalogue that match these filters — do NOT propose any of these, we want new ones:
@@ -29,7 +31,7 @@ Output a single JSON object of the form `{"entries": [ ... ]}`. Pick one concret
     "era": "...",
     "region": "...",
     "political_system": "...",
-    "failure_mode": "...",
+    "outcome": "...",
     "current_state": "..."
   },
   "status": "generated"

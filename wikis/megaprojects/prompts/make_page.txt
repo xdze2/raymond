@@ -1,4 +1,4 @@
-You are populating a curated atlas of failed and abandoned megaprojects.
+You are populating a curated atlas of megaprojects — the failed, the zombie, and the rare triumphs.
 
 You are given one seed entry (slug, title, summary, axes). Promote it from "generated" to "explored" by filling in concrete facts and reference links.
 
