@@ -24,7 +24,6 @@ import argparse
 import json
 import re
 import sys
-import time
 from datetime import date
 from pathlib import Path
 
@@ -32,7 +31,7 @@ from flask import Flask, abort, jsonify, request, send_from_directory
 
 from build_index import REPO_ROOT, resolve_wiki, write_index
 from explore import ExploreError, explore_entry
-from llm import DEFAULT_MODEL, render_prompt, run_llm
+from generate import GenerateError, generate_entries
 
 FRONTEND_DIR = REPO_ROOT / "frontend"
 WIKI_PASSTHROUGH = {"wiki.json", "axis.json", "index.jsonl"}
@@ -43,11 +42,6 @@ SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 def _today() -> str:
     return date.today().isoformat()
-
-
-def _load_wiki_config(wiki_dir: Path) -> dict:
-    with (wiki_dir / "wiki.json").open() as f:
-        return json.load(f)
 
 
 def _read_entry(wiki_dir: Path, slug: str) -> dict:
@@ -71,43 +65,9 @@ def _write_entry(wiki_dir: Path, entry: dict) -> Path:
     return path
 
 
-def _parse_jsonl(text: str) -> list[dict]:
-    # Strip ```json fences if present, then try whole-text JSON first
-    # (Mistral's json_object mode returns one wrapper object, not JSONL).
-    stripped = "\n".join(
-        line for line in text.splitlines() if not line.strip().startswith("```")
-    ).strip()
-    if stripped:
-        try:
-            obj = json.loads(stripped)
-        except json.JSONDecodeError:
-            obj = None
-        if isinstance(obj, list):
-            return [e for e in obj if isinstance(e, dict)]
-        if isinstance(obj, dict):
-            for key in ("entries", "candidates", "items", "results"):
-                v = obj.get(key)
-                if isinstance(v, list):
-                    return [e for e in v if isinstance(e, dict)]
-            if "slug" in obj:
-                return [obj]
-
-    out: list[dict] = []
-    for line in text.splitlines():
-        line = line.strip()
-        if not line or line.startswith("```"):
-            continue
-        try:
-            out.append(json.loads(line))
-        except json.JSONDecodeError:
-            continue
-    return out
-
-
 def make_app(wiki_dir: Path) -> Flask:
     app = Flask(__name__)
     wiki_name = wiki_dir.name
-    prompts_dir = wiki_dir / "prompts"
     write_index(wiki_dir)
 
     @app.get("/api/health")
@@ -127,91 +87,20 @@ def make_app(wiki_dir: Path) -> Flask:
         axes = body.get("axes") or {}
         n = int(body.get("n", 5))
         existing = body.get("existing") or []
-        if not isinstance(axes, dict):
-            abort(400, description="axes must be an object")
-        if not isinstance(existing, list):
-            abort(400, description="existing must be a list")
 
-        config = _load_wiki_config(wiki_dir)
+        def log(msg: str) -> None:
+            print(msg, flush=True)
 
-        # Normalise axes: each value can be a string or list of strings.
-        # Empty / missing axes render as "any".
-        gen_axes = config.get("gen_axes", [])
-        rendered_axes: dict[str, str] = {}
-        single_axes: dict[str, str] = {}
-        for axis_id in gen_axes:
-            v = axes.get(axis_id)
-            if v is None or v == "" or v == []:
-                rendered_axes[axis_id] = "any"
-            elif isinstance(v, list):
-                rendered_axes[axis_id] = ", ".join(str(x) for x in v) or "any"
-                if len(v) == 1:
-                    single_axes[axis_id] = str(v[0])
-            else:
-                rendered_axes[axis_id] = str(v)
-                single_axes[axis_id] = str(v)
-
-        template_path = prompts_dir / "make_list.txt"
-        if not template_path.is_file():
-            abort(500, description="make_list.txt prompt missing")
-        template = template_path.read_text()
-
-        existing_block = (
-            "\n".join(f"- {t}" for t in existing if isinstance(t, str))
-            or "(none yet)"
-        )
-
-        prompt = render_prompt(
-            template,
-            n=str(n),
-            existing=existing_block,
-            **rendered_axes,
-        )
-
-        axes_summary = ", ".join(f"{k}={v}" for k, v in rendered_axes.items())
-        model = (config.get("models") or {}).get("make_list", DEFAULT_MODEL)
-        print(
-            f"[generate] n={n} existing={len(existing)} axes: {axes_summary}",
-            flush=True,
-        )
-        print(f"[generate] prompt={len(prompt)} chars → {model}…", flush=True)
-
-        t0 = time.monotonic()
         try:
-            raw = run_llm(prompt, model=model)
-        except Exception as e:
-            print(f"[generate] LLM call failed after {time.monotonic() - t0:.1f}s: {e}", flush=True)
-            abort(502, description=f"LLM call failed: {e}")
-        dt = time.monotonic() - t0
-        print(f"[generate] {model} returned {len(raw)} chars in {dt:.1f}s", flush=True)
-
-        candidates = _parse_jsonl(raw)
-        print(f"[generate] parsed {len(candidates)} candidate entries", flush=True)
-
-        written: list[str] = []
-        skipped: list[dict] = []
-        for entry in candidates:
-            slug = entry.get("slug")
-            if not slug or not SLUG_RE.match(slug):
-                skipped.append({"reason": "invalid slug", "entry": entry})
-                continue
-            if (wiki_dir / "catalogue" / f"{slug}.json").exists():
-                skipped.append({"reason": "exists", "slug": slug})
-                continue
-            entry.setdefault("status", "generated")
-            entry.setdefault("axes", dict(single_axes))
-            entry["created"] = {"at": _today(), "by": f"llm:{model}"}
-            _write_entry(wiki_dir, entry)
-            written.append(slug)
-
-        print(
-            f"[generate] wrote {len(written)} ({', '.join(written) or '—'}), "
-            f"skipped {len(skipped)}",
-            flush=True,
-        )
+            result = generate_entries(
+                wiki_dir, axes=axes, n=n, existing=existing, log=log,
+            )
+        except GenerateError as e:
+            status = {"bad_input": 400, "config": 500}.get(e.kind, 502)
+            abort(status, description=str(e))
 
         write_index(wiki_dir)
-        return jsonify({"ok": True, "written": written, "skipped": skipped})
+        return jsonify({"ok": True, **result})
 
     @app.post("/api/entries/<slug>/explore")
     def explore(slug: str):

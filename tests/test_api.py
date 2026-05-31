@@ -13,6 +13,7 @@ import pytest
 
 import dev_server
 import explore
+import generate
 
 
 # ── health & static passthrough ────────────────────────────────────────────────
@@ -80,7 +81,7 @@ def test_reindex(client, wiki_dir: Path):
 
 def test_generate_no_axes_allowed(client, monkeypatch):
     # With "search more" semantics, no filters means "any" on every axis.
-    monkeypatch.setattr(dev_server, "run_llm", lambda p, **kw: '{"slug": "x", "title": "X"}\n')
+    monkeypatch.setattr(generate, "run_llm", lambda p, **kw: '{"slug": "x", "title": "X"}\n')
     res = client.post("/api/generate", json={"n": 1})
     assert res.status_code == 200
 
@@ -93,7 +94,7 @@ def test_generate_partial_axes_allowed(client, monkeypatch):
         captured["prompt"] = prompt
         return '{"slug": "p", "title": "P"}\n'
 
-    monkeypatch.setattr(dev_server, "run_llm", fake)
+    monkeypatch.setattr(generate, "run_llm", fake)
     res = client.post(
         "/api/generate",
         json={"axes": {"domain": "energy"}, "n": 1},
@@ -115,7 +116,7 @@ def test_generate_passes_existing_titles(client, monkeypatch):
         captured["prompt"] = prompt
         return '{"slug": "n", "title": "N"}\n'
 
-    monkeypatch.setattr(dev_server, "run_llm", fake)
+    monkeypatch.setattr(generate, "run_llm", fake)
     res = client.post(
         "/api/generate",
         json={
@@ -134,7 +135,7 @@ def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):
         '{"slug": "new-one", "title": "New One", "summary": "first"}\n'
         '{"slug": "new-two", "title": "New Two", "summary": "second"}\n'
     )
-    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
+    monkeypatch.setattr(generate, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -154,7 +155,7 @@ def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):
 
 def test_generate_skips_existing(client, wiki_dir: Path, monkeypatch):
     fake_jsonl = '{"slug": "seed-one", "title": "Dupe"}\n'
-    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
+    monkeypatch.setattr(generate, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -168,7 +169,7 @@ def test_generate_skips_existing(client, wiki_dir: Path, monkeypatch):
 
 def test_generate_skips_invalid_slug(client, monkeypatch):
     fake_jsonl = '{"slug": "Has Spaces", "title": "Bad"}\n'
-    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
+    monkeypatch.setattr(generate, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -184,7 +185,7 @@ def test_generate_tolerates_code_fences(client, wiki_dir: Path, monkeypatch):
         '{"slug": "fenced", "title": "Fenced"}\n'
         "```\n"
     )
-    monkeypatch.setattr(dev_server, "run_llm", lambda p, **kw: fake)
+    monkeypatch.setattr(generate, "run_llm", lambda p, **kw: fake)
     res = client.post(
         "/api/generate",
         json={"axes": {"domain": "energy", "era": "modern"}, "n": 1},

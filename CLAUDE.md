@@ -26,18 +26,18 @@ uv run pytest tests/test_api.py::test_explore_promotes_to_explored -v
 
 ### Mocking the LLM
 
-`dev_server.run_llm` is imported by name (`from llm import run_llm`), so patch
-it on the `dev_server` module (or `explore` module for the explore route), not
-on `llm`:
+`run_llm` is imported by name (`from llm import run_llm`) in each module that
+calls it, so patch it on the calling module — `generate` for `/api/generate`,
+`explore` for the explore route — not on `llm`:
 
 ```python
-monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: '{"facts": []}')
+monkeypatch.setattr(generate, "run_llm", lambda prompt, **kw: '{"slug": "x"}')
 monkeypatch.setattr(explore, "run_llm", lambda prompt, **kw: '{"facts": []}')
 ```
 
 The `**kw` swallows the `model=` kwarg that callers pass through from
 `wiki.json`'s `models` map. Patching `llm.run_llm` would not take effect —
-`dev_server` / `explore` already hold a reference to the original function.
+`generate` / `explore` already hold a reference to the original function.
 
 ### What's covered
 

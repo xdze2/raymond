@@ -3,10 +3,11 @@
 All subcommands operate on a wiki under wikis/<name>/ and share the same
 core modules used by the Flask dev server, so behaviour stays in sync.
 
-    uv run tools/atlas.py explore  --wiki megaprojects --slug aral-sea
-    uv run tools/atlas.py fetch    --wiki megaprojects --slug aral-sea
-    uv run tools/atlas.py reindex  --wiki megaprojects
-    uv run tools/atlas.py serve    --wiki megaprojects --port 8765
+    uv run tools/atlas.py explore   --wiki megaprojects --slug aral-sea
+    uv run tools/atlas.py fetch     --wiki megaprojects --slug aral-sea
+    uv run tools/atlas.py generate  --wiki megaprojects --n 5 --axis domain=energy
+    uv run tools/atlas.py reindex   --wiki megaprojects
+    uv run tools/atlas.py serve     --wiki megaprojects --port 8765
 """
 
 from __future__ import annotations
@@ -23,6 +24,15 @@ sys.path.insert(0, str(REPO_ROOT / "tools"))
 
 from build_index import resolve_wiki, write_index  # noqa: E402
 from explore import ExploreError, explore_entry  # noqa: E402
+from generate import GenerateError, generate_entries  # noqa: E402
+
+# Map domain-error `kind` strings to process exit codes. Shared by every
+# subcommand that surfaces an *Error so callers (scripts, Make targets) can
+# branch on the cause without parsing stderr.
+_EXIT_CODES = {
+    "bad_slug": 2, "bad_input": 2, "not_found": 2, "config": 2,
+    "parse": 3, "llm": 4,
+}
 
 
 def _wiki_dir(name: str) -> Path:
@@ -30,6 +40,16 @@ def _wiki_dir(name: str) -> Path:
         return resolve_wiki(name)
     except SystemExit as e:
         raise click.BadParameter(str(e), param_hint="--wiki")
+
+
+def _refresh_index(wiki_dir: Path) -> None:
+    out = write_index(wiki_dir)
+    n = sum(1 for _ in out.open())
+    try:
+        rel = out.relative_to(REPO_ROOT)
+    except ValueError:
+        rel = out
+    click.echo(f"refreshed {rel} ({n} entries)")
 
 
 @click.group(help=__doc__.splitlines()[0])
@@ -59,12 +79,13 @@ def explore_cmd(wiki: str, slug: str, query: str | None,
         )
     except ExploreError as e:
         click.echo(f"error ({e.kind}): {e}", err=True)
-        sys.exit({"bad_slug": 2, "not_found": 2, "config": 2,
-                  "parse": 3, "llm": 4}.get(e.kind, 1))
+        sys.exit(_EXIT_CODES.get(e.kind, 1))
 
     if dry_run:
         click.echo("--- dry run, would write: ---")
         click.echo(json.dumps(entry, indent=2, ensure_ascii=False))
+    else:
+        _refresh_index(wiki_dir)
 
 
 # ── fetch ──────────────────────────────────────────────────────────────────────
@@ -95,20 +116,66 @@ def fetch_cmd(wiki: str, slug: str, query: str | None,
     sys.exit(subprocess.call(cmd))
 
 
+# ── generate ───────────────────────────────────────────────────────────────────
+
+
+def _parse_axis(ctx, param, values):
+    """Click callback: parse repeated --axis KEY=VALUE[,VALUE...] into a dict."""
+    out: dict[str, str | list[str]] = {}
+    for spec in values or ():
+        if "=" not in spec:
+            raise click.BadParameter(f"expected KEY=VALUE, got: {spec!r}",
+                                     param=param)
+        key, _, raw = spec.partition("=")
+        key = key.strip()
+        if not key:
+            raise click.BadParameter(f"missing key: {spec!r}", param=param)
+        if "," in raw:
+            parts = [p.strip() for p in raw.split(",") if p.strip()]
+            out[key] = parts if len(parts) > 1 else (parts[0] if parts else "")
+        else:
+            out[key] = raw.strip()
+    return out
+
+
+@cli.command("generate", help="Generate new catalogue entries for a wiki via LLM.")
+@click.option("--wiki", required=True, help="Wiki name under wikis/.")
+@click.option("--n", "n", type=int, default=5, show_default=True,
+              help="Number of entries to request.")
+@click.option("--axis", "axes", multiple=True, callback=_parse_axis,
+              metavar="KEY=VALUE",
+              help="Set a generation axis (repeatable; value may be comma-separated).")
+@click.option("--existing", multiple=True, metavar="TITLE",
+              help="Title to feed the prompt as already-known (repeatable).")
+@click.option("--dry-run", is_flag=True,
+              help="Print candidates but don't write to catalogue/ or rebuild index.")
+def generate_cmd(wiki: str, n: int, axes: dict, existing: tuple[str, ...],
+                 dry_run: bool) -> None:
+    wiki_dir = _wiki_dir(wiki)
+    try:
+        result = generate_entries(
+            wiki_dir,
+            axes=axes,
+            n=n,
+            existing=list(existing),
+            write=not dry_run,
+        )
+    except GenerateError as e:
+        click.echo(f"error ({e.kind}): {e}", err=True)
+        sys.exit(_EXIT_CODES.get(e.kind, 1))
+
+    click.echo(json.dumps(result, indent=2, ensure_ascii=False))
+    if not dry_run and result.get("written"):
+        _refresh_index(wiki_dir)
+
+
 # ── reindex ────────────────────────────────────────────────────────────────────
 
 
 @cli.command("reindex", help="Rebuild wikis/<wiki>/index.jsonl from catalogue/.")
 @click.option("--wiki", required=True, help="Wiki name under wikis/.")
 def reindex_cmd(wiki: str) -> None:
-    wiki_dir = _wiki_dir(wiki)
-    out = write_index(wiki_dir)
-    n = sum(1 for _ in out.open())
-    try:
-        rel = out.relative_to(REPO_ROOT)
-    except ValueError:
-        rel = out
-    click.echo(f"wrote {rel} ({n} entries)")
+    _refresh_index(_wiki_dir(wiki))
 
 
 # ── serve ──────────────────────────────────────────────────────────────────────
