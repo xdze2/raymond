@@ -1,0 +1,18 @@
+{
+  "slug": "greifswald-vver-units-5-8",
+  "title": "Greifswald Nuclear Plant Units 5–8",
+  "summary": "Four VVER-440 reactors at the Lubmin/Greifswald site in East Germany were in various stages of construction when German reunification triggered immediate safety reviews in 1990. The first four units were shut down; the partially-built units 5–8 were cancelled outright and never commissioned. Decommissioning of the entire site, managed by EWN, became one of the largest nuclear cleanup operations in Europe.",
+  "axes": {
+    "domain": "energy",
+    "era": "1990_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "demolished"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

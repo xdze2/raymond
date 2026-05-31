@@ -1,0 +1,18 @@
+{
+  "slug": "vilnius-palace-of-soviets-reconstruction",
+  "title": "Vilnius Royal Palace Reconstruction Disputes",
+  "summary": "Lithuania completed a full reconstruction of the Royal Palace of the Grand Duchy of Lithuania in Vilnius in 2018, but the project was mired in decades of historical authenticity disputes and post-completion criticism that the building is an ideological fabrication rather than a restoration. Significant planned interior programs and a planned permanent historical exhibition were cancelled or indefinitely deferred after the opening amid continued scholarly rejection.",
+  "axes": {
+    "domain": "symbolic",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "zombie"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

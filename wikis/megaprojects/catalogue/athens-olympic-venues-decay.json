@@ -1,0 +1,18 @@
+{
+  "slug": "athens-olympic-venues-decay",
+  "title": "Athens 2004 Olympic Venues Post-Crisis Abandonment",
+  "summary": "After the 2008 financial crisis, the majority of Athens's 2004 Olympic infrastructure fell into disuse and disrepair through the 2010s, with iconic venues such as the velodrome and beach volleyball stadium left roofless, graffiti-covered, or fenced off. The venues had been built as symbols of Greece's European arrival; their decay became an equally powerful counter-symbol of austerity and mismanagement.",
+  "axes": {
+    "domain": "symbolic",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "financial",
+    "current_state": "abandoned"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

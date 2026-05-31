@@ -1,0 +1,18 @@
+{
+  "slug": "kalkar-fast-breeder-reactor",
+  "title": "Kalkar SNR-300 Fast Breeder Reactor",
+  "summary": "A sodium-cooled fast breeder prototype in North Rhine-Westphalia was completed in 1985 after 15 years and DM 7 billion but was never fuelled or operated. Successive state and federal governments refused an operating licence amid safety concerns and anti-nuclear politics; the plant was formally abandoned in 1991 and sold to a Dutch investor who converted it into a holiday park.",
+  "axes": {
+    "domain": "energy",
+    "era": "1990_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "repurposed"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

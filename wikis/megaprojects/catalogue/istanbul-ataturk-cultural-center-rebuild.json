@@ -1,0 +1,18 @@
+{
+  "slug": "istanbul-ataturk-cultural-center-rebuild",
+  "title": "Atatürk Cultural Center Demolition and Rebuild, Istanbul",
+  "summary": "Turkey's iconic Atatürk Cultural Center on Taksim Square — a Cold War-era symbol of secular modernism — was demolished in 2018 after years of political controversy and rebuilt as a neo-Ottoman opera house that opened in 2021. The original AKM had been closed since a 2008 fire; its forced replacement under Erdoğan was widely read as a symbolic erasure of Kemalist identity, making both the abandonment and the replacement politically charged failures of cultural stewardship.",
+  "axes": {
+    "domain": "symbolic",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "autocracy",
+    "failure_mode": "political",
+    "current_state": "demolished"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

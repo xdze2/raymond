@@ -1,0 +1,18 @@
+{
+  "slug": "severn-barrage-uk",
+  "title": "Severn Estuary Tidal Barrage",
+  "summary": "A 16 km barrage across the Bristol Channel, capable of supplying roughly 5% of UK electricity, was seriously studied and costed (£15 billion in 1989 terms) by a government-backed consortium but shelved on environmental and economic grounds. The Blair government commissioned a further feasibility review in 2008–2010, which again concluded the project was not viable. No construction has begun despite the site holding one of the world's highest tidal ranges.",
+  "axes": {
+    "domain": "energy",
+    "era": "1990_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "economic",
+    "current_state": "cancelled"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

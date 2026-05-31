@@ -1,0 +1,18 @@
+{
+  "slug": "stendal-nuclear-plant",
+  "title": "Stendal Nuclear Power Station",
+  "summary": "Two VVER-1000 reactors under construction in Saxony-Anhalt were halted in 1990 following German reunification. Western safety assessments deemed the Soviet-designed plant unacceptable, and the near-complete units were abandoned after roughly DM 10 billion in sunk costs. The site was demolished through the 1990s.",
+  "axes": {
+    "domain": "energy",
+    "era": "1990_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "demolished"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

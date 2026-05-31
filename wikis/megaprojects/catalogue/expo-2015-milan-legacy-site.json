@@ -1,0 +1,18 @@
+{
+  "slug": "expo-2015-milan-legacy-site",
+  "title": "Milan Expo 2015 Legacy Site",
+  "summary": "Italy's Expo 2015 attracted 21 million visitors to a purpose-built symbolic site in Milan, but post-event conversion plans collapsed repeatedly through the 2010s and into the 2020s. The 110-hectare site sat largely fallow for years, with successive development proposals — including a tech hub and an Olympic village bid — stalling over funding and governance disputes between the city, region, and national government.",
+  "axes": {
+    "domain": "symbolic",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "zombie"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}
