@@ -589,7 +589,47 @@ body.busy {
 .edit-actions {
   display: flex;
   gap: 8px;
-  margin-top: 14px;
+}
+
+.entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--text-2);
+  font-family: 'system-ui', sans-serif;
+}
+
+.entry-meta-item {
+  letter-spacing: 0.02em;
+}
+
+.admin-zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 6px,
+    rgba(0, 0, 0, 0.02) 6px,
+    rgba(0, 0, 0, 0.02) 12px
+  );
+}
+
+.admin-zone-label {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  opacity: 0.7;
 }
 
 .edit-btn {
@@ -629,7 +669,7 @@ body.busy {
 }
 
 .explore-btn {
-  border-style: dashed;
+  border-style: solid;
 }
 
 .entry-editor {

@@ -362,21 +362,42 @@
           ? ""
           : `<span class="chip chip-generated">generated</span>`;
 
-        const editActions = state.editMode
-          ? `<div class="edit-actions edit-only">
-               ${entry.status !== "explored"
-                 ? `<button class="edit-btn explore-btn" type="button">explore →</button>`
-                 : ""}
-               <button class="edit-btn edit-json-btn" type="button">edit</button>
+        const metaParts = [];
+        if (entry.created?.at || entry.created?.by) {
+          metaParts.push(
+            `<span class="entry-meta-item">created ${escapeHtml(entry.created.at || "")}${
+              entry.created.by ? ` · ${escapeHtml(entry.created.by)}` : ""
+            }</span>`
+          );
+        }
+        if (entry.updated?.at || entry.updated?.by) {
+          metaParts.push(
+            `<span class="entry-meta-item">updated ${escapeHtml(entry.updated.at || "")}${
+              entry.updated.by ? ` · ${escapeHtml(entry.updated.by)}` : ""
+            }</span>`
+          );
+        }
+        const metaHtml = metaParts.length
+          ? `<div class="entry-meta">${metaParts.join("")}</div>`
+          : "";
+
+        const adminZone = state.editMode
+          ? `<div class="admin-zone edit-only">
+               <span class="admin-zone-label">admin</span>
+               <div class="edit-actions">
+                 <button class="edit-btn explore-btn" type="button">explore →</button>
+                 <button class="edit-btn edit-json-btn" type="button">edit</button>
+               </div>
              </div>`
           : "";
 
         const headerHtml = `
+          ${adminZone}
           <div class="entry-header">
             <h1 class="entry-title-large">${escapeHtml(entry.title || "")}</h1>
             <p class="entry-summary">${escapeHtml(entry.summary || "")}</p>
             <div class="chips">${axisChips}${statusChip}<button class="select-similar" type="button">select similar</button></div>
-            ${editActions}
+            ${metaHtml}
           </div>
         `;
 
