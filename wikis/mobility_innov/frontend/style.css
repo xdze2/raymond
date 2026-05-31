@@ -13,12 +13,8 @@
   --text:      #131311;
   --text-2:    #4a4842;
   --text-3:    #6e6b63;
-  --accent:    #1a1a18;
   --active-bg: #f0ede6;
-  --active-border: #1a1a18;
 
-  --axis-h:    120px;
-  --gap:       1px;
   --card-min:  180px;
 
   font-family: 'Georgia', 'Times New Roman', serif;
@@ -73,10 +69,14 @@
 
 #filter-table th,
 #filter-table td {
-  border: 1px solid var(--border);
   padding: 0;
   text-align: left;
   vertical-align: middle;
+  border: 1px solid var(--border);
+}
+
+#filter-table .filter-cell-empty {
+  border: none;
 }
 
 .filter-th {
@@ -132,16 +132,19 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-tap-highlight-color: transparent;
   transition: background 60ms, color 60ms;
 }
 
-.filter-cell:hover:not(.filter-cell-empty) {
-  background: var(--active-bg);
-  color: var(--text);
+@media (hover: hover) {
+  .filter-cell:hover:not(.filter-cell-empty):not(.selected) {
+    background: var(--active-bg);
+    color: var(--text);
+  }
 }
 
 .filter-cell.selected {
-  background: var(--text);
+  background: var(--text-2);
   color: #fff;
   font-weight: 500;
 }
@@ -282,6 +285,7 @@
   height: 9px;
   border-radius: 50%;
   box-shadow: 0 0 0 2px var(--surface);
+  flex-shrink: 0;
 }
 
 .card-body {
@@ -385,13 +389,6 @@ body.modal-open {
 
 /* ── entry view ───────────────────────────────────────────────────────────── */
 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 .loading {
   color: var(--text-3);
   font-family: 'system-ui', sans-serif;
@@ -485,8 +482,8 @@ body.modal-open {
   width: 240px;
   margin: 0 0 1em 1.5em;
   padding: 6px;
-  border: 1px solid var(--border, #ddd);
-  background: var(--bg-soft, #fafafa);
+  border: 1px solid var(--border);
+  background: var(--bg);
   font-size: 0.8rem;
   line-height: 1.35;
 }
@@ -499,7 +496,7 @@ body.modal-open {
 
 .infobox-credit {
   margin-top: 4px;
-  color: var(--text-muted, #888);
+  color: var(--text-3);
   font-size: 0.72rem;
 }
 

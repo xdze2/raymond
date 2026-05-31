@@ -43,7 +43,6 @@
       // ── tiny markdown renderer (no external deps) ────────────────────────────────
 
       function renderMarkdown(md) {
-        // We'll use a simple sequential pass
         const lines = md.split("\n");
         let html = "";
         let i = 0;
@@ -226,7 +225,6 @@
                 try {
                   const entry = JSON.parse(trimmed);
                   if (!entry.slug) continue;
-                  // page entry wins over catalogue seed if already present
                   if (!map.has(entry.slug)) {
                     map.set(entry.slug, {
                       ...entry,
@@ -241,7 +239,7 @@
           }),
         );
 
-        // 3. load full page entries — they override catalogue seeds
+        // page entries override catalogue seeds
         await Promise.all(
           [...pageSlugs].map(async (slug) => {
             try {
@@ -358,7 +356,7 @@
             const clear = document.createElement("button");
             clear.type = "button";
             clear.className = "filter-th-clear";
-            clear.textContent = "×";
+            clear.textContent = "⌫";
             clear.title = "Clear";
             clear.addEventListener("click", (e) => {
               e.stopPropagation();
@@ -456,7 +454,7 @@
 
           if (entry.status) {
             const dot = document.createElement("span");
-            dot.className = "status-dot card-status-dot";
+            dot.className = "card-status-dot";
             dot.style.background = getStatusColor(entry.status);
             dot.title = entry.status;
             thumb.appendChild(dot);
@@ -647,7 +645,6 @@
             closeModal();
           }
         });
-
       }
 
       init().catch(console.error);
