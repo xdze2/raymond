@@ -8,7 +8,7 @@
   "freeform_axes": [],
   "status_axis": "current_state",
   "models": {
-    "make_list": "claude:claude-sonnet-4-6",
+    "make_list": "mistral:mistral-small-latest",
     "make_page": "claude:claude-sonnet-4-6"
   }
 }

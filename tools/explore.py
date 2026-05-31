@@ -188,7 +188,7 @@ def explore_entry(
             entry["image"] = web_path
 
     entry["status"] = "explored"
-    entry["updated"] = {"at": date.today().isoformat(), "by": "llm"}
+    entry["updated"] = {"at": date.today().isoformat(), "by": f"llm:{model}"}
 
     log(
         f"[merge] facts={len(entry.get('facts') or [])} "

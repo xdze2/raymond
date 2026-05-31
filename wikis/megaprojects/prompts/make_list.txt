@@ -18,7 +18,7 @@ Entries already in the catalogue that match these filters — do NOT propose any
 
 Produce up to {n} new candidate entries (hard cap: 5, even if {n} is larger) that genuinely fit these filters. Favor real historical projects (verifiable). If the cell is genuinely empty in the historical record, return fewer entries rather than invent. Prefer the obscure over the obvious — but obvious entries are fine when they're a textbook fit.
 
-For each entry, output one JSON object on its own line (JSONL). Pick one concrete value per axis from those allowed (do not output "any" or comma-separated lists). Shape:
+Output a single JSON object of the form `{"entries": [ ... ]}`. Pick one concrete value per axis from those allowed (do not output "any" or comma-separated lists). Each entry has this shape:
 
 {
   "slug": "kebab-case-id",

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 from typing import TypeVar
 
 from pydantic import BaseModel, ValidationError
@@ -12,6 +11,7 @@ from mistralai.client import Mistral
 from mistralai.client.errors import SDKError
 from mistralai.client.models import ResponseFormat
 
+import env_config
 from rate_limiter import RateLimiter
 
 T = TypeVar("T", bound=BaseModel)
@@ -31,10 +31,9 @@ _sdk: Mistral | None = None
 def _get_sdk() -> Mistral:
     global _sdk
     if _sdk is None:
-        key = os.environ.get("MISTRAL_API_KEY")
-        if not key:
+        if not env_config.MISTRAL_API_KEY:
             raise RuntimeError("MISTRAL_API_KEY not set — see .env.example")
-        _sdk = Mistral(api_key=key)
+        _sdk = Mistral(api_key=env_config.MISTRAL_API_KEY)
     return _sdk
 
 

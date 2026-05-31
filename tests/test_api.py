@@ -149,7 +149,7 @@ def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):
     entry = json.loads((wiki_dir / "catalogue" / "new-one.json").read_text())
     assert entry["axes"] == {"domain": "energy", "era": "modern"}
     assert entry["status"] == "generated"
-    assert entry["created"]["by"] == "llm"
+    assert entry["created"]["by"].startswith("llm:")
 
 
 def test_generate_skips_existing(client, wiki_dir: Path, monkeypatch):
@@ -219,7 +219,7 @@ def test_explore_promotes_to_explored(client, wiki_dir: Path, monkeypatch):
     assert body["status"] == "explored"
     assert body["facts"] == payload["facts"]
     assert body["links"] == payload["links"]
-    assert body["updated"]["by"] == "llm"
+    assert body["updated"]["by"].startswith("llm:")
 
     # persisted on disk
     on_disk = json.loads((wiki_dir / "catalogue" / "seed-one.json").read_text())

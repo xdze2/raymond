@@ -22,7 +22,10 @@ Goal: make generation cheaper and faster, give the user real-time feedback, and 
 ### D — Mistral via API
 - [x] Add a Mistral backend to `run_llm` (API key from env, lazy SDK init).
 - [x] Per-prompt config to pick model — `wiki.json` has a `models: {make_list, make_page}` map; routes read it and pass through to `run_llm`.
-- [ ] Real end-to-end check: set `MISTRAL_API_KEY`, flip `make_list` to `mistral:mistral-small-latest`, run `/api/generate`, confirm output.
+- [x] Real end-to-end check: `mistral:mistral-small-latest` on `/api/generate` returned 3 valid entries in 4.6s. Required two fixes along the way:
+  - `tools/env_config.py` loads `.env` (no `python-dotenv` dep); `mistral.py` reads the key from it.
+  - Mistral's `response_format=json_object` forces a single wrapper object, so `make_list.txt` now asks for `{"entries": [...]}` and `_parse_jsonl` accepts wrapper-object / array / JSONL.
+- [ ] Watch axis drift: one of the 3 test entries came back with `domain=infrastructure` despite `domain=energy` being requested. Track this in the eval below.
 - [ ] Tiny eval: regenerate 5 existing entries with Mistral, diff against current, decide where it's good enough.
 
 ### D.5 — DDG grounding for `explore`

@@ -72,13 +72,30 @@ def _write_entry(wiki_dir: Path, entry: dict) -> Path:
 
 
 def _parse_jsonl(text: str) -> list[dict]:
+    # Strip ```json fences if present, then try whole-text JSON first
+    # (Mistral's json_object mode returns one wrapper object, not JSONL).
+    stripped = "\n".join(
+        line for line in text.splitlines() if not line.strip().startswith("```")
+    ).strip()
+    if stripped:
+        try:
+            obj = json.loads(stripped)
+        except json.JSONDecodeError:
+            obj = None
+        if isinstance(obj, list):
+            return [e for e in obj if isinstance(e, dict)]
+        if isinstance(obj, dict):
+            for key in ("entries", "candidates", "items", "results"):
+                v = obj.get(key)
+                if isinstance(v, list):
+                    return [e for e in v if isinstance(e, dict)]
+            if "slug" in obj:
+                return [obj]
+
     out: list[dict] = []
     for line in text.splitlines():
         line = line.strip()
-        if not line:
-            continue
-        # tolerate ```json fences
-        if line.startswith("```"):
+        if not line or line.startswith("```"):
             continue
         try:
             out.append(json.loads(line))
@@ -183,7 +200,7 @@ def make_app(wiki_dir: Path) -> Flask:
                 continue
             entry.setdefault("status", "generated")
             entry.setdefault("axes", dict(single_axes))
-            entry["created"] = {"at": _today(), "by": "llm"}
+            entry["created"] = {"at": _today(), "by": f"llm:{model}"}
             _write_entry(wiki_dir, entry)
             written.append(slug)
 
