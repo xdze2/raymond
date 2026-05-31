@@ -7,3 +7,6 @@ wikis/*/index.jsonl
 
 # generated standalone bundles
 dist/
+
+# frontend test deps
+node_modules/
