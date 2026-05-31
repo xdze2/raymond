@@ -1,0 +1,63 @@
+{
+  "slug": "italian-mose-flood-barrier-corruption-2014-collapse",
+  "query": "MOSE Flood Barrier Corruption Scandal (2014)",
+  "wikipedia": {
+    "title": "MOSE",
+    "url": "https://en.wikipedia.org/wiki/MOSE",
+    "extract": "MOSE is a project intended to protect the city of Venice, Italy, and the Venetian Lagoon from flooding."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/3/38/05_bocca_di_lido.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/italian-mose-flood-barrier-corruption-2014-collapse/web_05-bocca-di-lido.jpg",
+    "filename": "05_bocca_di_lido.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/05_bocca_di_lido.jpg",
+    "mime": "image/jpeg",
+    "width": 1024,
+    "height": 683,
+    "license_short": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "artist": "Magistrato alle Acque di Venezia - Consorzio Venezia Nuova",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.salve.it/wiki/\">http://www.salve.it/wiki/</a>",
+    "description": "La bocca di porto di Lido. In primo piano, il bacino lato mare del porto rifugio riallagato dopo il varo e il posizionamento dei cassoni che ospiteranno le paratoie per la schiera di Lido Treporti; al centro, la nuova isola che servirà da struttura intermedia tra le due schiere di paratoie previste per questo varco"
+  },
+  "wikidata": {
+    "qid": "Q770350",
+    "url": "https://www.wikidata.org/wiki/Q770350",
+    "label": "MOSE",
+    "description": "flood barrier in Venice",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 24853940,
+          "id": "Q24853940"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 170584,
+          "id": "Q170584"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 38,
+          "id": "Q38"
+        }
+      ],
+      "official_website": [
+        "https://www.mosevenezia.eu"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 45.4318,
+          "longitude": 12.408569444444444,
+          "altitude": null,
+          "precision": 2.777777777777778e-06,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

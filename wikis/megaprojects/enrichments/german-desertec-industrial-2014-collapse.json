@@ -1,0 +1,53 @@
+{
+  "slug": "german-desertec-industrial-2014-collapse",
+  "query": "Desertec Industrial Initiative's 2014 Collapse",
+  "wikipedia": {
+    "title": "Economy of Morocco",
+    "url": "https://en.wikipedia.org/wiki/Economy_of_Morocco",
+    "extract": "Morocco has a developing market economy. Since 1993, in line with many Western world changes, it has followed a policy of privatisation. Morocco is the 6th largest African economy by GDP (PPP) and seventh-highest GDP in the Arab world, despite not being an energy-producing country. Over the period 1971 and 2024, Morocco had annual GDP growth of 4.13% and per-capita GDP growth of 2.33%."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Casa_finance_city_1.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/german-desertec-industrial-2014-collapse/web_casa-finance-city-1.jpg",
+    "filename": "Casa_finance_city_1.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Casa_finance_city_1.jpg",
+    "mime": "image/jpeg",
+    "width": 1809,
+    "height": 2416,
+    "license_short": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Chah.salah&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Chah.salah (page does not exist)\">Chah.salah</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "description": "Casablanca Finance City seen from le 7éme ciel rooftop in CIL district"
+  },
+  "wikidata": {
+    "qid": "Q615580",
+    "url": "https://www.wikidata.org/wiki/Q615580",
+    "label": "economy of Morocco",
+    "description": "economy of the country",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 6456916,
+          "id": "Q6456916"
+        }
+      ],
+      "subclass_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 580864,
+          "id": "Q580864"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 1028,
+          "id": "Q1028"
+        }
+      ]
+    }
+  }
+}

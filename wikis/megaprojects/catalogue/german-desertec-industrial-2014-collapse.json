@@ -1,0 +1,59 @@
+{
+  "slug": "german-desertec-industrial-2014-collapse",
+  "title": "Desertec Industrial Initiative's 2014 Collapse",
+  "summary": "A $55 billion plan to power Europe via North African solar plants, launched in 2009 by a consortium of German firms, was abandoned in 2014 after political and financial disputes left the project without investors or host-country agreements.",
+  "axes": {
+    "domain": "industrial",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "parliamentary_democracy",
+    "failure_mode": "political_dispute",
+    "current_state": "abandoned"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-small-latest"
+  },
+  "facts": [
+    {
+      "label": "Founded",
+      "value": "2009, as Dii GmbH, headquartered in Munich, Germany"
+    },
+    {
+      "label": "Founding consortium",
+      "value": "12 European companies including Siemens, E.ON, RWE, Deutsche Bank, and Munich Re"
+    },
+    {
+      "label": "Projected cost",
+      "value": "€400 billion over 40 years"
+    },
+    {
+      "label": "Target",
+      "value": "Supply 15% of Europe's electricity from Saharan solar and wind by 2050"
+    },
+    {
+      "label": "Key withdrawals",
+      "value": "Siemens (2012), Bosch (2013), then E.ON and others by 2014; 12 of 20 members left"
+    },
+    {
+      "label": "Dissolved",
+      "value": "October 2014; Dii GmbH wound down, replaced by a smaller advisory body"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Desertec",
+      "url": "https://en.wikipedia.org/wiki/Desertec"
+    },
+    {
+      "label": "Wikipedia — Dii GmbH",
+      "url": "https://en.wikipedia.org/wiki/Dii_GmbH"
+    }
+  ],
+  "image": "media/german-desertec-industrial-2014-collapse/web_casa-finance-city-1.jpg",
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm:claude:claude-sonnet-4-6"
+  }
+}

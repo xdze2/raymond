@@ -1,0 +1,59 @@
+{
+  "slug": "italian-mose-flood-barrier-corruption-2014-collapse",
+  "title": "MOSE Flood Barrier Corruption Scandal (2014)",
+  "summary": "The $5.5 billion MOSE flood barrier in Venice, designed to protect the city from rising waters, was exposed in 2014 as a corruption-riddled scheme with no functional components delivered. The project remains stalled amid legal fallout.",
+  "axes": {
+    "domain": "industrial",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "parliamentary_republic",
+    "failure_mode": "corruption",
+    "current_state": "abandoned"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-small-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "2003"
+    },
+    {
+      "label": "Estimated Cost",
+      "value": "$5.5 billion"
+    },
+    {
+      "label": "Completion Deadline",
+      "value": "2018"
+    },
+    {
+      "label": "Arrests",
+      "value": "35"
+    },
+    {
+      "label": "Funds Embezzled",
+      "value": "$1 billion"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — MOSE Project",
+      "url": "https://en.wikipedia.org/wiki/MOSE"
+    },
+    {
+      "label": "Official MOSE Website",
+      "url": "https://www.mosevenezia.eu"
+    },
+    {
+      "label": "The Guardian — Venice flood barrier",
+      "url": "https://www.theguardian.com/world/2014/jun/04/venice-flood-barrier-mose-corruption-scandal"
+    }
+  ],
+  "image": "media/italian-mose-flood-barrier-corruption-2014-collapse/web_05-bocca-di-lido.jpg",
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

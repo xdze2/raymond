@@ -12,13 +12,48 @@
   },
   "status": "explored",
   "facts": [
-    { "label": "Proposed by", "value": "Herman Sörgel" },
-    { "label": "First published", "value": "1929" },
-    { "label": "Core idea", "value": "Gibraltar + Dardanelles dams, plus a Congo-fed inland African sea" },
-    { "label": "Killed by", "value": "WWII, then decolonization" }
+    {
+      "label": "Started",
+      "value": "1928"
+    },
+    {
+      "label": "Proposed by",
+      "value": "Herman Sörgel"
+    },
+    {
+      "label": "First published",
+      "value": "1929"
+    },
+    {
+      "label": "Core idea",
+      "value": "Gibraltar + Dardanelles dams, plus a Congo-fed inland African sea"
+    },
+    {
+      "label": "Killed by",
+      "value": "WWII, then decolonization"
+    }
   ],
   "links": [
-    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Atlantropa" }
+    {
+      "label": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Atlantropa"
+    },
+    {
+      "label": "Wikidata",
+      "url": "https://www.wikidata.org/wiki/Q431214"
+    },
+    {
+      "label": "SRF",
+      "url": "https://www.srf.ch/kultur/gesellschaft-religion/utopie-atlantropa-wie-ein-gigantischer-staudamm-die-welt-retten-sollte"
+    }
   ],
-  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+  "created": {
+    "at": "2026-05-31",
+    "by": "user"
+  },
+  "image": "media/atlantropa/web_map-of-the-atlantrop-projekt-en.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
 }

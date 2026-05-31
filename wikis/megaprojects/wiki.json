@@ -4,11 +4,18 @@
   "wordmark": ["FAILED", "MEGA"],
   "tagline": "Things humanity started building at scale, then walked away from.",
   "placeholder_hint": "Pick an axis combination above, or click any card.",
-  "gen_axes": ["domain", "era", "region", "political_system", "failure_mode", "current_state"],
+  "gen_axes": [
+    "domain",
+    "era",
+    "region",
+    "political_system",
+    "failure_mode",
+    "current_state"
+  ],
   "freeform_axes": [],
   "status_axis": "current_state",
   "models": {
-    "make_list": "mistral:mistral-small-latest",
-    "make_page": "claude:claude-sonnet-4-6"
+    "make_list": "mistral:mistral-medium-latest",
+    "make_page": "mistral:mistral-medium-latest"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "slug": "swedish-e4-motorway-bypass-2013-abandonment",
+  "title": "Swedish E4 Motorway Bypass Abandonment (2013)",
+  "summary": "A 20 km bypass for the E4 motorway near Uppsala, Sweden, was approved in 2010 but canceled in 2013 after environmental protests and cost escalations. The project left a partially constructed bridge and unresolved traffic congestion.",
+  "axes": {
+    "domain": "industrial",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "parliamentary_democracy",
+    "failure_mode": "public_opposition",
+    "current_state": "cancelled"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-small-latest"
+  }
+}

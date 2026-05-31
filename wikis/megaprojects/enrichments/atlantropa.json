@@ -1,0 +1,54 @@
+{
+  "slug": "atlantropa",
+  "query": "Atlantropa",
+  "wikipedia": {
+    "title": "Atlantropa",
+    "url": "https://en.wikipedia.org/wiki/Atlantropa",
+    "extract": "Atlantropa, also referred to as Panropa, was a gigantic engineering and colonisation idea that German architect Herman Sörgel devised in the 1920s, and promoted until his death in 1952. The proposal included several hydroelectric dams at key points on the Mediterranean Sea, such as the Strait of Gibraltar and the Bosporus, to cause a sea level drop and reclaim land."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Map_of_the_Atlantrop_Projekt_en.png",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/atlantropa/web_map-of-the-atlantrop-projekt-en.jpg",
+    "filename": "Map_of_the_Atlantrop_Projekt_en.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Map_of_the_Atlantrop_Projekt_en.png",
+    "mime": "image/png",
+    "width": 2889,
+    "height": 3497,
+    "license_short": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0",
+    "artist": "Devilm25 (map), VulcanTrekkie45 (translation)",
+    "credit": "<a href=\"//commons.wikimedia.org/wiki/File:Map_of_the_Atlantrop_Projekt_blank.png\" title=\"File:Map of the Atlantrop Projekt blank.png\">File:Map_of_the_Atlantrop_Projekt_blank.png</a>",
+    "description": "Map of the Atlantropa Project (English)"
+  },
+  "wikidata": {
+    "qid": "Q431214",
+    "url": "https://www.wikidata.org/wiki/Q431214",
+    "label": "Atlantropa",
+    "description": "proposed German megaproject",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 170584,
+          "id": "Q170584"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 1371819,
+          "id": "Q1371819"
+        }
+      ],
+      "inception": [
+        {
+          "time": "+1928-00-00T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "french-iter-construction-delays-2010s",
+  "title": "ITER Fusion Reactor Construction Delays (2010s)",
+  "summary": "The $22 billion ITER fusion reactor, approved in 2006 and under construction in France since 2010, faced repeated delays and cost overruns, with completion pushed back to at least 2035. The project remains operational but far behind original timelines.",
+  "axes": {
+    "domain": "industrial",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "semi-presidential_republic",
+    "failure_mode": "technical_delay",
+    "current_state": "zombie"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-small-latest"
+  }
+}

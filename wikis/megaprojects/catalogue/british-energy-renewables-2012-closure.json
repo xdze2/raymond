@@ -1,0 +1,18 @@
+{
+  "slug": "british-energy-renewables-2012-closure",
+  "title": "British Energy Renewables' 2012 Offshore Wind Farm Cancellations",
+  "summary": "The UK government approved multiple offshore wind farms in 2010–2012 but canceled all projects by 2012 due to funding cuts and shifting energy priorities, leaving only one partially completed. The abandoned schemes included the 97-turbine Atlantic Array and the 63-turbine Norfolk Array.",
+  "axes": {
+    "domain": "industrial",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "parliamentary_democracy",
+    "failure_mode": "funding_withdrawal",
+    "current_state": "cancelled"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm:mistral:mistral-small-latest"
+  }
+}
