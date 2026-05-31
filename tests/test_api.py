@@ -179,6 +179,27 @@ def test_generate_skips_invalid_slug(client, monkeypatch):
     assert res.get_json()["written"] == []
 
 
+def test_generate_drops_invalid_axis_values(client, wiki_dir: Path, monkeypatch):
+    # LLM hallucinates an axis id ("military") and a value ("completed") that
+    # don't exist in axis.json. They should be silently dropped from the entry,
+    # leaving valid axes in place.
+    fake_jsonl = (
+        '{"slug": "manhattan", "title": "Manhattan", '
+        '"axes": {"domain": "military", "era": "modern", '
+        '"current_state": "completed"}}\n'
+    )
+    monkeypatch.setattr(generate, "run_llm", lambda p, **kw: fake_jsonl)
+
+    res = client.post("/api/generate", json={"n": 1})
+    assert res.status_code == 200
+    assert res.get_json()["written"] == ["manhattan"]
+
+    entry = json.loads((wiki_dir / "catalogue" / "manhattan.json").read_text())
+    # invalid value dropped, invalid axis-id-with-invalid-value dropped,
+    # valid axis kept
+    assert entry["axes"] == {"era": "modern"}
+
+
 def test_generate_tolerates_code_fences(client, wiki_dir: Path, monkeypatch):
     fake = (
         "```jsonl\n"

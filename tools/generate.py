@@ -106,6 +106,13 @@ def generate_entries(
     with (wiki_dir / "wiki.json").open() as f:
         config = json.load(f)
 
+    with (wiki_dir / "axis.json").open() as f:
+        axis_config = json.load(f)
+    allowed_axis_values: dict[str, set[str]] = {
+        a["id"]: {v["id"] for v in a.get("values", [])}
+        for a in axis_config.get("axes", [])
+    }
+
     # Normalise axes: each value can be a string or list of strings.
     # Empty / missing axes render as "any".
     gen_axes = config.get("gen_axes", [])
@@ -169,6 +176,18 @@ def generate_entries(
             continue
         entry.setdefault("status", "generated")
         entry.setdefault("axes", dict(single_axes))
+        entry_axes = entry.get("axes") or {}
+        if isinstance(entry_axes, dict):
+            dropped = {
+                k: v for k, v in entry_axes.items()
+                if k not in allowed_axis_values
+                or v not in allowed_axis_values[k]
+            }
+            for k in dropped:
+                entry_axes.pop(k, None)
+            if dropped:
+                log(f"[generate] {slug}: dropped invalid axes {dropped}")
+            entry["axes"] = entry_axes
         entry["created"] = {"at": _today(), "by": f"llm:{model}"}
         if write:
             _write_entry(wiki_dir, entry)
