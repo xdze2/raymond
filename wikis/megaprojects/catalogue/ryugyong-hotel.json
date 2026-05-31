@@ -1,0 +1,25 @@
+{
+  "slug": "ryugyong-hotel",
+  "title": "Ryugyong Hotel",
+  "summary": "330-metre pyramidal hotel in Pyongyang, begun 1987 to upstage Seoul; structurally complete since 2011 but never opened to guests.",
+  "axes": {
+    "domain": "habitat",
+    "era": "1946_1989",
+    "region": "china_e_asia",
+    "political_system": "communist_state",
+    "failure_mode": "economic",
+    "current_state": "operating_zombie"
+  },
+  "status": "explored",
+  "facts": [
+    { "label": "Height", "value": "330 m, 105 floors" },
+    { "label": "Started", "value": "1987" },
+    { "label": "Halted", "value": "1992 (Soviet collapse cut funding)" },
+    { "label": "Glass cladding", "value": "added 2008–2011" },
+    { "label": "Guest rooms opened", "value": "Zero" }
+  ],
+  "links": [
+    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Ryugyong_Hotel" }
+  ],
+  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+}

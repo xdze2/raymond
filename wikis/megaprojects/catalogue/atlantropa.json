@@ -1,0 +1,24 @@
+{
+  "slug": "atlantropa",
+  "title": "Atlantropa",
+  "summary": "Interwar German plan to dam the Strait of Gibraltar, lower the Mediterranean by 200 m, and fuse Europe and Africa into a single hydroelectric supercontinent.",
+  "axes": {
+    "domain": "energy",
+    "era": "1900_1945",
+    "region": "europe",
+    "political_system": "democracy",
+    "failure_mode": "political",
+    "current_state": "never_built"
+  },
+  "status": "explored",
+  "facts": [
+    { "label": "Proposed by", "value": "Herman Sörgel" },
+    { "label": "First published", "value": "1929" },
+    { "label": "Core idea", "value": "Gibraltar + Dardanelles dams, plus a Congo-fed inland African sea" },
+    { "label": "Killed by", "value": "WWII, then decolonization" }
+  ],
+  "links": [
+    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Atlantropa" }
+  ],
+  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+}

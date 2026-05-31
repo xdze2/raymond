@@ -1,0 +1,84 @@
+{
+  "axes": [
+    {
+      "id": "domain",
+      "label": "Domain",
+      "description": "What kind of thing the project was meant to be.",
+      "values": [
+        { "id": "transport",       "label": "Transport",        "description": "Canals, rail, airports, airships, supersonic networks — moving people or freight." },
+        { "id": "habitat",         "label": "Habitat",          "description": "Planned cities, arcologies, biosphere experiments, mass housing schemes." },
+        { "id": "energy",          "label": "Energy",           "description": "Reactors, dams, solar arrays, fusion, exotic power schemes." },
+        { "id": "industrial",      "label": "Industrial",       "description": "Mines, smelters, agricultural conversion, terraforming-scale resource extraction." },
+        { "id": "science_military","label": "Science / Military","description": "Telescopes, accelerators, weapon programs, defense lines, space hardware." },
+        { "id": "symbolic",        "label": "Symbolic",         "description": "Monuments, expo pavilions, palaces, theme parks — built for meaning more than function." }
+      ]
+    },
+    {
+      "id": "era",
+      "label": "Era",
+      "description": "When the project broke ground (or, if never built, when it was seriously planned).",
+      "values": [
+        { "id": "pre_1900",   "label": "Pre-1900",   "description": "Imperial-era megaprojects, early industrial revolution failures." },
+        { "id": "1900_1945",  "label": "1900–1945",  "description": "Early-modern, interwar, fascist-era and WWII grand schemes." },
+        { "id": "1946_1989",  "label": "1946–1989",  "description": "Cold War: the golden age of state-driven megaprojects on both sides." },
+        { "id": "1990_2010",  "label": "1990–2010",  "description": "Post-Soviet, late-globalization, dot-com and pre-financial-crisis era." },
+        { "id": "post_2010",  "label": "Post-2010",  "description": "Gulf-state cities, crypto utopias, recent infrastructure overruns." }
+      ]
+    },
+    {
+      "id": "region",
+      "label": "Region",
+      "description": "Where the project was sited (or planned to be sited).",
+      "values": [
+        { "id": "n_america",      "label": "N. America",   "description": "USA, Canada, Mexico." },
+        { "id": "s_america",      "label": "S. America",   "description": "Latin America from Panama south." },
+        { "id": "europe",         "label": "Europe",       "description": "Western and Central Europe outside the Soviet bloc." },
+        { "id": "ussr_russia",    "label": "USSR / Russia","description": "Soviet Union, its successor states, and the satellite bloc projects." },
+        { "id": "china_e_asia",   "label": "China / E. Asia","description": "China, Japan, Korea, Taiwan, Mongolia." },
+        { "id": "s_asia",         "label": "S. Asia",      "description": "Indian subcontinent and Southeast Asia." },
+        { "id": "mena",           "label": "MENA",         "description": "Middle East and North Africa." },
+        { "id": "africa",         "label": "Africa",       "description": "Sub-Saharan Africa." },
+        { "id": "oceania_polar",  "label": "Oceania / Polar","description": "Australia, Pacific islands, Antarctic and Arctic schemes." }
+      ]
+    },
+    {
+      "id": "political_system",
+      "label": "Political system",
+      "description": "The regime type of the commissioning power at the project's start. Often the strongest predictor of how a megaproject fails.",
+      "values": [
+        { "id": "democracy",        "label": "Democracy",        "description": "Elected government, free press, ordinary procurement rules." },
+        { "id": "autocracy",        "label": "Autocracy",        "description": "Strongman regimes, monarchies, military juntas not aligned with the Soviet model." },
+        { "id": "colony_imperial",  "label": "Colony / Imperial","description": "Colonial administrations or imperial powers building on colonized territory." },
+        { "id": "communist_state",  "label": "Communist state",  "description": "USSR, China under Mao, Eastern Bloc, North Korea — state-planned economies." },
+        { "id": "corporate",        "label": "Corporate",        "description": "Driven by a private company or consortium, with the state in a permissive role." },
+        { "id": "theocracy",        "label": "Theocracy",        "description": "Religious authority as the primary commissioning power." }
+      ]
+    },
+    {
+      "id": "failure_mode",
+      "label": "Failure mode",
+      "description": "Why it fell over. The editorial axis of the wiki.",
+      "values": [
+        { "id": "technical",     "label": "Technical",      "description": "Couldn't be built, or worked badly: physics, materials, engineering wouldn't cooperate." },
+        { "id": "economic",      "label": "Economic",       "description": "Ran out of money. Cost overruns, market collapse, no buyers." },
+        { "id": "political",     "label": "Political",      "description": "Regime change, war, change of priorities killed it." },
+        { "id": "ecological",    "label": "Ecological",     "description": "Poisoned its own substrate or the surrounding environment. Aral Sea-class." },
+        { "id": "obsolete",      "label": "Obsolete",       "description": "Overtaken by technology or demand before it could pay off." },
+        { "id": "scandal_fraud", "label": "Scandal / fraud","description": "Corruption, fraud, or scandal — the thing was a lie or a crime as much as a project." }
+      ]
+    },
+    {
+      "id": "current_state",
+      "label": "Current state",
+      "description": "What is left of it today.",
+      "values": [
+        { "id": "ruin",                    "label": "Ruin",                    "color": "#868e96", "description": "Visibly decaying, abandoned in place, untouched." },
+        { "id": "repurposed",              "label": "Repurposed",              "color": "#2f9e44", "description": "Given a second life: missile silo → datacenter, airport → park." },
+        { "id": "operating_zombie",        "label": "Operating zombie",        "color": "#f08c00", "description": "Technically still running but pointless: empty hotels, ghost cities, half-used rail lines." },
+        { "id": "erased",                  "label": "Erased",                  "color": "#495057", "description": "Demolished, flooded, scrubbed — physically removed." },
+        { "id": "never_built",             "label": "Never built",             "color": "#1971c2", "description": "Planned in detail, sometimes started, then cancelled. Paper megaproject." },
+        { "id": "still_under_construction","label": "Still under construction","color": "#7048e8", "description": "Decades-long stalled or grinding builds that may or may not ever finish." }
+      ]
+    }
+  ]
+}

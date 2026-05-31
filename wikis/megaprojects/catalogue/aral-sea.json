@@ -1,0 +1,25 @@
+{
+  "slug": "aral-sea",
+  "title": "Aral Sea Diversion",
+  "summary": "Soviet irrigation of Central Asian cotton lands drained the world's fourth-largest lake into a salt desert in a single generation.",
+  "axes": {
+    "domain": "industrial",
+    "era": "1946_1989",
+    "region": "ussr_russia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "explored",
+  "facts": [
+    { "label": "Started", "value": "1960s" },
+    { "label": "Lost volume", "value": "~90% by 2010" },
+    { "label": "New desert", "value": "Aralkum, ~60,000 km²" },
+    { "label": "Surviving fragment", "value": "North Aral, dammed 2005" }
+  ],
+  "links": [
+    { "label": "Wikipedia — Aral Sea", "url": "https://en.wikipedia.org/wiki/Aral_Sea" },
+    { "label": "Wikipedia — Aralkum Desert", "url": "https://en.wikipedia.org/wiki/Aralkum_Desert" }
+  ],
+  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+}

@@ -1,0 +1,26 @@
+{
+  "slug": "biosphere-2",
+  "title": "Biosphere 2",
+  "summary": "Sealed three-acre glass terrarium in the Arizona desert meant to model a self-sustaining off-world colony; two crewed missions ended in oxygen loss, faction wars and acquisition by a university.",
+  "axes": {
+    "domain": "science_military",
+    "era": "1946_1989",
+    "region": "n_america",
+    "political_system": "corporate",
+    "failure_mode": "technical",
+    "current_state": "repurposed"
+  },
+  "status": "explored",
+  "facts": [
+    { "label": "Built", "value": "1987–1991" },
+    { "label": "Funder", "value": "Ed Bass (~$200M)" },
+    { "label": "Mission 1", "value": "8 people, 1991–1993" },
+    { "label": "O₂ drop", "value": "21% → 14% before resupply" },
+    { "label": "Now operated by", "value": "University of Arizona" }
+  ],
+  "links": [
+    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Biosphere_2" },
+    { "label": "Operating site", "url": "https://biosphere2.org/" }
+  ],
+  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+}

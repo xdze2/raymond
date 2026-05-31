@@ -1,0 +1,24 @@
+{
+  "slug": "fordlandia",
+  "title": "Fordlândia",
+  "summary": "Henry Ford's prefab Michigan-style town carved into the Brazilian Amazon to grow rubber for his tires; defeated by leaf blight, worker revolts and the invention of synthetic rubber.",
+  "axes": {
+    "domain": "industrial",
+    "era": "1900_1945",
+    "region": "s_america",
+    "political_system": "corporate",
+    "failure_mode": "ecological",
+    "current_state": "ruin"
+  },
+  "status": "explored",
+  "facts": [
+    { "label": "Founded", "value": "1928" },
+    { "label": "Concession size", "value": "~10,000 km²" },
+    { "label": "Killed by", "value": "South American leaf blight + synthetic rubber" },
+    { "label": "Sold back to Brazil", "value": "1945, for $250,000 loss of ~$20M" }
+  ],
+  "links": [
+    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Fordl%C3%A2ndia" }
+  ],
+  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+}

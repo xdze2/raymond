@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wiki</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="axis-bar">
+        <div id="wordmark"><!-- populated by JS --></div>
+        <table id="filter-table">
+          <thead><!-- populated by JS --></thead>
+          <tbody><!-- populated by JS --></tbody>
+        </table>
+      </header>
+
+      <div id="main">
+        <div id="grid-header">
+          <span id="list-count"></span>
+          <button id="toggle-explored" class="toggle-btn" title="Show only explored entries">explored only</button>
+        </div>
+        <div id="entry-grid"><!-- populated by JS --></div>
+      </div>
+
+      <div id="modal" hidden>
+        <div id="modal-backdrop"></div>
+        <article id="modal-panel">
+          <button id="modal-close" type="button" aria-label="Close">✕</button>
+          <div id="view-content"><!-- populated by JS --></div>
+        </article>
+      </div>
+    </div>
+
+    <script type="module">
+      // ── state ──────────────────────────────────────────────────────────────
+
+      const state = {
+        wiki: {},
+        axes: [],
+        filters: {},     // axisId -> Set<valueId>
+        entries: [],
+        activeSlug: null,
+        exploredOnly: false,
+      };
+
+      // ── data loading ───────────────────────────────────────────────────────
+
+      async function loadWiki() {
+        const res = await fetch("./wiki.json");
+        state.wiki = await res.json();
+      }
+
+      async function loadAxes() {
+        const res = await fetch("./axis.json");
+        const data = await res.json();
+        state.axes = data.axes;
+        for (const ax of state.axes) state.filters[ax.id] = new Set();
+      }
+
+      async function loadEntries() {
+        const res = await fetch("./index.jsonl");
+        const text = await res.text();
+        const entries = [];
+        for (const line of text.split("\n")) {
+          const t = line.trim();
+          if (!t) continue;
+          try { entries.push(JSON.parse(t)); } catch (_) {}
+        }
+        state.entries = entries.sort((a, b) =>
+          (a.title || "").localeCompare(b.title || "")
+        );
+      }
+
+      // ── helpers ────────────────────────────────────────────────────────────
+
+      function axisValue(entry, axisId) {
+        return entry.axes ? entry.axes[axisId] : null;
+      }
+
+      function getStatusColor(valueId) {
+        const statusAxisId = state.wiki.status_axis;
+        if (!statusAxisId) return "#aaa";
+        const ax = state.axes.find((a) => a.id === statusAxisId);
+        if (!ax) return "#aaa";
+        const v = ax.values.find((v) => v.id === valueId);
+        return v?.color || "#aaa";
+      }
+
+      function valueLabel(axisId, valueId) {
+        const ax = state.axes.find((a) => a.id === axisId);
+        const v = ax?.values.find((v) => v.id === valueId);
+        return v?.label || valueId;
+      }
+
+      // ── rendering: chrome ──────────────────────────────────────────────────
+
+      function renderWordmark() {
+        const el = document.getElementById("wordmark");
+        el.innerHTML = "";
+        for (const word of state.wiki.wordmark || []) {
+          const span = document.createElement("span");
+          span.textContent = word;
+          el.appendChild(span);
+        }
+      }
+
+      function setDocumentTitle() {
+        document.title = state.wiki.title || "Wiki";
+      }
+
+      function renderAxisBar() {
+        const table = document.getElementById("filter-table");
+        const thead = table.querySelector("thead");
+        const tbody = table.querySelector("tbody");
+        thead.innerHTML = "";
+        tbody.innerHTML = "";
+
+        const headRow = document.createElement("tr");
+        for (const axis of state.axes) {
+          const th = document.createElement("th");
+          const selected = state.filters[axis.id];
+          th.className = "filter-th";
+          if (selected.size) th.classList.add("has-selection");
+          th.title = axis.description || "";
+
+          const label = document.createElement("span");
+          label.className = "filter-th-label";
+          label.textContent = axis.label;
+          th.appendChild(label);
+
+          if (selected.size) {
+            const clear = document.createElement("button");
+            clear.type = "button";
+            clear.className = "filter-th-clear";
+            clear.textContent = "⌫";
+            clear.title = "Clear";
+            clear.addEventListener("click", (e) => {
+              e.stopPropagation();
+              selected.clear();
+              renderAxisBar();
+              renderList();
+            });
+            th.appendChild(clear);
+          }
+          headRow.appendChild(th);
+        }
+        thead.appendChild(headRow);
+
+        const maxRows = Math.max(...state.axes.map((a) => a.values.length));
+        const statusAxisId = state.wiki.status_axis;
+
+        for (let r = 0; r < maxRows; r++) {
+          const tr = document.createElement("tr");
+          for (const axis of state.axes) {
+            const td = document.createElement("td");
+            const val = axis.values[r];
+            if (!val) {
+              td.className = "filter-cell filter-cell-empty";
+              tr.appendChild(td);
+              continue;
+            }
+            const selected = state.filters[axis.id];
+            const isSel = selected.has(val.id);
+
+            td.className = "filter-cell";
+            if (isSel) td.classList.add("selected");
+            if (axis.id === statusAxisId && val.color) {
+              td.style.setProperty("--status-color", val.color);
+              if (isSel) td.classList.add("status-colored");
+            }
+            td.title = val.description || val.label;
+            td.textContent = val.label;
+
+            td.addEventListener("click", () => {
+              if (isSel) selected.delete(val.id);
+              else selected.add(val.id);
+              renderAxisBar();
+              renderList();
+            });
+            tr.appendChild(td);
+          }
+          tbody.appendChild(tr);
+        }
+      }
+
+      // ── rendering: card grid ───────────────────────────────────────────────
+
+      function filteredEntries() {
+        return state.entries.filter((entry) => {
+          if (state.exploredOnly && entry.status !== "explored") return false;
+          for (const axisId of Object.keys(state.filters)) {
+            const selected = state.filters[axisId];
+            if (!selected.size) continue;
+            if (!selected.has(axisValue(entry, axisId))) return false;
+          }
+          return true;
+        });
+      }
+
+      function renderList() {
+        const grid = document.getElementById("entry-grid");
+        const countEl = document.getElementById("list-count");
+        grid.innerHTML = "";
+
+        const entries = filteredEntries();
+        const total = state.entries.length;
+        const filtered = entries.length;
+        countEl.textContent = filtered === total
+          ? `${total} entries`
+          : `${filtered} / ${total} entries`;
+
+        const statusAxisId = state.wiki.status_axis;
+
+        for (const entry of entries) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "entry-card";
+          if (entry.status !== "explored") card.classList.add("generated");
+
+          const thumb = document.createElement("div");
+          thumb.className = "card-thumb";
+          if (entry.image) {
+            const img = document.createElement("img");
+            img.loading = "lazy";
+            img.src = `./${entry.image}`;
+            img.alt = entry.title;
+            thumb.appendChild(img);
+          } else {
+            thumb.classList.add("placeholder");
+            const initial = document.createElement("span");
+            initial.className = "card-thumb-initial";
+            initial.textContent = (entry.title || "?").charAt(0).toUpperCase();
+            thumb.appendChild(initial);
+          }
+
+          const statusVal = statusAxisId ? axisValue(entry, statusAxisId) : null;
+          if (statusVal) {
+            const dot = document.createElement("span");
+            dot.className = "card-status-dot";
+            dot.style.background = getStatusColor(statusVal);
+            dot.title = valueLabel(statusAxisId, statusVal);
+            thumb.appendChild(dot);
+          }
+
+          const body = document.createElement("div");
+          body.className = "card-body";
+
+          const titleEl = document.createElement("div");
+          titleEl.className = "card-title";
+          titleEl.textContent = entry.title;
+          body.appendChild(titleEl);
+
+          if (entry.summary) {
+            const sEl = document.createElement("div");
+            sEl.className = "card-summary";
+            sEl.textContent = entry.summary;
+            body.appendChild(sEl);
+          }
+
+          card.appendChild(thumb);
+          card.appendChild(body);
+          card.addEventListener("click", () => openEntry(entry.slug));
+          grid.appendChild(card);
+        }
+      }
+
+      function selectSimilar(entry) {
+        for (const ax of state.axes) {
+          const set = state.filters[ax.id];
+          set.clear();
+          const v = axisValue(entry, ax.id);
+          if (v) set.add(v);
+        }
+        renderAxisBar();
+        renderList();
+      }
+
+      // ── modal ──────────────────────────────────────────────────────────────
+
+      function openModal() {
+        document.getElementById("modal").hidden = false;
+        document.body.classList.add("modal-open");
+      }
+
+      function closeModal() {
+        document.getElementById("modal").hidden = true;
+        document.body.classList.remove("modal-open");
+        state.activeSlug = null;
+      }
+
+      function openEntry(slug) {
+        state.activeSlug = slug;
+        const entry = state.entries.find((e) => e.slug === slug);
+        if (!entry) return;
+
+        const statusAxisId = state.wiki.status_axis;
+        const axisChips = state.axes.map((ax) => {
+          const v = axisValue(entry, ax.id);
+          if (!v) return "";
+          const color = ax.id === statusAxisId ? getStatusColor(v) : null;
+          const style = color
+            ? ` style="border-color:${color};color:${color}"`
+            : "";
+          return `<span class="chip"${style}>${ax.label}: ${valueLabel(ax.id, v)}</span>`;
+        }).join("");
+
+        const statusChip = entry.status === "explored"
+          ? ""
+          : `<span class="chip chip-generated">generated</span>`;
+
+        const headerHtml = `
+          <div class="entry-header">
+            <h1 class="entry-title-large">${escapeHtml(entry.title || "")}</h1>
+            <p class="entry-summary">${escapeHtml(entry.summary || "")}</p>
+            <div class="chips">${axisChips}${statusChip}<button class="select-similar" type="button">select similar</button></div>
+          </div>
+        `;
+
+        let bodyHtml = "";
+        if (entry.status === "explored") {
+          const parts = [];
+          if (entry.image) {
+            parts.push(
+              `<div class="entry-image"><img src="./${entry.image}" alt="${escapeHtml(entry.title)}"></div>`
+            );
+          }
+          if (Array.isArray(entry.facts) && entry.facts.length) {
+            const rows = entry.facts.map((f) =>
+              `<div class="fact-label">${escapeHtml(f.label || "")}</div>
+               <div class="fact-value">${escapeHtml(f.value || "")}</div>`
+            ).join("");
+            parts.push(
+              `<section class="facts-section">
+                 <h3>Facts</h3>
+                 <div class="facts-list">${rows}</div>
+               </section>`
+            );
+          }
+          if (Array.isArray(entry.links) && entry.links.length) {
+            const chips = entry.links.map((l) =>
+              `<a class="link-chip" href="${encodeURI(l.url || "#")}" target="_blank" rel="noopener">${escapeHtml(l.label || l.url || "")}</a>`
+            ).join("");
+            parts.push(
+              `<section class="links-section">
+                 <h3>Links</h3>
+                 <div class="links-row">${chips}</div>
+               </section>`
+            );
+          }
+          bodyHtml = `<div class="entry-body">${parts.join("")}</div>`;
+        } else {
+          bodyHtml = `<div class="entry-body"><div class="entry-stub">Generated entry — not yet explored.</div></div>`;
+        }
+
+        const viewEl = document.getElementById("view-content");
+        viewEl.innerHTML = headerHtml + bodyHtml;
+        viewEl.querySelector(".select-similar")
+          ?.addEventListener("click", () => selectSimilar(entry));
+
+        openModal();
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // ── init ───────────────────────────────────────────────────────────────
+
+      async function init() {
+        await loadWiki();
+        await loadAxes();
+        renderWordmark();
+        setDocumentTitle();
+        await loadEntries();
+        renderAxisBar();
+        renderList();
+
+        document.getElementById("toggle-explored").addEventListener("click", (e) => {
+          state.exploredOnly = !state.exploredOnly;
+          e.currentTarget.classList.toggle("active", state.exploredOnly);
+          renderList();
+        });
+
+        document.getElementById("modal-close").addEventListener("click", closeModal);
+        document.getElementById("modal-backdrop").addEventListener("click", closeModal);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !document.getElementById("modal").hidden) {
+            closeModal();
+          }
+        });
+
+        const hash = location.hash.replace(/^#/, "");
+        if (hash && state.entries.some((e) => e.slug === hash)) openEntry(hash);
+      }
+
+      init().catch(console.error);
+    </script>
+  </body>
+</html>

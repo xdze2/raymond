@@ -1,0 +1,35 @@
+You are populating a curated atlas of failed and abandoned megaprojects — large-scale construction or engineering schemes that humanity started (or seriously planned) and then walked away from.
+
+What counts as a megaproject for this wiki:
+- Scale that required state, imperial, corporate, or consortium-level coordination.
+- A clear physical or institutional ambition (a city, a tunnel, a reactor, a weapons program, a monument).
+- A discernible failure, abandonment, cancellation, or zombie state — not merely "controversial" or "over budget".
+
+The current axis combination is:
+- domain: {domain}
+- era: {era}
+- region: {region}
+- political_system: {political_system}
+- failure_mode: {failure_mode}
+- current_state: {current_state}
+
+Produce {n} candidate entries that genuinely fit this cell. Favor real historical projects (verifiable). If the cell is genuinely empty in the historical record, return fewer entries rather than invent. Prefer the obscure over the obvious — but obvious entries are fine when they're a textbook fit.
+
+For each entry, output one JSON object on its own line (JSONL), with this shape:
+
+{
+  "slug": "kebab-case-id",
+  "title": "Human Title",
+  "summary": "1–3 sentence card summary. Concrete. No filler.",
+  "axes": {
+    "domain": "{domain}",
+    "era": "{era}",
+    "region": "{region}",
+    "political_system": "{political_system}",
+    "failure_mode": "{failure_mode}",
+    "current_state": "{current_state}"
+  },
+  "status": "generated"
+}
+
+Do not include facts, links, or images — those are added during the human-curation pass.

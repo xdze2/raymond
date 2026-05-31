@@ -1,0 +1,10 @@
+{
+  "id": "megaprojects",
+  "title": "Failed Megaprojects",
+  "wordmark": ["FAILED", "MEGA"],
+  "tagline": "Things humanity started building at scale, then walked away from.",
+  "placeholder_hint": "Pick an axis combination above, or click any card.",
+  "gen_axes": ["domain", "era", "region", "political_system", "failure_mode", "current_state"],
+  "freeform_axes": [],
+  "status_axis": "current_state"
+}

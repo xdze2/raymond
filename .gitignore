@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+
+# generated per-wiki index, rebuilt by build_index.py / dev_server.py
+wikis/*/index.jsonl
+
+# generated standalone bundles
+dist/
