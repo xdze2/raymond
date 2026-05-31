@@ -15,6 +15,7 @@ from datetime import date
 from pathlib import Path
 from typing import Callable
 
+from ddg import ddg_client
 from llm import DEFAULT_MODEL, render_prompt, run_llm
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -135,7 +136,17 @@ def explore_entry(
         else:
             log(f"[fetch] no existing enrichment at {_rel(cached)}")
 
-    # Step 2: LLM
+    # Step 2: DDG search (best-effort; failures are logged and skipped).
+    ddg_results = None
+    ddg_query = entry.get("title") or slug
+    log(f"[ddg] query={ddg_query!r}")
+    try:
+        ddg_results = json.loads(ddg_client(ddg_query))
+        log(f"[ddg] {len(ddg_results)} results")
+    except Exception as e:
+        log(f"[ddg] skipped: {e}")
+
+    # Step 3: LLM
     template_path = wiki_dir / "prompts" / "make_page.txt"
     if not template_path.is_file():
         raise ExploreError(
@@ -147,6 +158,8 @@ def explore_entry(
     seed_payload = dict(entry)
     if enrichment is not None:
         seed_payload["enrichment"] = enrichment
+    if ddg_results is not None:
+        seed_payload["ddg_search"] = ddg_results
 
     prompt = render_prompt(
         template,

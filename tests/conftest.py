@@ -11,6 +11,7 @@ from pathlib import Path
 import pytest
 
 import dev_server
+import explore
 
 
 WIKI_CONFIG = {
@@ -71,6 +72,12 @@ def wiki_dir(tmp_path: Path) -> Path:
     )
     (wd / "prompts" / "make_page.txt").write_text("Explore: {seed}\n")
     return wd
+
+
+@pytest.fixture(autouse=True)
+def _stub_ddg(monkeypatch):
+    """Prevent explore tests from hitting the live DDG client."""
+    monkeypatch.setattr(explore, "ddg_client", lambda q, **kw: "[]")
 
 
 @pytest.fixture
