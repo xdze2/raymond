@@ -43,6 +43,15 @@ def test_frontend_index_served(client):
     assert b"<html" in res.data.lower()
 
 
+def test_responses_disable_caching(client):
+    # Browser cached stale index.jsonl after backend rewrites; dev server
+    # must serve everything with Cache-Control: no-store.
+    for path in ("/", "/index.jsonl", "/wiki.json", "/axis.json"):
+        res = client.get(path)
+        assert res.status_code == 200, path
+        assert res.headers.get("Cache-Control") == "no-store", path
+
+
 def test_path_traversal_blocked(client):
     res = client.get("/..%2Fpyproject.toml")
     # flask normalises URL, so this becomes /pyproject.toml → 404 against frontend

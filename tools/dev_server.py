@@ -238,9 +238,15 @@ def make_app(wiki_dir: Path) -> Flask:
         write_index(wiki_dir)
         return jsonify(merged)
 
+    def _nocache(resp):
+        # Dev server: backend can rewrite index.jsonl / catalogue files at any
+        # time; stale browser caches were causing filter state to desync.
+        resp.headers["Cache-Control"] = "no-store"
+        return resp
+
     @app.get("/")
     def index():
-        return send_from_directory(FRONTEND_DIR, "index.html")
+        return _nocache(send_from_directory(FRONTEND_DIR, "index.html"))
 
     @app.get("/<path:filename>")
     def serve(filename: str):
@@ -251,12 +257,12 @@ def make_app(wiki_dir: Path) -> Flask:
         first = filename.split("/", 1)[0]
 
         if filename in WIKI_PASSTHROUGH:
-            return send_from_directory(wiki_dir, filename)
+            return _nocache(send_from_directory(wiki_dir, filename))
 
         if first in WIKI_DIR_PASSTHROUGH:
-            return send_from_directory(wiki_dir, filename)
+            return _nocache(send_from_directory(wiki_dir, filename))
 
-        return send_from_directory(FRONTEND_DIR, filename)
+        return _nocache(send_from_directory(FRONTEND_DIR, filename))
 
     return app
 
