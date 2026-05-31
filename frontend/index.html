@@ -126,12 +126,43 @@
         document.title = state.wiki.title || "Wiki";
       }
 
+      function entriesMatchingExcept(skipAxisId) {
+        return state.entries.filter((entry) => {
+          if (state.exploredOnly && entry.status !== "explored") return false;
+          for (const axisId of Object.keys(state.filters)) {
+            if (axisId === skipAxisId) continue;
+            const selected = state.filters[axisId];
+            if (!selected.size) continue;
+            if (!selected.has(axisValue(entry, axisId))) return false;
+          }
+          return true;
+        });
+      }
+
       function renderAxisBar() {
         const table = document.getElementById("filter-table");
         const thead = table.querySelector("thead");
         const tbody = table.querySelector("tbody");
         thead.innerHTML = "";
         tbody.innerHTML = "";
+
+        const selCountByAxis = {};
+        const totCountByAxis = {};
+        for (const axis of state.axes) {
+          const sel = entriesMatchingExcept(axis.id);
+          const selCounts = {};
+          const totCounts = {};
+          for (const e of sel) {
+            const v = axisValue(e, axis.id);
+            if (v) selCounts[v] = (selCounts[v] || 0) + 1;
+          }
+          for (const e of state.entries) {
+            const v = axisValue(e, axis.id);
+            if (v) totCounts[v] = (totCounts[v] || 0) + 1;
+          }
+          selCountByAxis[axis.id] = selCounts;
+          totCountByAxis[axis.id] = totCounts;
+        }
 
         const headRow = document.createElement("tr");
         for (const axis of state.axes) {
@@ -187,7 +218,19 @@
               if (isSel) td.classList.add("status-colored");
             }
             td.title = val.description || val.label;
-            td.textContent = val.label;
+
+            const labelSpan = document.createElement("span");
+            labelSpan.className = "filter-cell-label";
+            labelSpan.textContent = val.label;
+            td.appendChild(labelSpan);
+
+            const sel = selCountByAxis[axis.id][val.id] || 0;
+            const tot = totCountByAxis[axis.id][val.id] || 0;
+            const countSpan = document.createElement("span");
+            countSpan.className = "filter-cell-count";
+            countSpan.textContent = sel === tot ? `${tot}` : `${sel} / ${tot}`;
+            if (!sel) td.classList.add("zero-count");
+            td.appendChild(countSpan);
 
             td.addEventListener("click", () => {
               if (isSel) selected.delete(val.id);
@@ -560,6 +603,7 @@
         document.getElementById("toggle-explored").addEventListener("click", (e) => {
           state.exploredOnly = !state.exploredOnly;
           e.currentTarget.classList.toggle("active", state.exploredOnly);
+          renderAxisBar();
           renderList();
         });
 

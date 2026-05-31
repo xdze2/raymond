@@ -135,6 +135,32 @@
   transition: background 60ms, color 60ms;
 }
 
+.filter-cell-label {
+  display: inline-block;
+  max-width: calc(100% - 3.5em);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.filter-cell-count {
+  float: right;
+  font-size: 0.7rem;
+  color: var(--text);
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+  margin-left: 8px;
+}
+
+.filter-cell.zero-count {
+  opacity: 0.65;
+}
+
+.filter-cell.selected .filter-cell-count {
+  color: #fff;
+  opacity: 1;
+}
+
 @media (hover: hover) {
   .filter-cell:hover:not(.filter-cell-empty):not(.selected) {
     background: var(--active-bg);
