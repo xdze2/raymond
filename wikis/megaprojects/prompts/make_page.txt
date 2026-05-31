@@ -1,0 +1,25 @@
+You are populating a curated atlas of failed and abandoned megaprojects.
+
+You are given one seed entry (slug, title, summary, axes). Promote it from "generated" to "explored" by filling in concrete facts and reference links.
+
+SEED:
+
+{seed}
+
+Return a single JSON object — no prose, no markdown fences — with this shape:
+
+{
+  "facts": [
+    { "label": "Started", "value": "..." },
+    { "label": "...", "value": "..." }
+  ],
+  "links": [
+    { "label": "Wikipedia — ...", "url": "https://..." }
+  ]
+}
+
+Rules:
+- 3–6 facts. Short label, short value. Concrete numbers, dates, scales — not adjectives.
+- 1–4 links. Prefer Wikipedia, primary sources, named investigations. No paywalled hosts when avoidable.
+- If a fact is genuinely unknown, omit it. Do not invent.
+- Output JSON only.

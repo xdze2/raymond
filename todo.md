@@ -92,16 +92,17 @@ Goal: standardize the entry file format.
 
 ---
 
-## Step 9 — Flask edit endpoints
+## Step 9 — Flask edit endpoints ✅
 
 Goal: wire the existing CLI tools into the frontend.
 
-- [ ] `POST /api/generate` — body: `{ axes: {...}, n: int }`. Wraps catalogue generation; writes new `catalogue/<slug>.json` files; re-runs `build_index`; returns new slugs.
-- [ ] `POST /api/entries/<slug>/explore` — promotes `generated` → `explored`; LLM fills `facts`, `links`, possibly `image`; writes file; returns updated entry.
-- [ ] `PUT /api/entries/<slug>` — save manual edits; updates `updated` block.
-- [ ] `POST /api/reindex` — force rebuild of `index.jsonl`.
-
-**Verify each:** call from `curl`, file appears/changes on disk, response payload matches.
+- [x] `POST /api/generate` — body: `{ axes: {...}, n: int }`. Renders `prompts/make_list.txt`, shells out to `claude --print`, parses JSONL, writes one `catalogue/<slug>.json` per entry, re-runs `build_index`, returns `{written, skipped}`.
+- [x] `POST /api/entries/<slug>/explore` — renders `prompts/make_page.txt` with seed entry, calls LLM, merges `facts`/`links`/`image`, flips status to `explored`, stamps `updated`.
+- [x] `PUT /api/entries/<slug>` — merges body over existing entry, stamps `updated: {by: "user"}`.
+- [x] `POST /api/reindex` — rebuilds `index.jsonl`, returns entry count.
+- [x] `tools/llm.py` added — thin `claude` CLI wrapper + `{placeholder}` renderer.
+- [x] `wikis/megaprojects/prompts/make_page.txt` added — emits the new `{facts, links}` JSON shape (not the old markdown page format).
+- [x] Validation paths verified via curl (400/404 on bad input, PUT round-trip preserves untouched fields). LLM-backed `/generate` and `/explore` are wired but not yet end-to-end-tested with a real model call.
 
 ---
 
