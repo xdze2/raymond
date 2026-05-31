@@ -533,27 +533,38 @@ body.modal-open {
   color: var(--text);
 }
 
-.links-row {
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.link-chip {
+.link-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-url {
   font-family: 'system-ui', sans-serif;
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--surface);
+  font-size: 0.85rem;
   color: var(--text-2);
-  text-decoration: none;
-  transition: border-color 80ms, color 80ms;
+  text-decoration: underline;
+  word-break: break-all;
+  transition: color 80ms;
 }
 
-.link-chip:hover {
-  border-color: var(--text);
+.link-url:hover {
   color: var(--text);
+}
+
+.link-desc {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  line-height: 1.4;
 }
 
 .entry-stub {

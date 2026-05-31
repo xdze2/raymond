@@ -422,13 +422,18 @@
             );
           }
           if (Array.isArray(entry.links) && entry.links.length) {
-            const chips = entry.links.map((l) =>
-              `<a class="link-chip" href="${encodeURI(l.url || "#")}" target="_blank" rel="noopener">${escapeHtml(l.label || l.url || "")}</a>`
-            ).join("");
+            const items = entry.links.map((l) => {
+              const url = l.url || "";
+              const desc = l.description || l.label || "";
+              return `<li class="link-item">
+                <a class="link-url" href="${encodeURI(url || "#")}" target="_blank" rel="noopener">${escapeHtml(url)}</a>
+                ${desc ? `<div class="link-desc">${escapeHtml(desc)}</div>` : ""}
+              </li>`;
+            }).join("");
             parts.push(
               `<section class="links-section">
                  <h3>Links</h3>
-                 <div class="links-row">${chips}</div>
+                 <ul class="links-list">${items}</ul>
                </section>`
             );
           }
