@@ -63,11 +63,12 @@
 }
 
 #axis-bar-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 16px;
-  min-width: max-content;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 16px;
+  padding: 10px 16px 12px;
+  align-items: start;
 }
 
 /* main area: list + view */
@@ -149,10 +150,26 @@
 
 /* ── axis bar ─────────────────────────────────────────────────────────────── */
 
-.axis-row {
+.axis-col {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+}
+
+.axis-col:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.axis-head {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  min-width: 0;
 }
 
 .axis-label {
@@ -162,53 +179,78 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-3);
-  width: 72px;
   flex-shrink: 0;
 }
 
-.axis-buttons {
+.axis-head .axis-select {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.axis-select {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text-2);
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: border-color 80ms, color 80ms, box-shadow 80ms;
+}
+
+.axis-select:hover {
+  border-color: #aaa;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.axis-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
 }
 
-.axis-btn {
-  font-family: 'system-ui', sans-serif;
-  font-size: 0.78rem;
-  padding: 3px 10px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--bg);
-  color: var(--text-2);
-  cursor: pointer;
-  transition: background 80ms, border-color 80ms, color 80ms;
-  line-height: 1.5;
+.axis-chips:empty {
+  display: none;
 }
 
-.axis-btn:hover {
-  border-color: #aaa;
-  color: var(--text);
-}
-
-.axis-btn.active {
-  background: var(--text);
-  border-color: var(--text);
-  color: #fff;
-}
-
-.axis-btn.active.status-colored {
-  background: var(--status-color);
-  border-color: var(--status-color);
-  color: #fff;
-}
-
-.axis-desc {
+.axis-chip {
   font-family: 'system-ui', sans-serif;
   font-size: 0.75rem;
-  color: var(--text-3);
-  line-height: 1.5;
-  align-self: center;
-  padding-left: 4px;
+  padding: 2px 4px 2px 8px;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: var(--text);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.4;
+  transition: opacity 80ms;
+}
+
+.axis-chip:hover {
+  opacity: 0.85;
+}
+
+.axis-chip.status-colored {
+  background: var(--status-color);
+  border-color: var(--status-color);
+}
+
+.axis-chip-x {
+  font-size: 0.95rem;
+  line-height: 1;
+  opacity: 0.7;
+  padding: 0 2px;
+}
+
+.axis-chip:hover .axis-chip-x {
+  opacity: 1;
 }
 
 /* ── entry list ───────────────────────────────────────────────────────────── */

@@ -192,7 +192,7 @@
         const data = await res.json();
         state.axes = data.axes;
         state.axes.forEach((ax) => {
-          state.filters[ax.id] = null;
+          state.filters[ax.id] = [];
         });
       }
 
@@ -336,70 +336,100 @@
         container.innerHTML = "";
 
         for (const axis of state.axes) {
-          const row = document.createElement("div");
-          row.className = "axis-row";
+          const col = document.createElement("div");
+          col.className = "axis-col";
+
+          const head = document.createElement("div");
+          head.className = "axis-head";
 
           const label = document.createElement("span");
           label.className = "axis-label";
           label.textContent = axis.label;
-          row.appendChild(label);
+          label.title = axis.description || "";
+          head.appendChild(label);
 
-          const buttons = document.createElement("div");
-          buttons.className = "axis-buttons";
+          const selected = state.filters[axis.id] || [];
+
+          const select = document.createElement("select");
+          select.className = "axis-select";
+          const placeholder = document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = selected.length
+            ? "add…"
+            : "all";
+          placeholder.selected = true;
+          select.appendChild(placeholder);
 
           for (const val of axis.values) {
-            const btn = document.createElement("button");
-            btn.className = "axis-btn";
-            btn.textContent = val.label;
-            btn.dataset.axis = axis.id;
-            btn.dataset.value = val.id;
-            btn.title = val.description;
+            if (selected.includes(val.id)) continue;
+            const opt = document.createElement("option");
+            opt.value = val.id;
+            opt.textContent = val.label;
+            opt.title = val.description || "";
+            select.appendChild(opt);
+          }
 
-            if (state.filters[axis.id] === val.id) {
-              btn.classList.add("active");
-              if (axis.id === "status" && val.color) {
-                btn.style.setProperty("--status-color", val.color);
-                btn.classList.add("status-colored");
-              }
+          select.addEventListener("change", () => {
+            const v = select.value;
+            if (!v) return;
+            if (!state.filters[axis.id].includes(v)) {
+              state.filters[axis.id].push(v);
+            }
+            renderAxisBar();
+            renderList();
+          });
+
+          head.appendChild(select);
+          col.appendChild(head);
+
+          const chips = document.createElement("div");
+          chips.className = "axis-chips";
+
+          for (const valId of selected) {
+            const val = axis.values.find((v) => v.id === valId);
+            if (!val) continue;
+
+            const chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "axis-chip";
+            chip.title = val.description || "";
+
+            if (axis.id === "status" && val.color) {
+              chip.style.setProperty("--status-color", val.color);
+              chip.classList.add("status-colored");
             }
 
-            btn.addEventListener("click", () => {
-              if (state.filters[axis.id] === val.id) {
-                state.filters[axis.id] = null;
-              } else {
-                state.filters[axis.id] = val.id;
-              }
+            const text = document.createElement("span");
+            text.textContent = val.label;
+            chip.appendChild(text);
+
+            const close = document.createElement("span");
+            close.className = "axis-chip-x";
+            close.textContent = "×";
+            chip.appendChild(close);
+
+            chip.addEventListener("click", () => {
+              state.filters[axis.id] = state.filters[axis.id].filter(
+                (id) => id !== valId,
+              );
               renderAxisBar();
               renderList();
             });
 
-            buttons.appendChild(btn);
+            chips.appendChild(chip);
           }
 
-          row.appendChild(buttons);
-
-          // description of the selected value, inline after the buttons
-          const selectedVal = axis.values.find(
-            (v) => v.id === state.filters[axis.id],
-          );
-          if (selectedVal) {
-            const desc = document.createElement("span");
-            desc.className = "axis-desc";
-            desc.textContent = selectedVal.description;
-            buttons.appendChild(desc);
-          }
-
-          row.appendChild(buttons);
-          container.appendChild(row);
+          col.appendChild(chips);
+          container.appendChild(col);
         }
       }
 
       function filteredEntries() {
         return state.entries.filter((entry) => {
           if (state.pagesOnly && !entry.page_url) return false;
-          for (const [axisId, valueId] of Object.entries(state.filters)) {
-            if (!valueId) continue;
-            if (entry[axisId] !== valueId) return false;
+          for (const [axisId, valueIds] of Object.entries(state.filters)) {
+            if (!valueIds || !valueIds.length) continue;
+            if (!valueIds.includes(entry[axisId])) return false;
           }
           return true;
         });
