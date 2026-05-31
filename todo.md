@@ -1,4 +1,42 @@
-# Migration TODO
+# TODO
+
+## Next up — LLM cost/speed + batch filling
+
+Goal: make generation cheaper and faster, give the user real-time feedback, and grow the wiki without one-click-at-a-time tedium. Ordered cheapest-first; each step independently shippable. Keep the stack simple — plain Flask + vanilla JS frontend, no WebSockets, no framework rewrite.
+
+### A — Usage logging
+- [ ] Append one JSONL record per LLM call to `wikis/<wiki>/llm_calls.jsonl`: timestamp, model, prompt name, input/output tokens, latency, est. cost, slug (if any).
+- [ ] Hook it into `tools/llm.py` so every provider goes through the same log path.
+- [ ] `.gitignore` the log file.
+
+### B — Provider abstraction in `tools/llm.py`
+- [ ] Refactor `run_claude` → `run_llm(prompt, model=...)` with a thin dispatcher.
+- [ ] Keep current `claude --print` path as one backend; no behaviour change yet.
+- [ ] Tests still patch `dev_server.run_claude` (or the new name) — update `CLAUDE.md` if renamed.
+
+### C — Optimistic UI + elapsed counter
+- [ ] On `generate` / `explore` click: immediately render the entry/card in a "generating…" state with a live elapsed-seconds counter.
+- [ ] Disable the trigger button, show a cancel affordance (even if cancel is best-effort).
+- [ ] On error, surface the message inline (not just console).
+
+### D — Mistral via API
+- [ ] Add a Mistral backend to `run_llm` (API key from env).
+- [ ] Per-wiki config or per-prompt config to pick model (e.g. Mistral Small for `make_list`, Claude for `make_page`).
+- [ ] Tiny eval: regenerate 5 existing entries with Mistral, diff against current, decide where it's good enough.
+
+### E — Batch generation (CLI, not a route)
+- [ ] `tools/batch_generate.py <wiki> [--axes ...] [--n N]` — runs `make_list` then `make_page` for each new slug, writes to `catalogue/`, rebuilds index.
+- [ ] Dedup against existing slugs; skip-or-retry on LLM errors with backoff.
+- [ ] Decision needed: seed list source — curated input file vs. LLM-proposed neighbors of existing entries. Start with curated.
+
+### F — SSE streaming (only if C isn't enough)
+- [ ] Add `text/event-stream` variants of `/api/generate` and `/api/entries/<slug>/explore` for prose fields.
+- [ ] Structured JSON outputs stay non-streaming (can't parse partial JSON cleanly).
+- [ ] Skip entirely if the optimistic UI already feels good.
+
+---
+
+## Migration TODO (done)
 
 Refactor toward: per-entry JSON files, shared frontend, build/export/dev scripts under `tools/`. Each step is independently verifiable.
 
