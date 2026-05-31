@@ -32,7 +32,7 @@ from flask import Flask, abort, jsonify, request, send_from_directory
 
 from build_index import REPO_ROOT, resolve_wiki, write_index
 from explore import ExploreError, explore_entry
-from llm import render_prompt, run_claude
+from llm import DEFAULT_MODEL, render_prompt, run_llm
 
 FRONTEND_DIR = REPO_ROOT / "frontend"
 WIKI_PASSTHROUGH = {"wiki.json", "axis.json", "index.jsonl"}
@@ -152,20 +152,21 @@ def make_app(wiki_dir: Path) -> Flask:
         )
 
         axes_summary = ", ".join(f"{k}={v}" for k, v in rendered_axes.items())
+        model = (config.get("models") or {}).get("make_list", DEFAULT_MODEL)
         print(
             f"[generate] n={n} existing={len(existing)} axes: {axes_summary}",
             flush=True,
         )
-        print(f"[generate] prompt={len(prompt)} chars → calling claude…", flush=True)
+        print(f"[generate] prompt={len(prompt)} chars → {model}…", flush=True)
 
         t0 = time.monotonic()
         try:
-            raw = run_claude(prompt)
+            raw = run_llm(prompt, model=model)
         except Exception as e:
             print(f"[generate] LLM call failed after {time.monotonic() - t0:.1f}s: {e}", flush=True)
             abort(502, description=f"LLM call failed: {e}")
         dt = time.monotonic() - t0
-        print(f"[generate] claude returned {len(raw)} chars in {dt:.1f}s", flush=True)
+        print(f"[generate] {model} returned {len(raw)} chars in {dt:.1f}s", flush=True)
 
         candidates = _parse_jsonl(raw)
         print(f"[generate] parsed {len(candidates)} candidate entries", flush=True)

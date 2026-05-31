@@ -9,10 +9,10 @@ Goal: make generation cheaper and faster, give the user real-time feedback, and 
 - [ ] Hook it into `tools/llm.py` so every provider goes through the same log path.
 - [ ] `.gitignore` the log file.
 
-### B — Provider abstraction in `tools/llm.py`
-- [ ] Refactor `run_claude` → `run_llm(prompt, model=...)` with a thin dispatcher.
-- [ ] Keep current `claude --print` path as one backend; no behaviour change yet.
-- [ ] Tests still patch `dev_server.run_claude` (or the new name) — update `CLAUDE.md` if renamed.
+### B — Provider abstraction in `tools/llm.py` ✅
+- [x] Refactor `run_claude` → `run_llm(prompt, model=...)` with a thin dispatcher. Model strings are `"<provider>:<name>"`.
+- [x] Keep current `claude --print` path as one backend; `run_claude` kept as a back-compat alias in `llm.py`.
+- [x] Tests patch `dev_server.run_llm` / `explore.run_llm` with `lambda p, **kw: ...` to swallow the `model=` kwarg. `CLAUDE.md` updated.
 
 ### C — Optimistic UI + elapsed counter
 - [ ] On `generate` / `explore` click: immediately render the entry/card in a "generating…" state with a live elapsed-seconds counter.
@@ -20,9 +20,16 @@ Goal: make generation cheaper and faster, give the user real-time feedback, and 
 - [ ] On error, surface the message inline (not just console).
 
 ### D — Mistral via API
-- [ ] Add a Mistral backend to `run_llm` (API key from env).
-- [ ] Per-wiki config or per-prompt config to pick model (e.g. Mistral Small for `make_list`, Claude for `make_page`).
+- [x] Add a Mistral backend to `run_llm` (API key from env, lazy SDK init).
+- [x] Per-prompt config to pick model — `wiki.json` has a `models: {make_list, make_page}` map; routes read it and pass through to `run_llm`.
+- [ ] Real end-to-end check: set `MISTRAL_API_KEY`, flip `make_list` to `mistral:mistral-small-latest`, run `/api/generate`, confirm output.
 - [ ] Tiny eval: regenerate 5 existing entries with Mistral, diff against current, decide where it's good enough.
+
+### D.5 — DDG grounding for `explore`
+- [ ] Wire `tools/ddg.py` into `explore_entry`: search on entry title, pass top N snippets into `make_page.txt` as a `{sources}` block, instruct the LLM to only state facts present in sources and populate `links[]` with the URLs it used.
+- [ ] Add `{sources}` placeholder to `wikis/megaprojects/prompts/make_page.txt`.
+- [ ] Behind a per-wiki flag (e.g. `wiki.json` `grounding: "ddg"` / `"none"`) so it's A/B-able.
+- [ ] Skip if existing enrichments file is present (already grounded via `fetch_wiki.py`).
 
 ### E — Batch generation (CLI, not a route)
 - [ ] `tools/batch_generate.py <wiki> [--axes ...] [--n N]` — runs `make_list` then `make_page` for each new slug, writes to `catalogue/`, rebuilds index.

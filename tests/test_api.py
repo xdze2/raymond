@@ -1,6 +1,6 @@
 """Tests for the dev_server Flask API: health, validation, edit endpoints.
 
-The LLM call (`run_claude`) is monkeypatched everywhere — these tests never
+The LLM call (`run_llm`) is monkeypatched everywhere — these tests never
 shell out.
 """
 
@@ -80,7 +80,7 @@ def test_reindex(client, wiki_dir: Path):
 
 def test_generate_no_axes_allowed(client, monkeypatch):
     # With "search more" semantics, no filters means "any" on every axis.
-    monkeypatch.setattr(dev_server, "run_claude", lambda p: '{"slug": "x", "title": "X"}\n')
+    monkeypatch.setattr(dev_server, "run_llm", lambda p, **kw: '{"slug": "x", "title": "X"}\n')
     res = client.post("/api/generate", json={"n": 1})
     assert res.status_code == 200
 
@@ -89,11 +89,11 @@ def test_generate_partial_axes_allowed(client, monkeypatch):
     # Missing axes are fine; specified ones render normally.
     captured = {}
 
-    def fake(prompt):
+    def fake(prompt, **kw):
         captured["prompt"] = prompt
         return '{"slug": "p", "title": "P"}\n'
 
-    monkeypatch.setattr(dev_server, "run_claude", fake)
+    monkeypatch.setattr(dev_server, "run_llm", fake)
     res = client.post(
         "/api/generate",
         json={"axes": {"domain": "energy"}, "n": 1},
@@ -111,11 +111,11 @@ def test_generate_rejects_non_object_axes(client):
 def test_generate_passes_existing_titles(client, monkeypatch):
     captured = {}
 
-    def fake(prompt):
+    def fake(prompt, **kw):
         captured["prompt"] = prompt
         return '{"slug": "n", "title": "N"}\n'
 
-    monkeypatch.setattr(dev_server, "run_claude", fake)
+    monkeypatch.setattr(dev_server, "run_llm", fake)
     res = client.post(
         "/api/generate",
         json={
@@ -134,7 +134,7 @@ def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):
         '{"slug": "new-one", "title": "New One", "summary": "first"}\n'
         '{"slug": "new-two", "title": "New Two", "summary": "second"}\n'
     )
-    monkeypatch.setattr(dev_server, "run_claude", lambda prompt: fake_jsonl)
+    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -154,7 +154,7 @@ def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):
 
 def test_generate_skips_existing(client, wiki_dir: Path, monkeypatch):
     fake_jsonl = '{"slug": "seed-one", "title": "Dupe"}\n'
-    monkeypatch.setattr(dev_server, "run_claude", lambda prompt: fake_jsonl)
+    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -168,7 +168,7 @@ def test_generate_skips_existing(client, wiki_dir: Path, monkeypatch):
 
 def test_generate_skips_invalid_slug(client, monkeypatch):
     fake_jsonl = '{"slug": "Has Spaces", "title": "Bad"}\n'
-    monkeypatch.setattr(dev_server, "run_claude", lambda prompt: fake_jsonl)
+    monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: fake_jsonl)
 
     res = client.post(
         "/api/generate",
@@ -184,7 +184,7 @@ def test_generate_tolerates_code_fences(client, wiki_dir: Path, monkeypatch):
         '{"slug": "fenced", "title": "Fenced"}\n'
         "```\n"
     )
-    monkeypatch.setattr(dev_server, "run_claude", lambda p: fake)
+    monkeypatch.setattr(dev_server, "run_llm", lambda p, **kw: fake)
     res = client.post(
         "/api/generate",
         json={"axes": {"domain": "energy", "era": "modern"}, "n": 1},
@@ -211,7 +211,7 @@ def test_explore_promotes_to_explored(client, wiki_dir: Path, monkeypatch):
         "facts": [{"label": "Built", "value": "1969"}],
         "links": [{"label": "wiki", "url": "https://x"}],
     }
-    monkeypatch.setattr(explore, "run_claude", lambda p: json.dumps(payload))
+    monkeypatch.setattr(explore, "run_llm", lambda p, **kw: json.dumps(payload))
 
     res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 200
@@ -228,23 +228,23 @@ def test_explore_promotes_to_explored(client, wiki_dir: Path, monkeypatch):
 
 def test_explore_handles_fenced_json(client, monkeypatch):
     raw = "```json\n" + json.dumps({"facts": [{"label": "a", "value": "b"}]}) + "\n```"
-    monkeypatch.setattr(explore, "run_claude", lambda p: raw)
+    monkeypatch.setattr(explore, "run_llm", lambda p, **kw: raw)
     res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 200
     assert res.get_json()["facts"] == [{"label": "a", "value": "b"}]
 
 
 def test_explore_rejects_non_json(client, monkeypatch):
-    monkeypatch.setattr(explore, "run_claude", lambda p: "not json at all")
+    monkeypatch.setattr(explore, "run_llm", lambda p, **kw: "not json at all")
     res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 502
 
 
 def test_explore_llm_failure(client, monkeypatch):
-    def boom(_):
+    def boom(_, **kw):
         raise RuntimeError("model exploded")
 
-    monkeypatch.setattr(explore, "run_claude", boom)
+    monkeypatch.setattr(explore, "run_llm", boom)
     res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 502
 

@@ -6,5 +6,9 @@
   "placeholder_hint": "Pick an axis combination above, or click any card.",
   "gen_axes": ["domain", "era", "region", "political_system", "failure_mode", "current_state"],
   "freeform_axes": [],
-  "status_axis": "current_state"
+  "status_axis": "current_state",
+  "models": {
+    "make_list": "claude:claude-sonnet-4-6",
+    "make_page": "claude:claude-sonnet-4-6"
+  }
 }

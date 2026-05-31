@@ -2,6 +2,9 @@
 __pycache__/
 *.pyc
 
+# secrets — keep .env.example tracked
+.env
+
 # generated per-wiki index, rebuilt by build_index.py / dev_server.py
 wikis/*/index.jsonl
 

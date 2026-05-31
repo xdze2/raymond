@@ -15,7 +15,7 @@ from datetime import date
 from pathlib import Path
 from typing import Callable
 
-from llm import render_prompt, run_claude
+from llm import DEFAULT_MODEL, render_prompt, run_llm
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -152,9 +152,11 @@ def explore_entry(
         template,
         seed=json.dumps(seed_payload, indent=2, ensure_ascii=False),
     )
-    log(f"[llm] prompt={len(prompt)} chars → calling claude…")
+    wiki_config = json.loads((wiki_dir / "wiki.json").read_text())
+    model = (wiki_config.get("models") or {}).get("make_page", DEFAULT_MODEL)
+    log(f"[llm] prompt={len(prompt)} chars → {model}…")
     try:
-        raw = run_claude(prompt)
+        raw = run_llm(prompt, model=model)
     except Exception as e:
         raise ExploreError(f"LLM call failed: {e}", kind="llm") from e
     log(f"[llm] response={len(raw)} chars")

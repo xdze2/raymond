@@ -26,15 +26,18 @@ uv run pytest tests/test_api.py::test_explore_promotes_to_explored -v
 
 ### Mocking the LLM
 
-`dev_server.run_claude` is imported by name (`from llm import run_claude`), so
-patch it on the `dev_server` module, not on `llm`:
+`dev_server.run_llm` is imported by name (`from llm import run_llm`), so patch
+it on the `dev_server` module (or `explore` module for the explore route), not
+on `llm`:
 
 ```python
-monkeypatch.setattr(dev_server, "run_claude", lambda prompt: '{"facts": []}')
+monkeypatch.setattr(dev_server, "run_llm", lambda prompt, **kw: '{"facts": []}')
+monkeypatch.setattr(explore, "run_llm", lambda prompt, **kw: '{"facts": []}')
 ```
 
-Patching `llm.run_claude` would not take effect — `dev_server` already holds a
-reference to the original function.
+The `**kw` swallows the `model=` kwarg that callers pass through from
+`wiki.json`'s `models` map. Patching `llm.run_llm` would not take effect —
+`dev_server` / `explore` already hold a reference to the original function.
 
 ### What's covered
 
@@ -52,7 +55,7 @@ reference to the original function.
 
 1. Add the route handler in `tools/dev_server.py`.
 2. Add tests in `tests/test_api.py` covering: happy path + validation errors +
-   (if it calls the LLM) a `monkeypatch.setattr(dev_server, "run_claude", ...)`
+   (if it calls the LLM) a `monkeypatch.setattr(dev_server, "run_llm", ...)`
    stub for success and one for failure.
 3. Run `uv run pytest` — keep the suite green before moving on.
 
