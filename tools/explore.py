@@ -11,7 +11,6 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-import sys
 from datetime import date
 from pathlib import Path
 from typing import Callable
@@ -64,8 +63,13 @@ def run_fetch_wiki(
     wiki: str, slug: str, query: str | None, *, log: Logger = print
 ) -> Path | None:
     """Invoke tools/fetch_wiki.py. Return path to the enrichment file, or None."""
+    # fetch_wiki.py is a PEP 723 uv-script; invoke via `uv run --script` so
+    # its inline deps (e.g. `requests`) resolve. sys.executable points at the
+    # project venv, which doesn't include them.
     cmd = [
-        sys.executable,
+        "uv",
+        "run",
+        "--script",
         str(REPO_ROOT / "tools" / "fetch_wiki.py"),
         "--wiki",
         wiki,

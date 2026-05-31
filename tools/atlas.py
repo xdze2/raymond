@@ -79,10 +79,10 @@ def explore_cmd(wiki: str, slug: str, query: str | None,
 @click.option("--no-wikidata", is_flag=True, help="Skip Wikidata facts.")
 def fetch_cmd(wiki: str, slug: str, query: str | None,
               no_image: bool, no_shrink: bool, no_wikidata: bool) -> None:
-    # fetch_wiki.py is a uv-script with its own dependencies; shell out to
-    # preserve that contract. When it's refactored into a module, swap this
-    # for a direct import.
-    cmd = [sys.executable, str(REPO_ROOT / "tools" / "fetch_wiki.py"),
+    # fetch_wiki.py is a uv-script with its own dependencies (PEP 723);
+    # invoke via `uv run --script` so its inline deps are honored. The
+    # project venv (sys.executable) does not include `requests`.
+    cmd = ["uv", "run", "--script", str(REPO_ROOT / "tools" / "fetch_wiki.py"),
            "--wiki", wiki, "--slug", slug]
     if query:
         cmd += ["--query", query]
