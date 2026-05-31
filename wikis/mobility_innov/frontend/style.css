@@ -18,8 +18,8 @@
   --active-border: #1a1a18;
 
   --axis-h:    120px;
-  --list-w:    390px;
   --gap:       1px;
+  --card-min:  180px;
 
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 16px;
@@ -70,26 +70,17 @@
   min-width: max-content;
 }
 
-/* main area: list + view */
+/* main area: grid below the filter bar */
 #main {
   display: flex;
+  flex-direction: column;
   flex: 1 1 0;
   overflow: hidden;
-  gap: var(--gap);
-  background: var(--border);
+  background: var(--bg);
 }
 
-/* left list */
-#list-panel {
-  flex: 0 0 var(--list-w);
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  overflow: hidden;
-}
-
-#list-header {
-  padding: 10px 14px 8px;
+#grid-header {
+  padding: 10px 20px 8px;
   font-size: 0.72rem;
   font-family: 'system-ui', sans-serif;
   letter-spacing: 0.04em;
@@ -99,6 +90,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+#entry-grid {
+  flex: 1 1 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: 14px;
+  padding: 16px 20px 24px;
+  align-content: start;
 }
 
 .toggle-btn {
@@ -128,23 +132,170 @@
   color: #fff;
 }
 
-#entry-list {
-  flex: 1 1 0;
-  overflow-y: auto;
-  list-style: none;
-  padding: 4px 0;
+/* ── card grid ────────────────────────────────────────────────────────────── */
+
+.entry-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition: border-color 100ms, box-shadow 100ms, transform 100ms;
 }
 
-/* center view */
-#view-panel {
-  flex: 1 1 0;
-  overflow-y: auto;
+.entry-card:hover {
+  border-color: var(--text-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.entry-card.stub {
+  opacity: 0.78;
+}
+
+.card-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--active-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-thumb.placeholder {
+  background: linear-gradient(135deg, #ece9e0 0%, #d8d4c8 100%);
+}
+
+.card-thumb-initial {
+  font-family: 'Georgia', serif;
+  font-size: 2.2rem;
+  color: var(--text-3);
+  font-weight: normal;
+  user-select: none;
+}
+
+.card-status-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.card-body {
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 auto;
+}
+
+.card-title {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-summary {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── modal ────────────────────────────────────────────────────────────────── */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+#modal[hidden] {
+  display: none;
+}
+
+#modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 20, 18, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+#modal-panel {
+  position: relative;
   background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.12);
+  width: min(820px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+}
+
+#modal-close {
+  position: sticky;
+  top: 8px;
+  float: right;
+  margin: 8px 8px 0 0;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 80ms, color 80ms, border-color 80ms;
+}
+
+#modal-close:hover {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
 }
 
 #view-content {
-  max-width: 720px;
-  padding: 12px 16px 32px;
+  padding: 20px 28px 32px;
 }
 
 /* ── axis bar ─────────────────────────────────────────────────────────────── */
@@ -233,66 +384,13 @@
   padding-left: 4px;
 }
 
-/* ── entry list ───────────────────────────────────────────────────────────── */
-
-.entry-item {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 6px;
-  padding: 9px 14px;
-  cursor: pointer;
-  border-left: 3px solid transparent;
-  transition: background 60ms;
-}
-
-.entry-item:hover {
-  background: var(--active-bg);
-}
-
-.entry-item.active {
-  background: var(--active-bg);
-  border-left-color: var(--active-border);
-}
-
-.entry-title {
-  font-family: 'system-ui', sans-serif;
-  font-size: 0.83rem;
-  line-height: 1.35;
-  color: var(--text);
-}
-
-.entry-meta {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-  padding-top: 3px;
-}
+/* ── entry view ───────────────────────────────────────────────────────────── */
 
 .status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
-}
-
-/* ── entry view ───────────────────────────────────────────────────────────── */
-
-#placeholder {
-  color: var(--text-2);
-  padding-top: 20px;
-}
-
-#placeholder h1 {
-  font-size: 1.5rem;
-  margin-bottom: 12px;
-  color: var(--text);
-}
-
-#placeholder p {
-  margin-bottom: 8px;
-  line-height: 1.6;
 }
 
 .loading {
@@ -513,11 +611,21 @@
 
 @media (max-width: 640px) {
   :root {
-    --list-w: 280px;
+    --card-min: 140px;
+  }
+
+  #modal {
+    padding: 0;
+  }
+
+  #modal-panel {
+    border-radius: 0;
+    max-height: 100dvh;
+    height: 100dvh;
   }
 
   #view-content {
-    padding: 12px 16px 32px;
+    padding: 16px 18px 32px;
   }
 
   .entry-title-large {

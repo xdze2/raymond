@@ -18,21 +18,21 @@
       </header>
 
       <div id="main">
-        <nav id="list-panel">
-          <div id="list-header">
-            <span id="list-count"></span>
-            <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
-          </div>
-          <ul id="entry-list">
-            <!-- populated by JS -->
-          </ul>
-        </nav>
+        <div id="grid-header">
+          <span id="list-count"></span>
+          <button id="toggle-pages" class="toggle-btn" title="Show only entries with a full page">pages only</button>
+        </div>
+        <div id="entry-grid">
+          <!-- populated by JS -->
+        </div>
+      </div>
 
-        <article id="view-panel">
+      <div id="modal" hidden>
+        <div id="modal-backdrop"></div>
+        <article id="modal-panel">
+          <button id="modal-close" type="button" aria-label="Close">✕</button>
           <div id="view-content">
-            <div id="placeholder">
-              <!-- populated by JS -->
-            </div>
+            <!-- populated by JS -->
           </div>
         </article>
       </div>
@@ -273,6 +273,19 @@
         );
       }
 
+      async function loadEnrichments() {
+        // best-effort: fetch all enrichment sidecars in parallel so cards can show thumbnails
+        await Promise.all(
+          state.entries.map(async (entry) => {
+            try {
+              const res = await fetch(`../enrichments/${entry.slug}.json`);
+              if (!res.ok) return;
+              entry._enrichment = await res.json();
+            } catch (_) {}
+          }),
+        );
+      }
+
       // ── rendering ────────────────────────────────────────────────────────────────
 
       function getStatusColor(statusId) {
@@ -297,19 +310,8 @@
         }
       }
 
-      function renderPlaceholder() {
-        const el = document.getElementById("placeholder");
-        const title = state.wiki.title || "Wiki";
-        const tagline = state.wiki.tagline || "";
-        const hint =
-          state.wiki.placeholder_hint ||
-          "Select an entry from the list, or filter by axis above.";
-        el.innerHTML = `
-          <h1>${title}</h1>
-          ${tagline ? `<p>${tagline}</p>` : ""}
-          <p>${hint}</p>
-        `;
-        document.title = title;
+      function setDocumentTitle() {
+        document.title = state.wiki.title || "Wiki";
       }
 
       function renderExtraChips(source) {
@@ -406,9 +408,9 @@
       }
 
       function renderList() {
-        const ul = document.getElementById("entry-list");
+        const grid = document.getElementById("entry-grid");
         const countEl = document.getElementById("list-count");
-        ul.innerHTML = "";
+        grid.innerHTML = "";
 
         const entries = filteredEntries();
         const total = state.entries.length;
@@ -418,30 +420,55 @@
           : `${filtered} / ${total} datasets`;
 
         for (const entry of entries) {
-          const li = document.createElement("li");
-          li.className = "entry-item";
-          if (entry.slug === state.activeSlug) li.classList.add("active");
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "entry-card";
+          if (!entry.page_url) card.classList.add("stub");
 
-          const titleEl = document.createElement("span");
-          titleEl.className = "entry-title";
-          titleEl.textContent = entry.title;
-
-          const meta = document.createElement("span");
-          meta.className = "entry-meta";
+          const thumb = document.createElement("div");
+          thumb.className = "card-thumb";
+          const imgPath = entry._enrichment?.image?.web_path;
+          if (imgPath) {
+            const img = document.createElement("img");
+            img.loading = "lazy";
+            img.src = `../../../${imgPath}`;
+            img.alt = entry.title;
+            thumb.appendChild(img);
+          } else {
+            thumb.classList.add("placeholder");
+            const initial = document.createElement("span");
+            initial.className = "card-thumb-initial";
+            initial.textContent = (entry.title || "?").charAt(0).toUpperCase();
+            thumb.appendChild(initial);
+          }
 
           if (entry.status) {
             const dot = document.createElement("span");
-            dot.className = "status-dot";
+            dot.className = "status-dot card-status-dot";
             dot.style.background = getStatusColor(entry.status);
             dot.title = entry.status;
-            meta.appendChild(dot);
+            thumb.appendChild(dot);
           }
 
-          li.appendChild(titleEl);
-          li.appendChild(meta);
+          const body = document.createElement("div");
+          body.className = "card-body";
 
-          li.addEventListener("click", () => loadEntry(entry.slug));
-          ul.appendChild(li);
+          const titleEl = document.createElement("div");
+          titleEl.className = "card-title";
+          titleEl.textContent = entry.title;
+          body.appendChild(titleEl);
+
+          if (entry.summary) {
+            const summaryEl = document.createElement("div");
+            summaryEl.className = "card-summary";
+            summaryEl.textContent = entry.summary;
+            body.appendChild(summaryEl);
+          }
+
+          card.appendChild(thumb);
+          card.appendChild(body);
+          card.addEventListener("click", () => loadEntry(entry.slug));
+          grid.appendChild(card);
         }
       }
 
@@ -461,15 +488,26 @@
         renderList();
       }
 
+      function openModal() {
+        document.getElementById("modal").hidden = false;
+        document.body.classList.add("modal-open");
+      }
+
+      function closeModal() {
+        document.getElementById("modal").hidden = true;
+        document.body.classList.remove("modal-open");
+        state.activeSlug = null;
+      }
+
       async function loadEntry(slug) {
         state.activeSlug = slug;
-        renderList();
 
         const entry = state.entries.find((e) => e.slug === slug);
         if (!entry) return;
 
         const viewEl = document.getElementById("view-content");
         viewEl.innerHTML = '<div class="loading">Loading…</div>';
+        openModal();
 
         // catalogue-only entry: no page yet
         if (!entry._raw && !entry.page_url) {
@@ -523,12 +561,7 @@
 
         const extraChips = renderExtraChips(fm);
 
-        // best-effort load of the enrichment sidecar (image, license, wikipedia summary)
-        let enrichment = null;
-        try {
-          const res = await fetch(`../enrichments/${slug}.json`);
-          if (res.ok) enrichment = await res.json();
-        } catch (_) {}
+        const enrichment = entry._enrichment || null;
 
         let infobox = "";
         if (enrichment && enrichment.image && enrichment.image.web_path) {
@@ -583,8 +616,9 @@
         await loadWiki();
         await loadAxes();
         renderWordmark();
-        renderPlaceholder();
+        setDocumentTitle();
         await loadEntries();
+        await loadEnrichments();
         renderAxisBar();
         renderList();
 
@@ -592,6 +626,14 @@
           state.pagesOnly = !state.pagesOnly;
           e.currentTarget.classList.toggle("active", state.pagesOnly);
           renderList();
+        });
+
+        document.getElementById("modal-close").addEventListener("click", closeModal);
+        document.getElementById("modal-backdrop").addEventListener("click", closeModal);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !document.getElementById("modal").hidden) {
+            closeModal();
+          }
         });
       }
 
