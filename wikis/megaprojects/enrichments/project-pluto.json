@@ -1,0 +1,46 @@
+{
+  "slug": "project-pluto",
+  "query": "Project Pluto",
+  "wikipedia": {
+    "title": "Project Pluto",
+    "url": "https://en.wikipedia.org/wiki/Project_Pluto",
+    "extract": "Project Pluto was a United States government program to develop nuclear-powered ramjet engines for use in cruise missiles. Two experimental engines were tested at the Nevada Test Site (NTS) in 1961 and 1964 respectively."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Tory-IIC_at_Jackass_flats.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/project-pluto/web_tory-iic-at-jackass-flats.jpg",
+    "filename": "Tory-IIC_at_Jackass_flats.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Tory-IIC_at_Jackass_flats.jpg",
+    "mime": "image/jpeg",
+    "width": 3209,
+    "height": 2411,
+    "license_short": "Public domain",
+    "license_url": null,
+    "artist": "Lawrence Livermore Laboratory",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.sandboxx.us/blog/project-pluto-the-craziest-nuclear-weapon-in-history/\">https://www.sandboxx.us/blog/project-pluto-the-craziest-nuclear-weapon-in-history/</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://web.archive.org/web/20230519214903/https://www.sandboxx.us/blog/project-pluto-the-craziest-nuclear-weapon-in-history/\">archive</a>)",
+    "description": "Tory-IIC at Jackass flats"
+  },
+  "wikidata": {
+    "qid": "Q1059282",
+    "url": "https://www.wikidata.org/wiki/Q1059282",
+    "label": "Project Pluto",
+    "description": "U.S government program to develop nuclear-powered ramjet engines for cruise missiles",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 170584,
+          "id": "Q170584"
+        }
+      ],
+      "subclass_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 181860,
+          "id": "Q181860"
+        }
+      ]
+    }
+  }
+}

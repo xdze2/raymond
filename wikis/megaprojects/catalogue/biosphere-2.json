@@ -12,15 +12,52 @@
   },
   "status": "explored",
   "facts": [
-    { "label": "Built", "value": "1987–1991" },
-    { "label": "Funder", "value": "Ed Bass (~$200M)" },
-    { "label": "Mission 1", "value": "8 people, 1991–1993" },
-    { "label": "O₂ drop", "value": "21% → 14% before resupply" },
-    { "label": "Now operated by", "value": "University of Arizona" }
+    {
+      "label": "Built",
+      "value": "1987–1991"
+    },
+    {
+      "label": "Cost",
+      "value": "~$200M (Ed Bass / Space Biospheres Ventures)"
+    },
+    {
+      "label": "Mission 1",
+      "value": "8 crew, Sept 1991 – Sept 1993"
+    },
+    {
+      "label": "O₂ drop",
+      "value": "21% → 14.2% (supplemented Sept 1993)"
+    },
+    {
+      "label": "Mission 2",
+      "value": "7 crew, March – Sept 1994 (aborted)"
+    },
+    {
+      "label": "Operator since 2011",
+      "value": "University of Arizona"
+    }
   ],
   "links": [
-    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Biosphere_2" },
-    { "label": "Operating site", "url": "https://biosphere2.org/" }
+    {
+      "label": "Wikipedia — Biosphere 2",
+      "url": "https://en.wikipedia.org/wiki/Biosphere_2"
+    },
+    {
+      "label": "University of Arizona Biosphere 2",
+      "url": "https://biosphere2.org/"
+    },
+    {
+      "label": "Wikidata Q68139",
+      "url": "https://www.wikidata.org/wiki/Q68139"
+    }
   ],
-  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+  "created": {
+    "at": "2026-05-31",
+    "by": "user:xdze2"
+  },
+  "image": "media/biosphere-2/web_wiki-bio2-sunset-001.jpg",
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
 }

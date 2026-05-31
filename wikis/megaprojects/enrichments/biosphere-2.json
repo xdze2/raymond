@@ -1,0 +1,68 @@
+{
+  "slug": "biosphere-2",
+  "query": "Biosphere 2",
+  "wikipedia": {
+    "title": "Biosphere 2",
+    "url": "https://en.wikipedia.org/wiki/Biosphere_2",
+    "extract": "University of Arizona Biosphere 2 is an American Earth system science research facility located in Oracle, Arizona. Its mission is to serve as a center for research, outreach, teaching, and lifelong learning about Earth, its living systems, and its place in the universe. It is a 3.14-acre (1.27-hectare) structure originally built to be an artificial, materially closed ecological system, or vivarium. It remains the largest closed ecological system ever created. Constructed between 1987 and 1991, Biosphere 2 was planned to experiment with the viability of closed ecological systems to support and maintain human life in outer space as a substitute for Earth's biosphere."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Wiki_bio2_sunset_001.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/biosphere-2/web_wiki-bio2-sunset-001.jpg",
+    "filename": "Wiki_bio2_sunset_001.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Wiki_bio2_sunset_001.jpg",
+    "mime": "image/jpeg",
+    "width": 700,
+    "height": 467,
+    "license_short": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Johndedios&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Johndedios (page does not exist)\">Johndedios</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "description": "The Biosphere 2 sits on a sprawling 40-acre campus that is now open to the public."
+  },
+  "wikidata": {
+    "qid": "Q68139",
+    "url": "https://www.wikidata.org/wiki/Q68139",
+    "label": "Biosphere 2",
+    "description": "artificial closed ecological system",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 19601179,
+          "id": "Q19601179"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 30,
+          "id": "Q30"
+        }
+      ],
+      "inception": [
+        {
+          "time": "+1991-00-00T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        }
+      ],
+      "official_website": [
+        "http://biosphere2.org/"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 32.578777777778,
+          "longitude": -110.85059444444,
+          "altitude": null,
+          "precision": null,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

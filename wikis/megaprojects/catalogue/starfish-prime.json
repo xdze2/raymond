@@ -1,0 +1,18 @@
+{
+  "slug": "starfish-prime",
+  "title": "Starfish Prime",
+  "summary": "A 1962 US high-altitude nuclear test that detonated a 1.4 megaton warhead 400 km above the Pacific. The electromagnetic pulse disabled satellites, knocked out streetlights in Hawaii, and produced radiation belts that persisted for years, effectively ending the program of high-altitude nuclear experiments.",
+  "axes": {
+    "domain": "science_military",
+    "era": "cold_war",
+    "region": "north_america",
+    "political_system": "democracy",
+    "failure_mode": "unintended_consequences",
+    "current_state": "abandoned"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

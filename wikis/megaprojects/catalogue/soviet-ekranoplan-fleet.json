@@ -1,0 +1,18 @@
+{
+  "slug": "soviet-ekranoplan-fleet",
+  "title": "Soviet Ekranoplan Fleet",
+  "summary": "The USSR developed a fleet of massive ground-effect vehicles — the largest, the Lun-class, weighed 380 tonnes — intended to deploy troops and anti-ship missiles at 500 km/h just above the Caspian Sea surface, invisible to radar. Funding collapsed with the Soviet Union; the surviving hulks sit beached and rusting on the Caspian shore.",
+  "axes": {
+    "domain": "science_military",
+    "era": "cold_war",
+    "region": "eurasia",
+    "political_system": "communist",
+    "failure_mode": "economic_collapse",
+    "current_state": "derelict"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

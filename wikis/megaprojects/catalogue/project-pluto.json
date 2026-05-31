@@ -1,0 +1,63 @@
+{
+  "slug": "project-pluto",
+  "title": "Project Pluto",
+  "summary": "A US program (1957–1964) to build a nuclear-ramjet-powered cruise missile that would fly at Mach 3 at treetop level, delivering warheads across the Soviet Union while spewing lethal reactor exhaust. The weapon was so indiscriminately destructive — killing populations along its own flight path — that it was cancelled without ever flying a complete mission profile.",
+  "axes": {
+    "domain": "science_military",
+    "era": "cold_war",
+    "region": "north_america",
+    "political_system": "democracy",
+    "failure_mode": "political_cancellation",
+    "current_state": "abandoned"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  },
+  "facts": [
+    {
+      "label": "Active",
+      "value": "1957–1964"
+    },
+    {
+      "label": "Lead laboratory",
+      "value": "Lawrence Livermore National Laboratory"
+    },
+    {
+      "label": "Engine tested",
+      "value": "Tory-IIA (1961) and Tory-IIC (1964), Nevada Test Site"
+    },
+    {
+      "label": "Designed speed",
+      "value": "Mach 3 at ~300 ft altitude"
+    },
+    {
+      "label": "Warhead capacity",
+      "value": "Up to 16 thermonuclear bombs in a single pass"
+    },
+    {
+      "label": "Cancellation date",
+      "value": "July 1, 1964 — ICBMs deemed less indiscriminate and more controllable"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Project Pluto",
+      "url": "https://en.wikipedia.org/wiki/Project_Pluto"
+    },
+    {
+      "label": "Wikidata — Q1059282",
+      "url": "https://www.wikidata.org/wiki/Q1059282"
+    },
+    {
+      "label": "Wikimedia Commons — Tory-IIC at Jackass Flats (image)",
+      "url": "https://commons.wikimedia.org/wiki/File:Tory-IIC_at_Jackass_flats.jpg"
+    }
+  ],
+  "image": "media/project-pluto/web_tory-iic-at-jackass-flats.jpg",
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "kaiserliche-marine-world-canal",
+  "title": "German Mittelafrika Canal Network",
+  "summary": "A colonial-era German plan to link the Congo and Zambezi river systems with canals and dams to create a continuous inland waterway across Central Africa, underpinning Mittelafrika economic ambitions. The scheme was elaborated in detail through the 1900s–1910s but collapsed entirely with Germany's defeat in World War I and the loss of its African colonies.",
+  "axes": {
+    "domain": "science_military",
+    "era": "industrial_age",
+    "region": "africa",
+    "political_system": "empire",
+    "failure_mode": "war_defeat",
+    "current_state": "never_built"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

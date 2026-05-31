@@ -1,0 +1,18 @@
+{
+  "slug": "project-orion-nuclear-pulse",
+  "title": "Project Orion",
+  "summary": "A 1958–1965 US/DARPA program to build a spacecraft propelled by detonating nuclear bombs beneath a pusher plate, capable of delivering hundreds of tonnes to Mars within a decade. The Partial Nuclear Test Ban Treaty of 1963 — which Orion's own designers had lobbied against — made atmospheric and space nuclear detonations illegal, killing the project.",
+  "axes": {
+    "domain": "science_military",
+    "era": "cold_war",
+    "region": "north_america",
+    "political_system": "democracy",
+    "failure_mode": "political_cancellation",
+    "current_state": "abandoned"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}
