@@ -1,0 +1,77 @@
+{
+  "slug": "zipline",
+  "query": "Zipline drone delivery company",
+  "wikipedia": {
+    "title": "Zipline (drone delivery company)",
+    "url": "https://en.wikipedia.org/wiki/Zipline_(drone_delivery_company)",
+    "extract": "Zipline International Inc. is an American company that designs, manufactures, and operates delivery drones, with distribution centers in the United States, Rwanda, Ghana, Japan, Nigeria, Côte d'Ivoire, and Kenya. Its drones deliver blood products, vaccines, and medical supplies, and the company also operates services for consumer and retail deliveries, including partnerships with Walmart and Chipotle Mexican Grill. As of January 2026, Zipline's drones have completed more than two million commercial deliveries and flown over 120 million autonomous miles."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Zipline_Drone_Launch.jpg/3840px-Zipline_Drone_Launch.jpg",
+    "local_path": null,
+    "web_path": "wikis/mobility_innov/media/zipline/web_zipline-drone-launch.jpg",
+    "filename": "Zipline_Drone_Launch.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Zipline_Drone_Launch.jpg",
+    "mime": "image/jpeg",
+    "width": 5184,
+    "height": 3570,
+    "license_short": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Roksenhorn&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Roksenhorn (page does not exist)\">Roksenhorn</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "description": "A drone launches from Zipline's California-based test facility"
+  },
+  "wikidata": {
+    "qid": "Q30271968",
+    "url": "https://www.wikidata.org/wiki/Q30271968",
+    "label": "Zipline International",
+    "description": "company that delivers medical supplies by drone",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 4830453,
+          "id": "Q4830453"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 43229,
+          "id": "Q43229"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 30,
+          "id": "Q30"
+        }
+      ],
+      "inception": [
+        {
+          "time": "+2011-01-01T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        },
+        {
+          "time": "+2014-00-00T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        }
+      ],
+      "official_website": [
+        "http://www.flyzipline.com"
+      ],
+      "described_at_url": [
+        "https://www.bloomberg.com/news/articles/2022-06-21/zipline-drone-delivery-service-approved-as-air-carrier-by-faa",
+        "https://nation.africa/kenya/health/medicine-from-the-sky-drones-helping-tackle-rabies-snakebites-4493448",
+        "https://www.zipline.com/"
+      ]
+    }
+  }
+}
