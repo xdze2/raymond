@@ -1,0 +1,18 @@
+{
+  "slug": "chernobyl-exclusion-zone-farmland",
+  "title": "Chernobyl Exclusion Zone Agricultural Land",
+  "summary": "Some 2,600 km² of collective-farm and state-farm land in Ukraine and Belarus around Chernobyl was forcibly depopulated and removed from agricultural use after the 1986 reactor explosion. Contaminated fields, orchards, and drainage infrastructure were abandoned in place. The land remains formally erased from agricultural use and is largely inaccessible.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "eastern_europe",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

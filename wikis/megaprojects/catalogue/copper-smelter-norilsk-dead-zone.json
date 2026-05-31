@@ -1,0 +1,66 @@
+{
+  "slug": "copper-smelter-norilsk-dead-zone",
+  "title": "Norilsk Smelter Dead Zone",
+  "summary": "Decades of Soviet-era copper-nickel smelting at Norilsk deposited sulfur dioxide and heavy metals across several thousand square kilometers of Siberian taiga and tundra, killing virtually all vegetation downwind. The industrial complex itself continues to operate, but the surrounding ecological zone — forest, wetland, and river systems — was effectively erased. Remediation attempts were minimal and the dead zone persists.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "siberia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  },
+  "facts": [
+    {
+      "label": "Smelting began",
+      "value": "1942 (first nickel produced); complex expanded through 1970s–80s"
+    },
+    {
+      "label": "Dead zone extent",
+      "value": "~24,000 km² of near-zero vegetation (NASA MODIS); ~5,000 km² of fully dead forest stands"
+    },
+    {
+      "label": "Peak SO₂ emissions",
+      "value": "~2 million tonnes/year (1990s–2000s), largest single point-source on Earth"
+    },
+    {
+      "label": "Soil contamination",
+      "value": "Copper up to 5,000 mg/kg (250× background); nickel up to 3,800 mg/kg near smelters"
+    },
+    {
+      "label": "Old Nickel Plant closure",
+      "value": "2016; removed ~100,000 t SO₂/year from urban emissions"
+    },
+    {
+      "label": "Sulphur capture programme",
+      "value": "~$3.5 billion USD committed post-2016; target 75% SO₂ reduction by 2025"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Norilsk",
+      "url": "https://en.wikipedia.org/wiki/Norilsk"
+    },
+    {
+      "label": "Wikipedia — Nornickel",
+      "url": "https://en.wikipedia.org/wiki/Nornickel"
+    },
+    {
+      "label": "NASA Earth Observatory — Forest Die-Off Near Norilsk",
+      "url": "https://earthobservatory.nasa.gov/images/7031/forest-die-off-near-norilsk-russia"
+    },
+    {
+      "label": "Wikipedia — 2020 Norilsk oil spill",
+      "url": "https://en.wikipedia.org/wiki/2020_Norilsk_oil_spill"
+    }
+  ],
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

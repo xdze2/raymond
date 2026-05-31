@@ -1,0 +1,70 @@
+{
+  "slug": "aral-sea",
+  "query": "Aral Sea Diversion",
+  "wikipedia": {
+    "title": "South Aral Sea",
+    "url": "https://en.wikipedia.org/wiki/South_Aral_Sea",
+    "extract": "The South Aral Sea is a lake in the basin of the former Aral Sea that formed in 1987 when that body divided in two, due to diversion of river inflow for agriculture. In 2003, the South Aral Sea itself split into eastern and western basins, the Eastern Sea and the West Aral Sea, connected by a narrow channel that balanced surface levels but did not allow mixing, and in 2005 the North Aral Sea was dammed to prevent the collapse of its fisheries, cutting off the only remaining inflow to the southern lakes. In 2008, the Eastern Sea split again, and in May 2009 had almost completely dried out, leaving only the small permanent Barsakelmes Lake between the Northern and Western Seas and increasing the expanse of the Aralkum desert. In 2010, it was partially filled again by meltwater, and by 2014 was once again dry. The West Aral Sea has some replenishment from groundwater in the northwest."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Aralsea_tmo_2014231_lrg.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/aral-sea/web_aralsea-tmo-2014231-lrg.jpg",
+    "filename": "Aralsea_tmo_2014231_lrg.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Aralsea_tmo_2014231_lrg.jpg",
+    "mime": "image/jpeg",
+    "width": 2000,
+    "height": 2000,
+    "license_short": "Public domain",
+    "license_url": null,
+    "artist": "NASA",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://earthobservatory.nasa.gov/IOTD/view.php?id=84437\" href=\"https://earthobservatory.nasa.gov/IOTD/view.php?id=84437\">http://earthobservatory.nasa.gov/IOTD/view.php?id=84437</a>",
+    "description": "The remains of the <a href=\"//commons.wikimedia.org/wiki/Aral_Sea\" class=\"mw-redirect\" title=\"Aral Sea\">Aral Sea</a> on August 19, 2014"
+  },
+  "wikidata": {
+    "qid": "Q276776",
+    "url": "https://www.wikidata.org/wiki/Q276776",
+    "label": "South Aral Sea",
+    "description": "former lake",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 23397,
+          "id": "Q23397"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 47486890,
+          "id": "Q47486890"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 232,
+          "id": "Q232"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 15180,
+          "id": "Q15180"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 265,
+          "id": "Q265"
+        }
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 45,
+          "longitude": 58.5,
+          "altitude": null,
+          "precision": 0.016666666666667,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

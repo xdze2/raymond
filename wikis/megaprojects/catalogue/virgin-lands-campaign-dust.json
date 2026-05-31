@@ -1,0 +1,18 @@
+{
+  "slug": "virgin-lands-campaign-dust",
+  "title": "Virgin Lands Campaign Soil Erosion",
+  "summary": "Khrushchev's 1950s mass plowing of 40 million hectares of Kazakh and Siberian steppe converted marginal grassland to wheat fields. Within a decade, wind erosion stripped topsoil across millions of hectares, triggering dust storms comparable to the American Dust Bowl. The degraded land was largely abandoned by the 1960s, leaving a scarred, desertified landscape.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "central_asia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

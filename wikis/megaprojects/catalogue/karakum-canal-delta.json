@@ -1,0 +1,18 @@
+{
+  "slug": "karakum-canal-delta",
+  "title": "Karakum Canal Downstream Delta",
+  "summary": "The Soviet Karakum Canal, completed in stages from 1954 onward, drained water from the Amu Darya across Turkmenistan to irrigate cotton. The terminal sections and the agricultural zone they fed were progressively abandoned as waterlogging and salinization rendered the soil unworkable. Vast tracts of the irrigated area reverted to salt flat and scrubland.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "central_asia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}

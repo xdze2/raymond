@@ -12,14 +12,56 @@
   },
   "status": "explored",
   "facts": [
-    { "label": "Started", "value": "1960s" },
-    { "label": "Lost volume", "value": "~90% by 2010" },
-    { "label": "New desert", "value": "Aralkum, ~60,000 km²" },
-    { "label": "Surviving fragment", "value": "North Aral, dammed 2005" }
+    {
+      "label": "Peak area",
+      "value": "68,000 km² (1960)"
+    },
+    {
+      "label": "Irrigation canals",
+      "value": "Karakum Canal, 1,375 km, opened 1954"
+    },
+    {
+      "label": "Volume lost",
+      "value": "~90% by 2007"
+    },
+    {
+      "label": "New desert",
+      "value": "Aralkum, ~60,000 km²"
+    },
+    {
+      "label": "North Aral dam",
+      "value": "Kokaral Dam, completed 2005"
+    },
+    {
+      "label": "Displaced fisheries",
+      "value": "20 native fish species lost; 40,000 fishing jobs gone"
+    }
   ],
   "links": [
-    { "label": "Wikipedia — Aral Sea", "url": "https://en.wikipedia.org/wiki/Aral_Sea" },
-    { "label": "Wikipedia — Aralkum Desert", "url": "https://en.wikipedia.org/wiki/Aralkum_Desert" }
+    {
+      "label": "Wikipedia — Aral Sea",
+      "url": "https://en.wikipedia.org/wiki/Aral_Sea"
+    },
+    {
+      "label": "Wikipedia — Aralkum Desert",
+      "url": "https://en.wikipedia.org/wiki/Aralkum_Desert"
+    },
+    {
+      "label": "Wikipedia — South Aral Sea",
+      "url": "https://en.wikipedia.org/wiki/South_Aral_Sea"
+    },
+    {
+      "label": "Wikipedia — Karakum Canal",
+      "url": "https://en.wikipedia.org/wiki/Karakum_Canal"
+    }
   ],
-  "created": { "at": "2026-05-31", "by": "user:xdze2" }
+  "created": {
+    "at": "2026-05-31",
+    "by": "user:xdze2"
+  },
+  "image": "media/aral-sea/web_aralsea-tmo-2014231-lrg.jpg",
+  "updated": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
 }

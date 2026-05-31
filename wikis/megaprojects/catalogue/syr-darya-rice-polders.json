@@ -1,0 +1,18 @@
+{
+  "slug": "syr-darya-rice-polders",
+  "title": "Syr Darya Lower-Delta Rice Polders",
+  "summary": "Soviet planners in the 1960s–70s converted the Syr Darya's lower delta in Kazakhstan into intensive rice-growing polders, dyking off shallow lake beds and marshes. Drainage and irrigation salted the soils within two decades; the delta wetlands that once fed fisheries were desiccated. The polders were abandoned and the land is now salt crust and scrub.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "central_asia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "erased"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-05-31",
+    "by": "llm"
+  }
+}
