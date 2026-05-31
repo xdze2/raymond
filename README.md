@@ -1,54 +1,76 @@
-# Wikis
+# Raymond
 
-A multi-wiki repo. Each wiki under `wikis/<name>/` is a self-contained TVTropes-style reference work with its own axes, catalogue, pages, prompts, and frontend.
+A multi-wiki platform for small, axis-driven reference works. Named after Raymond Queneau (Oulipo, *Cent mille milliards de poèmes*) — combinatorial exploration is the point.
 
-See [project_vision.md](project_vision.md) for the concept behind the data_atlas wiki.
+Each wiki under `wikis/<name>/` is a self-contained atlas. See [project_vision.md](project_vision.md) for the concept.
 
 ## Layout
 
 ```
+frontend/                # shared static frontend (one copy, all wikis)
 wikis/
-  data_atlas/
-    wiki.json          # title, wordmark, axes used by gen_list.sh, extra chips
-    axis.json          # axis definitions (id, label, values)
-    catalogue/         # JSONL files of candidate entries + index.json
-    pages/             # full prose markdown entries + index.json
-    prompts/           # make_list.txt, make_page.txt (per-wiki framing)
-    frontend/          # index.html, style.css (one deployment per wiki)
   mobility_innov/
+    wiki.json            # title, wordmark, prompt axes
+    axis.json            # axis definitions
+    catalogue/           # one <slug>.json per entry
+    pages/               # optional prose markdown (rare)
+    media/               # images
+    prompts/             # per-wiki LLM prompts
+  data_atlas/
     ...
-gen_list.sh            # generate a catalogue file via Claude CLI
-update_index.sh        # rebuild catalogue/index.json after adding files
+tools/
+  build_index.py         # catalogue/*.json → wiki's index.jsonl
+  dev_server.py          # Flask: serves frontend + a wiki, exposes edit API
+  export.py              # dist/<wiki>/  standalone bundle
+  gen_list.sh            # generate catalogue entries via Claude CLI
+dist/                    # generated, gitignored
 ```
 
 ## Run a wiki locally
 
+Two modes, same frontend.
+
+**Dev mode** (Flask, edit enabled):
+
 ```bash
-python3 -m http.server 8765
+python tools/dev_server.py mobility_innov
+# open http://localhost:8765
 ```
 
-Then open:
+Unlocks: generate new entries, explore (promote) entries, edit in place.
 
-- data_atlas: <http://localhost:8765/wikis/data_atlas/frontend/index.html>
-- mobility_innov: <http://localhost:8765/wikis/mobility_innov/frontend/index.html>
+**Static mode** (read-only) — first export, then serve the bundle:
 
-No build step. The files are the site.
+```bash
+python tools/export.py mobility_innov
+cd dist/mobility_innov && python3 -m http.server 8765
+# open http://localhost:8765
+```
+
+The exported `dist/<wiki>/` directory is self-contained and can be hosted anywhere.
+
+## Rebuild the frontend index
+
+```bash
+python tools/build_index.py mobility_innov
+```
+
+Writes `wikis/mobility_innov/index.jsonl`. Run after manually editing catalogue files. The dev server does this automatically on startup and on writes.
 
 ## Generate catalogue entries
 
 ```bash
-# positional args = values for wiki.json's gen_axes, then freeform_axes
-./gen_list.sh data_atlas sensor buried individual medical
-./update_index.sh data_atlas
+./tools/gen_list.sh mobility_innov electric individual short
+# positional args = values for the axes declared in wiki.json's gen_axes
 ```
 
-`gen_list.sh` reads `wikis/<wiki>/wiki.json` to know which axes to substitute into `prompts/make_list.txt`, then writes a JSONL file into `wikis/<wiki>/catalogue/`. `update_index.sh` rebuilds the catalogue's `index.json` so the frontend picks up new files.
+Or, in dev mode, click "Generate" in the UI.
 
 ## Add a new wiki
 
-1. `mkdir -p wikis/<name>/{catalogue,pages,prompts,frontend}`
-2. Create `wikis/<name>/wiki.json` (see `wikis/data_atlas/wiki.json` for shape)
+1. `mkdir -p wikis/<name>/{catalogue,pages,prompts,media}`
+2. Create `wikis/<name>/wiki.json` (see `wikis/mobility_innov/wiki.json` for shape)
 3. Create `wikis/<name>/axis.json` with your axes
-4. Write `wikis/<name>/prompts/make_list.txt` using `{axis_id}` placeholders matching your axis ids
-5. Copy a frontend: `cp wikis/data_atlas/frontend/* wikis/<name>/frontend/`
-6. Seed empty indexes: `echo '[]' > wikis/<name>/catalogue/index.json && echo '[]' > wikis/<name>/pages/index.json`
+4. Write `wikis/<name>/prompts/make_list.txt` using `{axis_id}` placeholders
+5. Generate a first batch: `./tools/gen_list.sh <name> <axis values...>`
+6. Open in the dev server: `python tools/dev_server.py <name>`

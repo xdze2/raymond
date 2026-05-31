@@ -1,154 +1,168 @@
-# Wikis — Project Vision
+# Raymond — Project Vision
+
+Named after Raymond Queneau — Oulipo, *Cent mille milliards de poèmes*, *Exercices de style*. Combinatorial generation under constraint, where the grid produces what no single author would write unprompted. That's the design north star.
 
 ## What It Is
 
-A platform for building small, focused reference works. Each wiki is a TVTropes-style atlas of a single subject: every entry sits in a multi-axis space that makes entries comparable, browsable, and generatable.
+A platform for building small, focused reference works. Each wiki is a TVTropes-style atlas of a single subject: every entry sits in a multi-axis space that makes entries comparable, browsable, and discoverable through combinatorial exploration.
 
-A wiki is not a catalog and not a database. It is a reference work *about* a subject, the way Wikipedia is a reference work about the world. The point is understanding through curation, cross-linking, and structural navigation — not exhaustive indexing.
+A wiki is **not an encyclopedia**. The point is not exhaustive prose articles — it is the *space* of entries, navigated through axis combinations. An entry is a card in a grid first, a page second (or never).
 
-The closest analogies are Wikipedia (breadth, cross-linking, collaborative curation) and TVTropes (a taxonomy that becomes a lens, not just a label). A wiki built on this platform is browsable the way those are — you arrive at one entry and leave through three others.
+The closest analogies: TVTropes (a taxonomy that becomes a lens), and a faceted catalog raised to a curation discipline. You arrive at the wiki through an axis combination — *what electric, individual-scale, short-range mobility innovations exist?* — and the answer is the visible cards.
 
 Current wikis in this repo:
 
-- **`data_atlas`** — a wiki of datasets: what exists, what's buried, what's missing, what's eroding. Axes: origin, status, scale, plus open-ended domain.
-- **`mobility_innov`** — a wiki of mobility innovations. Axes in progress.
+- **`mobility_innov`** — mobility innovations (active development)
+- **`data_atlas`** — datasets: what exists, what's buried, what's missing
 
 New wikis are added by dropping a folder under `wikis/<name>/`.
 
 ## The Axis System
 
-Every entry in a wiki is tagged along a set of axes. The axes are the wiki's lens — they decide what becomes comparable across entries and what becomes invisible.
+Every entry is tagged along a set of axes. The axes are the wiki's lens — they decide what becomes comparable and what becomes invisible.
 
-A wiki's `axis.json` defines its bounded axes (closed sets of values, displayed as filter chips) and optionally one or more freeform axes (open-ended categorical slots like `domain`, used as prompt ingredients rather than navigation chips).
+A wiki's `axis.json` defines its **bounded axes** (closed sets of values, displayed as filter chips) and optionally one or more **freeform axes** (open-ended slots used as prompt ingredients rather than navigation chips).
 
-Axes make the wiki navigable as a space rather than a list. In `data_atlas` you can ask: *what individual-scale sensor data is currently buried?* In `mobility_innov` the analogous question is shaped by that wiki's own axes. The axis set is the wiki's editorial point of view.
+Axes make the wiki navigable as a space rather than a list. The axis set is the wiki's editorial point of view.
 
-### Example: data_atlas axes
-
-- **Origin** — how the data came to exist: `sensor`, `exhaust`, `declared`, `derived`
-- **Scale** — the unit of resolution: `individual`, `organizational`, `systemic`, `planetary`
-- **Status** — the most important axis: `active`, `buried`, `missing`, `emerging`, `eroding`
-- **Domain** (freeform) — `medical`, `agriculture`, `finance`, `migration`, ...
-
-The `status` axis is what makes `data_atlas` different from a data catalog: it documents absence and erosion as first-class objects, not just what's accessible today.
-
-### Designing axes for a new wiki
+### Designing axes
 
 A good axis cuts the subject in a way that produces interesting intersections. The test: does combining values across axes surface entries a curator wouldn't write unprompted? If `axis_A × axis_B × axis_C` produces obvious cells *and* genuinely strange ones, the axes are doing real work.
 
-## What an Entry Contains
+## The Entry — Card First, Detail Second
 
-Each entry is prose, not a table. The shape varies per wiki — `data_atlas` entries describe a dataset's chain of custody and access landscape; `mobility_innov` entries describe an innovation's mechanism and current state. What stays constant:
+The card is the primary object. Every entry has:
 
-- A concrete description of the thing
-- Who or what controls/produces/sustains it
-- What it reveals, enables, or forecloses
-- The current landscape — who has access, who doesn't, what's changing
-- Pressure points — litigation, journalism, regulation, technology, market forces
-- Relations — links to structurally similar entries, counterparts, complements
+- `title` and a 1–3 sentence `summary`
+- axis values (the lens it sits under)
+- a `status`: `generated` (LLM-imagined, unverified) or `explored` (human-checked, detail filled in)
 
-The goal is understanding, not indexing. Each wiki's `prompts/make_page.txt` encodes its own version of this shape.
+An **explored** entry additionally has:
+
+- `facts`: 3–7 label/value pairs (founded, HQ, deployment date, ...) — freeform labels, no schema
+- `links`: 2–5 labeled external URLs (Wikipedia, official site, key article)
+- `image`: optional, relative to the wiki's `media/`
+
+That's the whole entry. The detail view is a small modal: facts + links + image. No prose articles by default. If an entry truly warrants a long-form treatment, a `pages/<slug>.md` file can be added later — but this is the exception, not the path.
+
+### Entry file schema
+
+```json
+{
+  "slug": "zipline",
+  "title": "Zipline",
+  "summary": "Autonomous medical-delivery drones operating at national scale.",
+  "axes": { "energy": "electric", "scale": "individual", "range": "long" },
+  "status": "explored",
+  "facts": [
+    { "label": "Founded", "value": "2014" },
+    { "label": "First deployment", "value": "Rwanda, 2016" }
+  ],
+  "links": [
+    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Zipline_(drone_delivery_company)" },
+    { "label": "Official", "url": "https://www.flyzipline.com" }
+  ],
+  "image": "media/zipline.jpg",
+  "created": { "at": "2026-05-20", "by": "model:claude-opus-4-7" },
+  "updated": { "at": "2026-05-30", "by": "user:xdze2" }
+}
+```
+
+One file per entry: `wikis/<wiki>/catalogue/<slug>.json`. Git tracks history — no in-file changelog.
 
 ## Curation Over Completeness
 
-A wiki will never be complete. That's fine — Wikipedia isn't complete either.
+A wiki will never be complete. The value is in the curation: cards that accurately describe how the subject actually moves through the world.
 
-The value is in the curation: entries that accurately describe how the subject actually moves through the world. A wrong or shallow entry is worse than no entry. The bar for inclusion is a full, accurate account — not just a technical specification or a name on a list.
-
-This means each wiki will grow slowly and will be better for it.
+A `generated` entry is a hypothesis the LLM produced from an axis combination. An `explored` entry is one a human looked at, confirmed, and minimally annotated. Both are valid wiki content — the status tells the reader what kind of trust to extend.
 
 ## UI Layout
 
-Three panels, identical across wikis (the frontend is per-wiki for deployment, but the structure is the same).
+Three surfaces, identical across wikis:
 
-**Top — axis bar.** A horizontal filter strip, one row of buttons per bounded axis. Clicking a value selects it (single-select per axis); the left panel updates immediately. Multiple axes can be active at once, narrowing the list by intersection. A "clear" affordance per axis resets it. The axis bar is the primary navigation surface — the way a reader orients themselves in the wiki.
+**Top — axis bar.** One row of filter buttons per bounded axis. Multi-select within an axis; intersection across axes. Clearing an axis resets it. The axis bar is the primary navigation surface.
 
-**Left — entry list.** A narrow scrollable list of entry titles matching the current axis selection. No search, no pagination — just a flat list. When no axis is selected, the full list is shown. Clicking an entry loads it in the central panel. The active entry is highlighted.
+**Main — card grid.** Cards matching the current axis selection. Each card shows title, summary, axis chips, image thumbnail if present. `explored` cards are visually distinguished from `generated` ones (badge, border, or icon).
 
-**Center — entry page.** The full content of the selected entry, rendered from markdown. Title, summary, axis tags (displayed as small chips at the top), then the prose sections in order. Cross-links (`→ [[slug]]`) render as inline links that load the target entry in the same panel. The page is the destination; the left and top panels are how you get there.
+**Modal — entry detail.** Opens on card click. Shows facts, links, and image. Minimal. No long prose. If a `pages/<slug>.md` exists (rare), it's rendered below.
 
-The overall feel is closer to a documentation site (like Notion or Obsidian's published pages) than to Wikipedia's chrome. Navigation is structural, not search-driven.
+The feel is closer to a combinatorial explorer than to Wikipedia. Navigation is structural, not search-driven.
 
 ## LLM Bootstrapping
 
-The axis grid is also a generation space. For each combination of bounded-axis values (and optionally a freeform-axis ingredient like `domain`), an LLM is prompted to enumerate entries that fit those coordinates — a brute-force sweep across the space to surface entries a human curator wouldn't think to write unprompted.
+The axis grid is a generation space. For each combination of bounded-axis values, an LLM is prompted to enumerate candidate entries — a brute-force sweep across the grid surfacing cards a human curator wouldn't think to write unprompted.
 
-The combinations are the point. In `data_atlas`, `sensor × buried × planetary` is obvious (satellite data, ocean sensors); `declared × missing × individual` is more interesting — what self-reported data should exist but doesn't? `exhaust × eroding × organizational` pushes the LLM into genuinely obscure territory. The grid forces exploration of corners. Each wiki has its own equivalent corners.
+The combinations are the point. Obvious cells get the obvious entries; weird cells push the LLM into genuinely obscure territory. Freeform axes (when present) add an extra prompt-time ingredient without expanding the navigation surface.
 
-Freeform axes (like `domain`) are unbounded — not a fixed taxonomy. New values are added as needed and each new value spawns a new row of files without touching the schema. Freeform slots are prompt ingredients, not controlled vocabularies.
+Output: one `<slug>.json` file per candidate entry, written into `wikis/<wiki>/catalogue/` with `status: "generated"`. A curation pass promotes promising ones to `explored` — adding facts, links, image, fixing the summary.
 
-The output of each LLM run is a JSONL file written to `wikis/<wiki>/catalogue/`. Each line is a candidate entry with axis values embedded, enough to appear in the list panel and be filtered immediately. A separate curation pass promotes promising entries to full `pages/` articles. Adding a new catalogue file requires only dropping the file and adding its name to `catalogue/index.json` (via `update_index.sh`).
+## Dev Mode vs Static Mode
+
+The repository supports two runtimes from one codebase.
+
+**Static mode** — `frontend/` served by any HTTP server, or an exported `dist/<wiki>/` bundle. Read-only. This is what gets deployed and shared.
+
+**Dev mode** — `tools/dev_server.py <wiki>` runs Flask, serves the same frontend, and exposes a small JSON API: generate entries, explore (promote) an entry, edit in place, rebuild index. Localhost only, no auth. The frontend probes `/api/health` on load; if present, edit controls appear.
+
+The exported bundle is dev mode minus the API — same files, no Flask, no edit UI.
 
 ## Repository Structure
 
 ```
+frontend/                     # shared frontend (one source of truth)
+  index.html
+  style.css
+  app.js
 wikis/
-  data_atlas/
-    wiki.json          # title, wordmark, axes used by gen_list.sh, extra chips
-    axis.json          # axis definitions (id, label, values)
-    catalogue/
-      index.json
-      list_sensor_buried_individual_medical.jsonl
-      ...
-    pages/
-      index.json
-      acoustic-gunshot-detection-shotspotter.md
-      ...
-    prompts/
-      make_list.txt    # per-wiki framing for catalogue generation
-      make_page.txt    # per-wiki framing for full-page promotion
-    frontend/
-      index.html
-      style.css
   mobility_innov/
+    wiki.json                 # title, wordmark, gen axes, freeform axes
+    axis.json                 # axis definitions
+    catalogue/
+      <slug>.json             # one entry per file
+    pages/                    # optional prose, rare
+    media/                    # images referenced by entries
+    prompts/
+      make_list.txt           # per-wiki framing for generation
+  data_atlas/
     ...
-gen_list.sh            # generate a catalogue file via Claude CLI
-update_index.sh        # rebuild catalogue/index.json after adding files
+tools/
+  build_index.py              # catalogue/*.json → wiki's index.jsonl
+  dev_server.py               # Flask: frontend + wiki + edit API
+  export.py                   # → dist/<wiki>/ standalone bundle
+  gen_list.sh                 # invokes Claude CLI for generation
+dist/                         # gitignored, generated by export.py
 ```
 
-**`wikis/<wiki>/wiki.json`** — wiki-level metadata: title, wordmark, which axes are substituted into prompts (`gen_axes`), which are freeform ingredients (`freeform_axes`), optional `status_axis` for color-coded chips, and `extra_chips` for display.
+**`wiki.json`** — wiki-level metadata: title, wordmark, which axes are substituted into prompts (`gen_axes`), which are freeform ingredients (`freeform_axes`), optional `status_axis` for color-coded chips.
 
-**`wikis/<wiki>/axis.json`** — defines the wiki's bounded axes and their values. Freeform axes are not listed here — they are open-ended.
+**`axis.json`** — bounded axes and their values. Freeform axes are not listed here (they're open-ended).
 
 ```json
 {
   "axes": [
     {
-      "id": "origin",
-      "label": "Origin",
-      "description": "How the data came to exist — the mechanism of its production.",
+      "id": "energy",
+      "label": "Energy",
+      "description": "...",
       "values": [
-        { "id": "sensor",   "label": "Sensor",   "description": "Produced by a physical measurement device." },
-        { "id": "exhaust",  "label": "Exhaust",  "description": "A byproduct of activity, not intentionally recorded as data." },
-        { "id": "declared", "label": "Declared", "description": "Someone chose to submit it." },
-        { "id": "derived",  "label": "Derived",  "description": "Produced by processing other datasets." }
+        { "id": "electric", "label": "Electric", "description": "..." },
+        { "id": "human",    "label": "Human-powered", "description": "..." }
       ]
     }
-    // ... more axes
   ]
 }
 ```
 
-**`wikis/<wiki>/catalogue/`** — the flat entry catalogue, split across multiple JSONL files. Each file is one LLM generation run. The filename is for human orientation only; the frontend does not parse it. `catalogue/index.json` lists all filenames to load.
+**`catalogue/<slug>.json`** — one entry per file. Edited by humans and the LLM. Git-tracked.
 
-Each line is a catalogue entry carrying its axis values directly:
+**`index.jsonl`** — generated. Per-wiki, written by `build_index.py`. One JSON object per line, one line per entry. The frontend fetches this single file. Gitignored.
 
-```jsonl
-{"slug": "nicu-physiological-waveforms", "title": "NICU Physiological Waveforms", "summary": "High-resolution heart rate and oxygen saturation streams from neonatal ICU monitors, rarely archived beyond discharge.", "origin": "sensor", "status": "buried", "scale": "individual", "has_page": false}
-```
-
-The catalogue is the authoritative entry list. Deduplication is by `slug` — if a slug appears in multiple files, the first occurrence wins. A full page entry always overrides a catalogue stub.
-
-**`wikis/<wiki>/pages/index.json`** — a flat array of slugs that have a full prose page. The frontend cross-references this against the catalogue to attach `page_url` to matching entries. No per-entry HTTP probing needed.
-
-**`wikis/<wiki>/pages/<slug>.md`** — full prose entries. Promoted manually from catalogue stubs after curation.
-
-The frontend loads `wiki.json`, `axis.json`, and both index files once, then fetches all catalogue JSONL files in parallel. Filtering happens client-side against the merged entry map. Full page markdown is fetched on demand when an entry is clicked. No build step required — the files are the site.
+**`pages/<slug>.md`** — optional long-form prose. Rare. Loaded into the modal below facts/links when present.
 
 ## Tech Stack
 
-Static files as the database: markdown for prose entries, JSON for axes and indexes, JSONL for catalogue rows. Git-backed for version control and attribution. A minimal vanilla-JS frontend per wiki renders pages, filters via the axis bar, and navigates cross-links. No server, no CMS, no database engine — the repository is the database, the list files are the index.
+Static files as the database: JSON per entry, JSON for axes and config, JSONL for the generated index, markdown for the rare prose page. Git-backed for version control and attribution.
 
-Generation is driven by `gen_list.sh`, which reads `wiki.json` to know which axes to substitute into `prompts/make_list.txt`, invokes the Claude CLI, and writes JSONL into the wiki's catalogue. `update_index.sh` rebuilds `catalogue/index.json` so the frontend picks up new files.
+The frontend is vanilla JS, served either by Flask (dev mode, with edit API) or any static HTTP server. No build step. No CMS. No database engine. The repository *is* the database.
 
-Adding a new wiki is mechanical: a folder, a `wiki.json`, an `axis.json`, a prompt template, and a copy of the frontend. See [README.md](README.md) for the step-by-step.
+Adding a new wiki is mechanical: a folder, a `wiki.json`, an `axis.json`, a prompt template. See [README.md](README.md) for the step-by-step.
