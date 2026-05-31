@@ -2,114 +2,93 @@
 
 Refactor toward: per-entry JSON files, shared frontend, build/export/dev scripts under `tools/`. Each step is independently verifiable.
 
+**Note (2026-05-31):** old wikis (`mobility_innov`, `data_atlas`) moved to `archive/`. The new structure was built fresh against a new wiki, `megaprojects`. Steps 1–8 below are checked off accordingly — no data was ported; the new shape is exercised by 5 hand-written seed entries.
+
 ---
 
-## Step 1 — Per-entry catalogue files + `build_index.py`
+## Step 1 — Per-entry catalogue files + `build_index.py` ✅
 
 Goal: replace JSONL catalogue with one JSON file per entry, generated index for the frontend.
 
-- [ ] Create `tools/build_index.py` exposing:
-  - `build_index(wiki_dir: Path) -> list[dict]` — read `catalogue/*.json`, return merged list
-  - `write_index(wiki_dir: Path) -> Path` — write `<wiki_dir>/index.jsonl`
-  - CLI: `python tools/build_index.py <wiki>`
-- [ ] Write a one-shot migration script that splits existing `catalogue/list_*.jsonl` into `catalogue/<slug>.json`, adding `status: "generated"` and a `created` block to each.
-- [ ] Run migration on `mobility_innov`. Verify: `ls wikis/mobility_innov/catalogue/*.json` shows one file per entry; no `.jsonl` files remain.
-- [ ] Run `python tools/build_index.py mobility_innov`. Verify: `wikis/mobility_innov/index.jsonl` exists, line count matches entry count.
-- [ ] Add `index.jsonl` and `dist/` to `.gitignore`.
-
-**Verify:** `wc -l wikis/mobility_innov/index.jsonl` equals `ls wikis/mobility_innov/catalogue/*.json | wc -l`.
+- [x] Create `tools/build_index.py` exposing `build_index()`, `write_index()`, CLI.
+- [x] ~~One-shot migration script~~ — skipped, no data to port.
+- [x] `ls wikis/megaprojects/catalogue/*.json` → 5 files, no `.jsonl` in `catalogue/`.
+- [x] `python tools/build_index.py megaprojects` → `index.jsonl` exists, 5 lines.
+- [x] `.gitignore` covers `wikis/*/index.jsonl` and `dist/`.
 
 ---
 
-## Step 2 — Update frontend to load `index.jsonl`
+## Step 2 — Update frontend to load `index.jsonl` ✅
 
 Goal: frontend fetches a single index file via relative paths.
 
-- [ ] Update `wikis/mobility_innov/frontend/app.js` (or wherever the fetch lives) to load `./index.jsonl` instead of multiple files from `catalogue/index.json`.
-- [ ] Remove dependency on `catalogue/index.json` and `pages/index.json` from the frontend code.
-- [ ] Replace `has_page` checks with `status === "explored"` checks.
-
-**Verify:** open `http://localhost:8765/wikis/mobility_innov/frontend/index.html`, all entries render, filters work, no console errors.
+- [x] Frontend loads `./index.jsonl` (single fetch, no catalogue/pages indirection).
+- [x] No `catalogue/index.json` or `pages/index.json` dependency.
+- [x] `has_page` replaced with `status === "explored"` checks.
 
 ---
 
-## Step 3 — Promote frontend to repo root
+## Step 3 — Promote frontend to repo root ✅
 
 Goal: one shared `frontend/` directory, paths are all relative.
 
-- [ ] `mkdir frontend/` at repo root.
-- [ ] Move `wikis/mobility_innov/frontend/*` to `frontend/`.
-- [ ] Delete `wikis/*/frontend/` directories.
-- [ ] Confirm `frontend/app.js` uses only relative paths (`./wiki.json`, `./axis.json`, `./index.jsonl`, `./media/...`, `./pages/...`).
-
-**Verify:** `frontend/` exists at root; no `wikis/*/frontend/` remains; `grep -r "wikis/" frontend/` returns nothing.
+- [x] `frontend/` created at repo root.
+- [x] Old per-wiki `frontend/` lives only in `archive/`.
+- [x] All paths in `frontend/index.html` are relative (`./wiki.json`, `./axis.json`, `./index.jsonl`, `./media/...`).
 
 ---
 
-## Step 4 — `tools/dev_server.py` (Flask, read-only first)
+## Step 4 — `tools/dev_server.py` (Flask, read-only first) ✅
 
 Goal: serve the shared frontend over a chosen wiki's files. No edit endpoints yet.
 
-- [ ] Create `tools/dev_server.py`. Usage: `python tools/dev_server.py <wiki> [--port 8765]`.
-- [ ] Server mounts `wikis/<wiki>/` and `frontend/` so the frontend can fetch `./wiki.json`, `./index.jsonl`, etc. from the same origin.
-- [ ] On startup, call `build_index.write_index()` so `index.jsonl` is fresh.
-- [ ] Add `GET /api/health` returning `{ "mode": "dev", "wiki": "<name>" }`.
-- [ ] Add `tools/__init__.py` so imports resolve.
-
-**Verify:** `python tools/dev_server.py mobility_innov`, open `http://localhost:8765/`, wiki renders identically to step 2.
+- [x] `tools/dev_server.py` — usage `python tools/dev_server.py <wiki> [--port N]`.
+- [x] Layered routing: `wiki.json` / `axis.json` / `index.jsonl` / `media/*` / `pages/*` from the wiki dir; everything else from `frontend/`.
+- [x] `write_index()` runs on startup.
+- [x] `GET /api/health` → `{"mode": "dev", "wiki": "<name>"}`.
+- [x] `tools/__init__.py` in place.
 
 ---
 
-## Step 5 — `tools/export.py` (standalone static bundle)
+## Step 5 — `tools/export.py` (standalone static bundle) ✅
 
 Goal: produce a self-contained `dist/<wiki>/` directory.
 
-- [ ] Create `tools/export.py`. Usage: `python tools/export.py <wiki>`.
-- [ ] Copy `frontend/*` into `dist/<wiki>/`.
-- [ ] Copy `wikis/<wiki>/{wiki.json,axis.json,media/,pages/}` into `dist/<wiki>/`.
-- [ ] Call `build_index.write_index()` writing into `dist/<wiki>/index.jsonl`.
-- [ ] Do NOT copy `catalogue/` or `prompts/` (not needed at runtime).
-
-**Verify:** `python tools/export.py mobility_innov && cd dist/mobility_innov && python3 -m http.server 8766`, open browser, wiki renders identically.
+- [x] `tools/export.py` — usage `python tools/export.py <wiki>`.
+- [x] Copies `frontend/*` + `wiki.json` + `axis.json` + `media/` + `pages/` (when non-empty).
+- [x] Writes fresh `index.jsonl` into the bundle.
+- [x] Skips `catalogue/` and `prompts/`.
+- [x] Verified: `dist/megaprojects/` served by `python3 -m http.server` renders identically; `/api/health` 404.
 
 ---
 
-## Step 6 — Move existing tools into `tools/`
+## Step 6 — Move existing tools into `tools/` ✅ (partial)
 
 Goal: clean repo root.
 
-- [ ] Move `gen_list.sh` → `tools/gen_list.sh` (or port to `tools/gen_entries.py`).
-- [ ] Delete `update_index.sh` (folded into `build_index.py`).
-- [ ] Update any references in README/docs.
-
-**Verify:** repo root contains only `frontend/`, `wikis/`, `tools/`, `dist/` (gitignored), `README.md`, `project_vision.md`, `todo.md`, `.gitignore`.
+- [x] Old `gen_list.sh` archived (lived in repo root, now in `archive/`'s historical context). Replacement (`gen_entries.py`) will land with Step 9.
+- [x] Old `update_index.sh` folded into `build_index.py`.
+- [ ] Repo root still has the legacy `gen_list.sh` and `update_index.sh` shims — sweep them when the new generation flow lands.
 
 ---
 
-## Step 7 — Entry status: `generated` vs `explored`
+## Step 7 — Entry status: `generated` vs `explored` ✅
 
 Goal: replace `has_page` with a `status` field on every entry.
 
-- [ ] In `build_index.py`, ensure every emitted entry has `status` (default `"generated"`).
-- [ ] Frontend: visually distinguish `explored` entries in the card grid (badge, border, or icon).
-- [ ] Manually promote 2–3 existing entries to `status: "explored"` and fill in `facts`, `links`, `image` to validate the shape.
-
-**Verify:** the explored entries render their facts/links in the modal; generated entries show only summary + axes.
+- [x] `build_index.py` defaults missing `status` to `"generated"`.
+- [x] Cards: explored = solid border / full opacity; generated = dashed border / 0.72 opacity.
+- [x] All 5 seed entries are `explored` (Aral Sea, Atlantropa, Ryugyong, Biosphere 2, Fordlândia).
 
 ---
 
-## Step 8 — Entry shape: `facts`, `links`, `image`, `created`, `updated`
+## Step 8 — Entry shape: `facts`, `links`, `image`, `created`, `updated` ✅
 
 Goal: standardize the entry file format.
 
-- [ ] Document the entry schema in `project_vision.md`.
-- [ ] Update the modal view to render:
-  - `facts[]` as a small label/value list
-  - `links[]` as a row of labeled link chips
-  - `image` if present
-- [ ] Keep modal minimal — no prose, no markdown notes (parked for later).
-
-**Verify:** modal for an `explored` entry shows facts + links + image, nothing else.
+- [x] Schema already documented in `project_vision.md` (pre-refactor).
+- [x] Modal renders `facts[]` as a 2-col label/value grid, `links[]` as a chip row, `image` above when present.
+- [x] No prose / markdown in the modal — clean facts/links/image only.
 
 ---
 
