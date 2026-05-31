@@ -12,6 +12,7 @@ from pathlib import Path
 import pytest
 
 import dev_server
+import explore
 
 
 # ── health & static passthrough ────────────────────────────────────────────────
@@ -201,9 +202,9 @@ def test_explore_promotes_to_explored(client, wiki_dir: Path, monkeypatch):
         "facts": [{"label": "Built", "value": "1969"}],
         "links": [{"label": "wiki", "url": "https://x"}],
     }
-    monkeypatch.setattr(dev_server, "run_claude", lambda p: json.dumps(payload))
+    monkeypatch.setattr(explore, "run_claude", lambda p: json.dumps(payload))
 
-    res = client.post("/api/entries/seed-one/explore")
+    res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 200
     body = res.get_json()
     assert body["status"] == "explored"
@@ -218,15 +219,15 @@ def test_explore_promotes_to_explored(client, wiki_dir: Path, monkeypatch):
 
 def test_explore_handles_fenced_json(client, monkeypatch):
     raw = "```json\n" + json.dumps({"facts": [{"label": "a", "value": "b"}]}) + "\n```"
-    monkeypatch.setattr(dev_server, "run_claude", lambda p: raw)
-    res = client.post("/api/entries/seed-one/explore")
+    monkeypatch.setattr(explore, "run_claude", lambda p: raw)
+    res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 200
     assert res.get_json()["facts"] == [{"label": "a", "value": "b"}]
 
 
 def test_explore_rejects_non_json(client, monkeypatch):
-    monkeypatch.setattr(dev_server, "run_claude", lambda p: "not json at all")
-    res = client.post("/api/entries/seed-one/explore")
+    monkeypatch.setattr(explore, "run_claude", lambda p: "not json at all")
+    res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 502
 
 
@@ -234,8 +235,8 @@ def test_explore_llm_failure(client, monkeypatch):
     def boom(_):
         raise RuntimeError("model exploded")
 
-    monkeypatch.setattr(dev_server, "run_claude", boom)
-    res = client.post("/api/entries/seed-one/explore")
+    monkeypatch.setattr(explore, "run_claude", boom)
+    res = client.post("/api/entries/seed-one/explore?fetch=0")
     assert res.status_code == 502
 
 

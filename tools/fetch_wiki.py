@@ -32,20 +32,11 @@ TIMEOUT = 20
 
 
 def find_catalogue_entry(wiki: str, slug: str) -> dict | None:
-    """Scan wikis/<wiki>/catalogue/*.jsonl for the slug. First match wins."""
-    cat_dir = REPO_ROOT / "wikis" / wiki / "catalogue"
-    for jsonl in sorted(cat_dir.glob("*.jsonl")):
-        for line in jsonl.read_text().splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                row = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if row.get("slug") == slug:
-                return row
-    return None
+    """Load wikis/<wiki>/catalogue/<slug>.json."""
+    path = REPO_ROOT / "wikis" / wiki / "catalogue" / f"{slug}.json"
+    if not path.is_file():
+        return None
+    return json.loads(path.read_text())
 
 
 def wiki_search(query: str) -> str | None:

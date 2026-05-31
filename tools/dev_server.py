@@ -31,6 +31,7 @@ from pathlib import Path
 from flask import Flask, abort, jsonify, request, send_from_directory
 
 from build_index import REPO_ROOT, resolve_wiki, write_index
+from explore import ExploreError, explore_entry
 from llm import render_prompt, run_claude
 
 FRONTEND_DIR = REPO_ROOT / "frontend"
@@ -84,19 +85,6 @@ def _parse_jsonl(text: str) -> list[dict]:
         except json.JSONDecodeError:
             continue
     return out
-
-
-def _parse_json_blob(text: str) -> dict:
-    text = text.strip()
-    if text.startswith("```"):
-        # strip leading fence line and trailing ```
-        lines = text.splitlines()
-        if lines and lines[0].startswith("```"):
-            lines = lines[1:]
-        if lines and lines[-1].strip() == "```":
-            lines = lines[:-1]
-        text = "\n".join(lines)
-    return json.loads(text)
 
 
 def make_app(wiki_dir: Path) -> Flask:
@@ -209,47 +197,25 @@ def make_app(wiki_dir: Path) -> Flask:
 
     @app.post("/api/entries/<slug>/explore")
     def explore(slug: str):
-        entry = _read_entry(wiki_dir, slug)
-        print(f"[explore] slug={slug} title={entry.get('title')!r}", flush=True)
+        # Validate slug + existence here so the route still returns 400/404
+        # (ExploreError otherwise becomes 502 below).
+        _read_entry(wiki_dir, slug)
 
-        template_path = prompts_dir / "make_page.txt"
-        if not template_path.is_file():
-            abort(500, description="make_page.txt prompt missing")
-        template = template_path.read_text()
-        prompt = render_prompt(template, seed=json.dumps(entry, indent=2, ensure_ascii=False))
-        print(f"[explore] prompt={len(prompt)} chars → calling claude…", flush=True)
+        def log(msg: str) -> None:
+            print(msg, flush=True)
 
-        t0 = time.monotonic()
-        try:
-            raw = run_claude(prompt)
-        except Exception as e:
-            print(f"[explore] LLM call failed after {time.monotonic() - t0:.1f}s: {e}", flush=True)
-            abort(502, description=f"LLM call failed: {e}")
-        dt = time.monotonic() - t0
-        print(f"[explore] claude returned {len(raw)} chars in {dt:.1f}s", flush=True)
+        fetch = request.args.get("fetch", "1").lower() not in ("0", "false", "no")
+        query = request.args.get("query") or None
 
         try:
-            payload = _parse_json_blob(raw)
-        except json.JSONDecodeError as e:
-            print(f"[explore] non-JSON response: {e}", flush=True)
-            abort(502, description=f"LLM returned non-JSON: {e}")
+            entry = explore_entry(
+                wiki_dir, slug, fetch=fetch, query=query, log=log,
+            )
+        except ExploreError as e:
+            log(f"[explore] failed ({e.kind}): {e}")
+            status = {"config": 500}.get(e.kind, 502)
+            abort(status, description=str(e))
 
-        if "facts" in payload:
-            entry["facts"] = payload["facts"]
-        if "links" in payload:
-            entry["links"] = payload["links"]
-        if "image" in payload:
-            entry["image"] = payload["image"]
-        entry["status"] = "explored"
-        entry["updated"] = {"at": _today(), "by": "llm"}
-
-        print(
-            f"[explore] {slug}: facts={len(payload.get('facts') or [])} "
-            f"links={len(payload.get('links') or [])} image={'yes' if payload.get('image') else 'no'}",
-            flush=True,
-        )
-
-        _write_entry(wiki_dir, entry)
         write_index(wiki_dir)
         return jsonify(entry)
 
