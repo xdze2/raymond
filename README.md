@@ -34,3 +34,14 @@ Writes `wikis/<wiki>/index.jsonl`. The dev server does this on startup and after
 2. Write `wikis/<name>/wiki.json` and `axis.json`.
 3. Write `prompts/make_list.txt` and `prompts/make_page.txt` using `{axis_id}` / `{seed}` placeholders.
 4. `uv run python tools/dev_server.py <name>` and generate entries from the UI.
+
+## Tests
+
+```bash
+uv sync --extra dev
+uv run pytest
+```
+
+Tests live in `tests/` and exercise the Flask API against a tmp_path wiki; the
+`claude` CLI is never invoked (`run_claude` is monkeypatched). See
+[CLAUDE.md](CLAUDE.md) for conventions.

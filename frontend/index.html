@@ -19,7 +19,10 @@
       <div id="main">
         <div id="grid-header">
           <span id="list-count"></span>
-          <button id="toggle-explored" class="toggle-btn" title="Show only explored entries">explored only</button>
+          <div class="header-actions">
+            <button id="generate-similar" class="toggle-btn edit-only" hidden title="Generate new entries matching the selected axes">+ generate</button>
+            <button id="toggle-explored" class="toggle-btn" title="Show only explored entries">explored only</button>
+          </div>
         </div>
         <div id="entry-grid"><!-- populated by JS --></div>
       </div>
@@ -43,9 +46,22 @@
         entries: [],
         activeSlug: null,
         exploredOnly: false,
+        editMode: false,
+        busy: false,
       };
 
       // ── data loading ───────────────────────────────────────────────────────
+
+      async function probeEditMode() {
+        try {
+          const res = await fetch("./api/health", { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.mode === "dev") state.editMode = true;
+          }
+        } catch (_) { /* static bundle: no /api/health */ }
+        document.body.classList.toggle("edit-mode", state.editMode);
+      }
 
       async function loadWiki() {
         const res = await fetch("./wiki.json");
@@ -199,10 +215,34 @@
         });
       }
 
+      function singleSelectedAxes() {
+        // returns {axisId: valueId} only if every gen_axis has exactly one value selected
+        const genAxes = state.wiki.gen_axes || state.axes.map((a) => a.id);
+        const out = {};
+        for (const axisId of genAxes) {
+          const sel = state.filters[axisId];
+          if (!sel || sel.size !== 1) return null;
+          out[axisId] = [...sel][0];
+        }
+        return out;
+      }
+
+      function updateGenerateButton() {
+        const btn = document.getElementById("generate-similar");
+        if (!state.editMode) {
+          btn.hidden = true;
+          return;
+        }
+        const sel = singleSelectedAxes();
+        btn.hidden = !sel;
+        btn.disabled = state.busy;
+      }
+
       function renderList() {
         const grid = document.getElementById("entry-grid");
         const countEl = document.getElementById("list-count");
         grid.innerHTML = "";
+        updateGenerateButton();
 
         const entries = filteredEntries();
         const total = state.entries.length;
@@ -310,11 +350,21 @@
           ? ""
           : `<span class="chip chip-generated">generated</span>`;
 
+        const editActions = state.editMode
+          ? `<div class="edit-actions edit-only">
+               ${entry.status !== "explored"
+                 ? `<button class="edit-btn explore-btn" type="button">explore →</button>`
+                 : ""}
+               <button class="edit-btn edit-json-btn" type="button">edit</button>
+             </div>`
+          : "";
+
         const headerHtml = `
           <div class="entry-header">
             <h1 class="entry-title-large">${escapeHtml(entry.title || "")}</h1>
             <p class="entry-summary">${escapeHtml(entry.summary || "")}</p>
             <div class="chips">${axisChips}${statusChip}<button class="select-similar" type="button">select similar</button></div>
+            ${editActions}
           </div>
         `;
 
@@ -358,8 +408,132 @@
         viewEl.innerHTML = headerHtml + bodyHtml;
         viewEl.querySelector(".select-similar")
           ?.addEventListener("click", () => selectSimilar(entry));
+        viewEl.querySelector(".explore-btn")
+          ?.addEventListener("click", () => exploreEntry(entry.slug));
+        viewEl.querySelector(".edit-json-btn")
+          ?.addEventListener("click", () => openEditor(entry.slug));
 
         openModal();
+      }
+
+      // ── edit-mode actions ──────────────────────────────────────────────────
+
+      async function refreshEntries() {
+        await loadEntries();
+        renderList();
+      }
+
+      function setBusy(b) {
+        state.busy = b;
+        document.body.classList.toggle("busy", b);
+        updateGenerateButton();
+      }
+
+      async function generateSimilar() {
+        const axes = singleSelectedAxes();
+        if (!axes) return;
+        if (state.busy) return;
+        const nStr = window.prompt("How many entries to generate?", "5");
+        if (!nStr) return;
+        const n = parseInt(nStr, 10);
+        if (!Number.isFinite(n) || n < 1) return;
+
+        setBusy(true);
+        try {
+          const res = await fetch("./api/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ axes, n }),
+          });
+          if (!res.ok) {
+            const txt = await res.text();
+            alert(`Generate failed: ${res.status}\n${txt}`);
+            return;
+          }
+          const data = await res.json();
+          await refreshEntries();
+          alert(`Generated ${data.written.length} entries (skipped ${data.skipped.length}).`);
+        } catch (e) {
+          alert(`Generate error: ${e}`);
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function exploreEntry(slug) {
+        if (state.busy) return;
+        if (!confirm(`Explore "${slug}" via LLM? This may take a moment.`)) return;
+        setBusy(true);
+        try {
+          const res = await fetch(`./api/entries/${encodeURIComponent(slug)}/explore`, {
+            method: "POST",
+          });
+          if (!res.ok) {
+            const txt = await res.text();
+            alert(`Explore failed: ${res.status}\n${txt}`);
+            return;
+          }
+          await refreshEntries();
+          openEntry(slug);
+        } catch (e) {
+          alert(`Explore error: ${e}`);
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      function openEditor(slug) {
+        const entry = state.entries.find((e) => e.slug === slug);
+        if (!entry) return;
+        const viewEl = document.getElementById("view-content");
+        const json = JSON.stringify(entry, null, 2);
+        viewEl.innerHTML = `
+          <div class="entry-editor">
+            <h2 class="editor-title">Edit ${escapeHtml(entry.title || slug)}</h2>
+            <p class="editor-hint">Raw JSON. Save merges over the existing entry.</p>
+            <textarea class="editor-textarea" spellcheck="false"></textarea>
+            <div class="editor-actions">
+              <button class="edit-btn" data-act="cancel" type="button">cancel</button>
+              <button class="edit-btn edit-btn-primary" data-act="save" type="button">save</button>
+            </div>
+          </div>
+        `;
+        const ta = viewEl.querySelector(".editor-textarea");
+        ta.value = json;
+        viewEl.querySelector('[data-act="cancel"]')
+          .addEventListener("click", () => openEntry(slug));
+        viewEl.querySelector('[data-act="save"]')
+          .addEventListener("click", () => saveEntry(slug, ta.value));
+      }
+
+      async function saveEntry(slug, raw) {
+        let body;
+        try {
+          body = JSON.parse(raw);
+        } catch (e) {
+          alert(`Invalid JSON: ${e.message}`);
+          return;
+        }
+        if (state.busy) return;
+        setBusy(true);
+        try {
+          const res = await fetch(`./api/entries/${encodeURIComponent(slug)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          if (!res.ok) {
+            const txt = await res.text();
+            alert(`Save failed: ${res.status}\n${txt}`);
+            return;
+          }
+          await refreshEntries();
+          openEntry(slug);
+        } catch (e) {
+          alert(`Save error: ${e}`);
+        } finally {
+          setBusy(false);
+        }
       }
 
       function escapeHtml(s) {
@@ -374,6 +548,7 @@
       // ── init ───────────────────────────────────────────────────────────────
 
       async function init() {
+        await probeEditMode();
         await loadWiki();
         await loadAxes();
         renderWordmark();
@@ -387,6 +562,9 @@
           e.currentTarget.classList.toggle("active", state.exploredOnly);
           renderList();
         });
+
+        document.getElementById("generate-similar")
+          .addEventListener("click", generateSimilar);
 
         document.getElementById("modal-close").addEventListener("click", closeModal);
         document.getElementById("modal-backdrop").addEventListener("click", closeModal);

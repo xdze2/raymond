@@ -102,6 +102,7 @@ def make_app(wiki_dir: Path) -> Flask:
     app = Flask(__name__)
     wiki_name = wiki_dir.name
     prompts_dir = wiki_dir / "prompts"
+    write_index(wiki_dir)
 
     @app.get("/api/health")
     def health():
@@ -238,10 +239,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     wiki_dir = resolve_wiki(args.wiki)
-    out = write_index(wiki_dir)
-    print(f"refreshed {out.relative_to(REPO_ROOT)}")
-
     app = make_app(wiki_dir)
+    print(f"refreshed {(wiki_dir / 'index.jsonl').relative_to(REPO_ROOT)}")
     print(f"serving wiki '{wiki_dir.name}' at http://{args.host}:{args.port}/")
     app.run(host=args.host, port=args.port, debug=False)
     return 0

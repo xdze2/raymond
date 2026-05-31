@@ -543,6 +543,105 @@ body.modal-open {
   padding-top: 20px;
 }
 
+/* ── edit mode ────────────────────────────────────────────────────────────── */
+
+/* hidden by default; revealed when body.edit-mode is set */
+body:not(.edit-mode) .edit-only {
+  display: none !important;
+}
+
+body.busy {
+  cursor: progress;
+}
+
+.header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.edit-btn {
+  font-family: 'system-ui', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background 80ms, border-color 80ms, color 80ms;
+}
+
+.edit-btn:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.edit-btn-primary {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+
+.edit-btn-primary:hover {
+  background: var(--text-2);
+  color: #fff;
+}
+
+.explore-btn {
+  border-style: dashed;
+}
+
+.entry-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor-title {
+  font-size: 1.15rem;
+  font-weight: normal;
+}
+
+.editor-hint {
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+.editor-textarea {
+  width: 100%;
+  min-height: 60vh;
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 /* ── scrollbars ───────────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {

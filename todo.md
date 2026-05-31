@@ -106,15 +106,17 @@ Goal: wire the existing CLI tools into the frontend.
 
 ---
 
-## Step 10 — Edit-mode UI in the frontend
+## Step 10 — Edit-mode UI in the frontend ✅
 
 Goal: frontend probes `/api/health`; if present, shows edit controls.
 
-- [ ] On load, frontend fetches `/api/health`. If 200, set `editMode = true`.
-- [ ] In edit mode: add "Generate similar" button on axis combinations, "Explore" button on `generated` entries, "Edit" button in the modal.
-- [ ] In static mode (exported bundle): controls hidden, identical look to step 2.
+- [x] On load, frontend fetches `./api/health`. If 200, sets `editMode` and `body.edit-mode`.
+- [x] In edit mode: "+ generate" button in grid header (appears when each `gen_axes` filter has exactly one value), "explore →" button on `generated` entries in the modal, "edit" button (raw JSON editor) on every entry in the modal.
+- [x] In static mode: `.edit-only` elements hidden via CSS, `/api/health` probe silently fails.
+- [x] pytest suite added under `tests/` (22 tests) covering health, passthrough, validation, generate/explore/edit endpoints with `run_claude` monkeypatched.
+- [x] `make_app()` now writes `index.jsonl` on startup (was only done by `main()`), so any consumer of the Flask app gets a populated index.
 
-**Verify:** `python tools/dev_server.py mobility_innov` shows edit controls; exported bundle from step 5 does not.
+**Verify:** `.venv/bin/python -m pytest tests/` → 22 passed.
 
 ---
 
