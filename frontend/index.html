@@ -20,7 +20,7 @@
         <div id="grid-header">
           <span id="list-count"></span>
           <div class="header-actions">
-            <button id="generate-similar" class="toggle-btn edit-only" hidden title="Generate new entries matching the selected axes">+ generate</button>
+            <button id="search-more" class="toggle-btn edit-only" hidden title="Generate more entries matching the current filters">+ search more</button>
             <button id="toggle-explored" class="toggle-btn" title="Show only explored entries">explored only</button>
           </div>
         </div>
@@ -258,26 +258,24 @@
         });
       }
 
-      function singleSelectedAxes() {
-        // returns {axisId: valueId} only if every gen_axis has exactly one value selected
+      function selectedAxesPayload() {
+        // returns {axisId: [valueId, ...]} for every gen_axis (possibly empty arrays)
         const genAxes = state.wiki.gen_axes || state.axes.map((a) => a.id);
         const out = {};
         for (const axisId of genAxes) {
           const sel = state.filters[axisId];
-          if (!sel || sel.size !== 1) return null;
-          out[axisId] = [...sel][0];
+          out[axisId] = sel ? [...sel] : [];
         }
         return out;
       }
 
       function updateGenerateButton() {
-        const btn = document.getElementById("generate-similar");
+        const btn = document.getElementById("search-more");
         if (!state.editMode) {
           btn.hidden = true;
           return;
         }
-        const sel = singleSelectedAxes();
-        btn.hidden = !sel;
+        btn.hidden = false;
         btn.disabled = state.busy;
       }
 
@@ -472,21 +470,18 @@
         updateGenerateButton();
       }
 
-      async function generateSimilar() {
-        const axes = singleSelectedAxes();
-        if (!axes) return;
+      async function searchMore() {
         if (state.busy) return;
-        const nStr = window.prompt("How many entries to generate?", "5");
-        if (!nStr) return;
-        const n = parseInt(nStr, 10);
-        if (!Number.isFinite(n) || n < 1) return;
+        const axes = selectedAxesPayload();
+        const n = 5;
+        const existing = filteredEntries().map((e) => e.title).filter(Boolean);
 
         setBusy(true);
         try {
           const res = await fetch("./api/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ axes, n }),
+            body: JSON.stringify({ axes, n, existing }),
           });
           if (!res.ok) {
             const txt = await res.text();
@@ -607,8 +602,8 @@
           renderList();
         });
 
-        document.getElementById("generate-similar")
-          .addEventListener("click", generateSimilar);
+        document.getElementById("search-more")
+          .addEventListener("click", searchMore);
 
         document.getElementById("modal-close").addEventListener("click", closeModal);
         document.getElementById("modal-backdrop").addEventListener("click", closeModal);

@@ -5,7 +5,7 @@ What counts as a megaproject for this wiki:
 - A clear physical or institutional ambition (a city, a tunnel, a reactor, a weapons program, a monument).
 - A discernible failure, abandonment, cancellation, or zombie state — not merely "controversial" or "over budget".
 
-The current axis combination is:
+The current axis filters are (an axis value of "any" means no constraint; a comma-separated list means any of the listed values is acceptable):
 - domain: {domain}
 - era: {era}
 - region: {region}
@@ -13,21 +13,24 @@ The current axis combination is:
 - failure_mode: {failure_mode}
 - current_state: {current_state}
 
-Produce {n} candidate entries that genuinely fit this cell. Favor real historical projects (verifiable). If the cell is genuinely empty in the historical record, return fewer entries rather than invent. Prefer the obscure over the obvious — but obvious entries are fine when they're a textbook fit.
+Entries already in the catalogue that match these filters — do NOT propose any of these, we want new ones:
+{existing}
 
-For each entry, output one JSON object on its own line (JSONL), with this shape:
+Produce up to {n} new candidate entries (hard cap: 5, even if {n} is larger) that genuinely fit these filters. Favor real historical projects (verifiable). If the cell is genuinely empty in the historical record, return fewer entries rather than invent. Prefer the obscure over the obvious — but obvious entries are fine when they're a textbook fit.
+
+For each entry, output one JSON object on its own line (JSONL). Pick one concrete value per axis from those allowed (do not output "any" or comma-separated lists). Shape:
 
 {
   "slug": "kebab-case-id",
   "title": "Human Title",
   "summary": "1–3 sentence card summary. Concrete. No filler.",
   "axes": {
-    "domain": "{domain}",
-    "era": "{era}",
-    "region": "{region}",
-    "political_system": "{political_system}",
-    "failure_mode": "{failure_mode}",
-    "current_state": "{current_state}"
+    "domain": "...",
+    "era": "...",
+    "region": "...",
+    "political_system": "...",
+    "failure_mode": "...",
+    "current_state": "..."
   },
   "status": "generated"
 }

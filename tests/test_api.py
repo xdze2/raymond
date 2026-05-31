@@ -68,16 +68,55 @@ def test_reindex(client, wiki_dir: Path):
 # ── /api/generate validation ──────────────────────────────────────────────────
 
 
-def test_generate_missing_axes(client):
-    res = client.post("/api/generate", json={"n": 3})
+def test_generate_no_axes_allowed(client, monkeypatch):
+    # With "search more" semantics, no filters means "any" on every axis.
+    monkeypatch.setattr(dev_server, "run_claude", lambda p: '{"slug": "x", "title": "X"}\n')
+    res = client.post("/api/generate", json={"n": 1})
+    assert res.status_code == 200
+
+
+def test_generate_partial_axes_allowed(client, monkeypatch):
+    # Missing axes are fine; specified ones render normally.
+    captured = {}
+
+    def fake(prompt):
+        captured["prompt"] = prompt
+        return '{"slug": "p", "title": "P"}\n'
+
+    monkeypatch.setattr(dev_server, "run_claude", fake)
+    res = client.post(
+        "/api/generate",
+        json={"axes": {"domain": "energy"}, "n": 1},
+    )
+    assert res.status_code == 200
+    # the unspecified axis renders as "any"
+    assert "any" in captured["prompt"]
+
+
+def test_generate_rejects_non_object_axes(client):
+    res = client.post("/api/generate", json={"axes": "not-a-dict", "n": 1})
     assert res.status_code == 400
 
 
-def test_generate_missing_required_axis(client):
-    res = client.post("/api/generate", json={"axes": {"domain": "energy"}, "n": 1})
-    # missing "era" (in gen_axes)
-    assert res.status_code == 400
-    assert b"era" in res.data
+def test_generate_passes_existing_titles(client, monkeypatch):
+    captured = {}
+
+    def fake(prompt):
+        captured["prompt"] = prompt
+        return '{"slug": "n", "title": "N"}\n'
+
+    monkeypatch.setattr(dev_server, "run_claude", fake)
+    res = client.post(
+        "/api/generate",
+        json={
+            "axes": {"domain": "energy"},
+            "n": 1,
+            "existing": ["Hoover Dam", "Three Gorges"],
+        },
+    )
+    assert res.status_code == 200
+    assert "Hoover Dam" in captured["prompt"]
+    assert "Three Gorges" in captured["prompt"]
 
 
 def test_generate_writes_entries(client, wiki_dir: Path, monkeypatch):

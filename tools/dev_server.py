@@ -24,6 +24,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -112,6 +113,7 @@ def make_app(wiki_dir: Path) -> Flask:
     def reindex():
         out = write_index(wiki_dir)
         n = sum(1 for _ in out.open())
+        print(f"[reindex] {n} entries", flush=True)
         return jsonify({"ok": True, "entries": n})
 
     @app.post("/api/generate")
@@ -119,27 +121,67 @@ def make_app(wiki_dir: Path) -> Flask:
         body = request.get_json(silent=True) or {}
         axes = body.get("axes") or {}
         n = int(body.get("n", 5))
-        if not isinstance(axes, dict) or not axes:
-            abort(400, description="missing axes")
+        existing = body.get("existing") or []
+        if not isinstance(axes, dict):
+            abort(400, description="axes must be an object")
+        if not isinstance(existing, list):
+            abort(400, description="existing must be a list")
 
         config = _load_wiki_config(wiki_dir)
-        for axis_id in config.get("gen_axes", []):
-            if axis_id not in axes:
-                abort(400, description=f"missing axis: {axis_id}")
+
+        # Normalise axes: each value can be a string or list of strings.
+        # Empty / missing axes render as "any".
+        gen_axes = config.get("gen_axes", [])
+        rendered_axes: dict[str, str] = {}
+        single_axes: dict[str, str] = {}
+        for axis_id in gen_axes:
+            v = axes.get(axis_id)
+            if v is None or v == "" or v == []:
+                rendered_axes[axis_id] = "any"
+            elif isinstance(v, list):
+                rendered_axes[axis_id] = ", ".join(str(x) for x in v) or "any"
+                if len(v) == 1:
+                    single_axes[axis_id] = str(v[0])
+            else:
+                rendered_axes[axis_id] = str(v)
+                single_axes[axis_id] = str(v)
 
         template_path = prompts_dir / "make_list.txt"
         if not template_path.is_file():
             abort(500, description="make_list.txt prompt missing")
         template = template_path.read_text()
 
-        prompt = render_prompt(template, n=str(n), **{k: str(v) for k, v in axes.items()})
+        existing_block = (
+            "\n".join(f"- {t}" for t in existing if isinstance(t, str))
+            or "(none yet)"
+        )
 
+        prompt = render_prompt(
+            template,
+            n=str(n),
+            existing=existing_block,
+            **rendered_axes,
+        )
+
+        axes_summary = ", ".join(f"{k}={v}" for k, v in rendered_axes.items())
+        print(
+            f"[generate] n={n} existing={len(existing)} axes: {axes_summary}",
+            flush=True,
+        )
+        print(f"[generate] prompt={len(prompt)} chars → calling claude…", flush=True)
+
+        t0 = time.monotonic()
         try:
             raw = run_claude(prompt)
         except Exception as e:
+            print(f"[generate] LLM call failed after {time.monotonic() - t0:.1f}s: {e}", flush=True)
             abort(502, description=f"LLM call failed: {e}")
+        dt = time.monotonic() - t0
+        print(f"[generate] claude returned {len(raw)} chars in {dt:.1f}s", flush=True)
 
         candidates = _parse_jsonl(raw)
+        print(f"[generate] parsed {len(candidates)} candidate entries", flush=True)
+
         written: list[str] = []
         skipped: list[dict] = []
         for entry in candidates:
@@ -151,10 +193,16 @@ def make_app(wiki_dir: Path) -> Flask:
                 skipped.append({"reason": "exists", "slug": slug})
                 continue
             entry.setdefault("status", "generated")
-            entry.setdefault("axes", axes)
+            entry.setdefault("axes", dict(single_axes))
             entry["created"] = {"at": _today(), "by": "llm"}
             _write_entry(wiki_dir, entry)
             written.append(slug)
+
+        print(
+            f"[generate] wrote {len(written)} ({', '.join(written) or '—'}), "
+            f"skipped {len(skipped)}",
+            flush=True,
+        )
 
         write_index(wiki_dir)
         return jsonify({"ok": True, "written": written, "skipped": skipped})
@@ -162,21 +210,28 @@ def make_app(wiki_dir: Path) -> Flask:
     @app.post("/api/entries/<slug>/explore")
     def explore(slug: str):
         entry = _read_entry(wiki_dir, slug)
+        print(f"[explore] slug={slug} title={entry.get('title')!r}", flush=True)
 
         template_path = prompts_dir / "make_page.txt"
         if not template_path.is_file():
             abort(500, description="make_page.txt prompt missing")
         template = template_path.read_text()
         prompt = render_prompt(template, seed=json.dumps(entry, indent=2, ensure_ascii=False))
+        print(f"[explore] prompt={len(prompt)} chars → calling claude…", flush=True)
 
+        t0 = time.monotonic()
         try:
             raw = run_claude(prompt)
         except Exception as e:
+            print(f"[explore] LLM call failed after {time.monotonic() - t0:.1f}s: {e}", flush=True)
             abort(502, description=f"LLM call failed: {e}")
+        dt = time.monotonic() - t0
+        print(f"[explore] claude returned {len(raw)} chars in {dt:.1f}s", flush=True)
 
         try:
             payload = _parse_json_blob(raw)
         except json.JSONDecodeError as e:
+            print(f"[explore] non-JSON response: {e}", flush=True)
             abort(502, description=f"LLM returned non-JSON: {e}")
 
         if "facts" in payload:
@@ -187,6 +242,12 @@ def make_app(wiki_dir: Path) -> Flask:
             entry["image"] = payload["image"]
         entry["status"] = "explored"
         entry["updated"] = {"at": _today(), "by": "llm"}
+
+        print(
+            f"[explore] {slug}: facts={len(payload.get('facts') or [])} "
+            f"links={len(payload.get('links') or [])} image={'yes' if payload.get('image') else 'no'}",
+            flush=True,
+        )
 
         _write_entry(wiki_dir, entry)
         write_index(wiki_dir)
@@ -203,6 +264,9 @@ def make_app(wiki_dir: Path) -> Flask:
 
         merged = {**existing, **body, "slug": slug}
         merged["updated"] = {"at": _today(), "by": "user"}
+
+        changed = sorted(k for k in body if k != "slug" and existing.get(k) != body.get(k))
+        print(f"[save] slug={slug} changed={changed or '—'}", flush=True)
 
         _write_entry(wiki_dir, merged)
         write_index(wiki_dir)

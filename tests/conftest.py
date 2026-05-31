@@ -67,7 +67,7 @@ def wiki_dir(tmp_path: Path) -> Path:
     (wd / "catalogue" / "seed-one.json").write_text(json.dumps(SEED_ENTRY))
 
     (wd / "prompts" / "make_list.txt").write_text(
-        "Generate {n} entries for domain={domain} era={era}\n"
+        "Generate {n} entries for domain={domain} era={era}\nExisting:\n{existing}\n"
     )
     (wd / "prompts" / "make_page.txt").write_text("Explore: {seed}\n")
     return wd
