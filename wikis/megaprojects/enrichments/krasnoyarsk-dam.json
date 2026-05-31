@@ -1,0 +1,83 @@
+{
+  "slug": "krasnoyarsk-dam",
+  "query": "Krasnoyarsk Dam",
+  "wikipedia": {
+    "title": "Krasnoyarsk Dam",
+    "url": "https://en.wikipedia.org/wiki/Krasnoyarsk_Dam",
+    "extract": "The Krasnoyarsk Dam is a 124-metre (407 ft) high concrete gravity dam located on the Yenisey River about 30 kilometres (19 mi) upstream from Krasnoyarsk in Divnogorsk, Russia. It was constructed from 1956 to 1972, and it supplies about 6,000 MW of electricity, mostly used to supply the KrAZ. Both power and aluminum plants are controlled by the RUSAL company."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/KrasnoyarskDam.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/krasnoyarsk-dam/web_krasnoyarskdam.jpg",
+    "filename": "KrasnoyarskDam.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/KrasnoyarskDam.jpg",
+    "mime": "image/jpeg",
+    "width": 2880,
+    "height": 2160,
+    "license_short": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/sashapo/\">Alex Polezhaev</a>",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/sashapo/4745280047/\">https://www.flickr.com/photos/sashapo/4745280047/</a>",
+    "description": "The <a href=\"https://en.wikipedia.org/wiki/Krasnoyarsk_Dam\" class=\"extiw\" title=\"w:Krasnoyarsk Dam\">Krasnoyarsk Dam</a> in Russia."
+  },
+  "wikidata": {
+    "qid": "Q1120899",
+    "url": "https://www.wikidata.org/wiki/Q1120899",
+    "label": "Krasnoyarsk Dam",
+    "description": "dam in Divnogorsk, Russia",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 15911738,
+          "id": "Q15911738"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 12323,
+          "id": "Q12323"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 891723,
+          "id": "Q891723"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 159,
+          "id": "Q159"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 15180,
+          "id": "Q15180"
+        }
+      ],
+      "inception": [
+        {
+          "time": "+1956-00-00T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        }
+      ],
+      "official_website": [
+        "http://www.kges.ru/"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 55.934722,
+          "longitude": 92.294444,
+          "altitude": null,
+          "precision": 1e-05,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

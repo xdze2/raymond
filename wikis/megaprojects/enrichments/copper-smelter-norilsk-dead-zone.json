@@ -1,0 +1,51 @@
+{
+  "slug": "copper-smelter-norilsk-dead-zone",
+  "query": "Norilsk Smelter Dead Zone",
+  "wikipedia": {
+    "title": "SA-15 (ship type)",
+    "url": "https://en.wikipedia.org/wiki/SA-15_(ship_type)",
+    "extract": "SA-15 is the project name for a series of icebreaking multipurpose cargo ships built in Finland for the Soviet Union in the 1980s. The ships, capable of independent operation in all prevailing arctic ice conditions, were the first merchant vessels designed for year-round operations in the Northern Sea Route. For this purpose they have hulls that resemble those of polar icebreakers and propulsion systems capable of withstanding ice loads."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/MV_Norilsk_20090519.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/copper-smelter-norilsk-dead-zone/web_mv-norilsk-20090519.jpg",
+    "filename": "MV_Norilsk_20090519.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/MV_Norilsk_20090519.jpg",
+    "mime": "image/jpeg",
+    "width": 1600,
+    "height": 1090,
+    "license_short": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"http://forum.shipspotting.com/index.php?action=profile;u=227\">Gerolf Drebes</a>",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.shipspotting.com/gallery/photo.php?lid=1090693\">http://www.shipspotting.com/gallery/photo.php?lid=1090693</a>",
+    "description": "MV <i>Norilsk</i> (IMO 8013003), the first SA-15 class arctic cargo ship, off Gibraltar on 19 May 2009."
+  },
+  "wikidata": {
+    "qid": "Q7388398",
+    "url": "https://www.wikidata.org/wiki/Q7388398",
+    "label": "SA-15-class cargo ship",
+    "description": "class of ice-breaking cargo ships",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 559026,
+          "id": "Q559026"
+        }
+      ],
+      "subclass_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 105999,
+          "id": "Q105999"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 14978,
+          "id": "Q14978"
+        }
+      ]
+    }
+  }
+}

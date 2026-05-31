@@ -1,0 +1,18 @@
+{
+  "slug": "bratsk-aluminum-plant",
+  "title": "Bratsk Aluminum Plant",
+  "summary": "One of the world's largest aluminum smelters, built during the Cold War, which caused severe ecological damage due to pollution and deforestation.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "siberia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "operational"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

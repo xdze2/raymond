@@ -17,28 +17,24 @@
   },
   "facts": [
     {
-      "label": "Smelting began",
-      "value": "1942 (first nickel produced); complex expanded through 1970s–80s"
+      "label": "Started",
+      "value": "1942"
     },
     {
       "label": "Dead zone extent",
-      "value": "~24,000 km² of near-zero vegetation (NASA MODIS); ~5,000 km² of fully dead forest stands"
+      "value": "~24,000 km²"
     },
     {
       "label": "Peak SO₂ emissions",
-      "value": "~2 million tonnes/year (1990s–2000s), largest single point-source on Earth"
-    },
-    {
-      "label": "Soil contamination",
-      "value": "Copper up to 5,000 mg/kg (250× background); nickel up to 3,800 mg/kg near smelters"
+      "value": "~2 million tonnes/year"
     },
     {
       "label": "Old Nickel Plant closure",
-      "value": "2016; removed ~100,000 t SO₂/year from urban emissions"
+      "value": "2016"
     },
     {
       "label": "Sulphur capture programme",
-      "value": "~$3.5 billion USD committed post-2016; target 75% SO₂ reduction by 2025"
+      "value": "$3.5 billion USD"
     }
   ],
   "links": [
@@ -60,7 +56,8 @@
     }
   ],
   "updated": {
-    "at": "2026-05-31",
-    "by": "llm"
-  }
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "image": "media/copper-smelter-norilsk-dead-zone/web_mv-norilsk-20090519.jpg"
 }

@@ -1,0 +1,59 @@
+{
+  "slug": "krasnoyarsk-dam",
+  "title": "Krasnoyarsk Dam",
+  "summary": "A major hydroelectric dam project that led to significant environmental issues, including flooding vast areas and disrupting local ecosystems.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "siberia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "operational"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "1956"
+    },
+    {
+      "label": "Completed",
+      "value": "1972"
+    },
+    {
+      "label": "Height",
+      "value": "124 meters"
+    },
+    {
+      "label": "Power Capacity",
+      "value": "6,000 MW"
+    },
+    {
+      "label": "Location",
+      "value": "Yenisey River, 30 km upstream from Krasnoyarsk"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Krasnoyarsk Dam",
+      "url": "https://en.wikipedia.org/wiki/Krasnoyarsk_Dam"
+    },
+    {
+      "label": "Official Website",
+      "url": "http://www.kges.ru/"
+    },
+    {
+      "label": "Google Maps — Trip to the Krasnoyarsk Dam",
+      "url": "https://www.google.com/maps/d/viewer?mid=1InGVesyQ-kQfDrri9RB_apqPjME&hl=en&ll=0,0&z=11"
+    }
+  ],
+  "image": "media/krasnoyarsk-dam/web_krasnoyarskdam.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "sayanogorsk-aluminum-smelter",
+  "title": "Sayano-Aluminum Smelter",
+  "summary": "An aluminum smelter that contributed to substantial air and water pollution in the region, affecting both the environment and local communities.",
+  "axes": {
+    "domain": "industrial",
+    "era": "cold_war",
+    "region": "siberia",
+    "political_system": "communist_state",
+    "failure_mode": "ecological",
+    "current_state": "operational"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}
