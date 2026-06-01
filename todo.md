@@ -35,9 +35,27 @@ Goal: make generation cheaper and faster, give the user real-time feedback, and 
 - [ ] Skip if existing enrichments file is present (already grounded via `fetch_wiki.py`).
 
 ### E — Batch generation (CLI, not a route)
-- [ ] `tools/batch_generate.py <wiki> [--axes ...] [--n N]` — runs `make_list` then `make_page` for each new slug, writes to `catalogue/`, rebuilds index.
-- [ ] Dedup against existing slugs; skip-or-retry on LLM errors with backoff.
-- [ ] Decision needed: seed list source — curated input file vs. LLM-proposed neighbors of existing entries. Start with curated.
+- [~] Partial: `wikis/neuromorphic/explore_all.sh` + `bootstrap.sh` drive batch explore/generate via bash, shelling into `atlas.py`. Works, but logic (slug filtering, retries, sleep, limit) is split across bash + an inline python heredoc.
+- [ ] `tools/batch.py <wiki>` — one entry point with subcommands:
+  - `batch.py <wiki> generate --axes ... --n N` — runs `make_list`, dedupes against existing slugs, writes catalogue files, rebuilds index.
+  - `batch.py <wiki> explore [--limit N] [--sleep S] [--status generated]` — iterates catalogue, calls `explore_entry()` directly (no subprocess), retries with backoff on LLM errors.
+  - `batch.py <wiki> bootstrap` — seed-list-driven full pipeline (replaces `bootstrap.sh`).
+- [ ] Factor the shared bits out of `dev_server.py` routes so CLI and HTTP share one code path (`generate_entries()` already lives in `tools/generate.py`; `explore_entry()` already in `tools/explore.py` — good, just call them).
+- [ ] Retire `explore_all.sh` and `bootstrap.sh` once `batch.py` covers them; keep `shrink_image.sh` (genuinely shell territory).
+- [ ] Decision needed: seed list source for `generate` — curated input file vs. LLM-proposed neighbors of existing entries. Start with curated.
+
+### G — Related entries (cross-references between catalogue items)
+- [ ] Add optional `related: [{slug, relation}]` field to the entry schema. `relation` is a short verb phrase ("successor of", "student of", "competes with", "studied at"). 2–4 items max.
+- [ ] Extend `make_page.txt`: pass the current catalogue's `[slug, title]` list into the prompt and ask the LLM to pick a few directly-connected entries with a verb. Validate slugs in `explore.py` against the catalogue before merging — drop unknowns, do not invent.
+- [ ] Tighten grounding language in the same prompt edit: "Ground every fact in `seed.enrichment` or `seed.ddg_search`. If neither supports a fact, omit it." (Plumbing already passes both — the prompt just doesn't say so.)
+- [ ] Frontend: render `entry.related` in the modal as a small chip row, each chip a click-through to the related entry's modal. Edge label = the verb.
+- [ ] Stretch — `/api/entries/<slug>/related?mode=surprising`: on-demand LLM pick of a non-obvious cross-axis connection, cached back into the entry. Exploratory surface, opt-in.
+- [ ] Stretch — cheap fallback: at index-build time compute axis-overlap neighbors (Jaccard on `axes`) as `related_auto`. Useful for `generated` entries that haven't been explored yet.
+
+### H — More document sources for `explore`
+- [ ] arXiv companion to `fetch_wiki.py` (`tools/fetch_arxiv.py`): API search on entry title, top-3 abstracts + URLs into `enrichments/<slug>.json` under `arxiv: [...]`. Big quality lift for algorithm/concept entries where Wikipedia is thin.
+- [ ] Same merge point in `explore.py` — just add `seed_payload["enrichment"]["arxiv"] = ...`. No prompt change beyond grounding sentence above.
+- [ ] Consider a generic `tools/fetch_docs.py` dispatcher (wiki / arxiv / lab-homepage) selected per `entity_type` axis. Defer until arXiv lands and we see the shape.
 
 ### F — SSE streaming (only if C isn't enough)
 - [ ] Add `text/event-stream` variants of `/api/generate` and `/api/entries/<slug>/explore` for prose fields.
