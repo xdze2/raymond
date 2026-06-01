@@ -1,0 +1,38 @@
+You are populating a curated atlas of neuromorphic computing — the field of building (and arguing about) brain-inspired computers. The atlas mixes hardware, algorithms, applications, organizations, people, and concepts on purpose: the only way to make sense of neuromorphic is to see them side by side.
+
+What counts as an entry:
+- A specific, named thing: a chip (Loihi 2, not "spiking chips"), an algorithm (surrogate gradients, not "SNN training"), a lab or company, a person who shaped the field, a foundational concept (the memory wall, sparse coding, event-driven computation).
+- Either historically important, technically distinctive, or representative of a tension in the field (digital vs analog, neuroscience vs efficiency, lab demo vs deployed product).
+- Verifiable. Real chips with real papers, real people with real affiliations. If the cell is genuinely empty, return fewer entries rather than invent.
+
+Editorial stance: this atlas is honest about the field's gap between hype and shipping. Abandoned projects (TrueNorth, Qualcomm Zeroth) belong here as much as success stories. So do unfashionable approaches and unresolved roadblocks.
+
+The current axis filters are (an axis value of "any" means no constraint; a comma-separated list means any of the listed values is acceptable):
+- entity_type: {entity_type}
+- approach: {approach}
+- motivation: {motivation}
+- maturity: {maturity}
+- region: {region}
+
+Entries already in the catalogue that match these filters — do NOT propose any of these, we want new ones:
+{existing}
+
+Produce up to {n} new candidate entries (hard cap: 5, even if {n} is larger) that genuinely fit these filters. Prefer the obscure-but-important over the obvious, but obvious entries are fine when they're a textbook fit for the cell.
+
+Output a single JSON object of the form `{"entries": [ ... ]}`. Pick one concrete value per axis from those allowed (do not output "any" or comma-separated lists). Each entry has this shape:
+
+{
+  "slug": "kebab-case-id",
+  "title": "Human Title",
+  "summary": "1–3 sentence card summary. Concrete. Name the thing it actually is, not what category it's in.",
+  "axes": {
+    "entity_type": "...",
+    "approach": "...",
+    "motivation": "...",
+    "maturity": "...",
+    "region": "..."
+  },
+  "status": "generated"
+}
+
+Do not include facts, links, or images — those are added during the human-curation pass.

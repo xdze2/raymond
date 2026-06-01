@@ -1,0 +1,68 @@
+{
+  "axes": [
+    {
+      "id": "entity_type",
+      "label": "Entity type",
+      "description": "What kind of thing the entry is. The atlas mixes hardware, ideas, people, and organizations on purpose — they only make sense together.",
+      "values": [
+        { "id": "hardware",     "label": "Hardware",      "description": "Chips, devices, architectures, boards. Loihi, TrueNorth, SpiNNaker, memristor crossbars, event cameras." },
+        { "id": "algorithm",    "label": "Algorithm",     "description": "Training methods, learning rules, encodings, simulators. Surrogate gradients, STDP, rate vs temporal coding, Nengo." },
+        { "id": "application",  "label": "Application",   "description": "A concrete use case or demo that made the field credible (or didn't). Keyword spotting, event-based vision, robotic control, olfaction." },
+        { "id": "organization", "label": "Organization",  "description": "Labs, companies, consortia, funding programs. Intel Neuromorphic Lab, BrainChip, Innatera, Human Brain Project, DARPA SyNAPSE." },
+        { "id": "person",       "label": "Person",        "description": "Researchers and founders who shaped the field. Carver Mead, Misha Mahowald, Giacomo Indiveri, Mike Davies." },
+        { "id": "concept",      "label": "Concept",       "description": "Foundational ideas: sparse coding, event-driven computation, in-memory compute, the memory wall, biological plausibility." }
+      ]
+    },
+    {
+      "id": "approach",
+      "label": "Approach",
+      "description": "How the work implements (or sidesteps) neuromorphic computation. For people and organizations, the approach they primarily work on.",
+      "values": [
+        { "id": "digital",       "label": "Digital",        "description": "Clocked, deterministic spiking hardware or software. Loihi, TrueNorth, SpiNNaker." },
+        { "id": "mixed_signal",  "label": "Mixed-signal",   "description": "Analog compute with digital communication. DYNAP, BrainScaleS, most academic neuromorphic chips." },
+        { "id": "analog",        "label": "Analog",         "description": "Fully analog computation, typically with memristive or floating-gate devices. Mythic, memristor crossbars." },
+        { "id": "photonic",      "label": "Photonic",       "description": "Optical neuromorphic — light as the compute substrate. Lightmatter-adjacent research, photonic SNNs." },
+        { "id": "software",      "label": "Software",       "description": "Simulators, frameworks, training stacks that run on conventional hardware. Nengo, Brian2, snnTorch, Lava." },
+        { "id": "theory",        "label": "Theory",         "description": "Not tied to a substrate: learning rules, coding schemes, computational neuroscience models, biological plausibility arguments." }
+      ]
+    },
+    {
+      "id": "motivation",
+      "label": "Motivation",
+      "description": "Why the work exists. The field is a coalition of people who want different things from the same silicon — this axis surfaces the disagreement. Pick the primary driver.",
+      "values": [
+        { "id": "neuroscience",         "label": "Neuroscience",         "description": "Understand the brain. Hardware as a faster-than-real-time simulation substrate. Human Brain Project, BrainScaleS, most academic biophysical work." },
+        { "id": "efficiency",           "label": "Efficiency",           "description": "Beat von Neumann on joules per inference. The commercial pitch: edge AI, always-on sensing, battery-bound devices. BrainChip, Innatera, most startups." },
+        { "id": "general_intelligence", "label": "General intelligence", "description": "Brain-like computation as a path to flexible, general-purpose AI. Numenta historically, parts of the Loihi research community, cognitive architectures." },
+        { "id": "scaling",              "label": "Scaling",              "description": "Break the memory wall. In-memory and analog compute as a post-Moore substrate for any workload, not just SNNs. Memristor crowd, Mythic, IBM analog AI." },
+        { "id": "robotics",             "label": "Robotics",             "description": "Real-time sensorimotor loops, event-driven sensing, low-latency control. Prophesee / iniLabs lineage, ETH Zurich, drone and prosthetics work." },
+        { "id": "bio_interface",        "label": "Bio-interface",        "description": "Neural prosthetics, brain-computer interfaces, closed-loop biomedical devices. Retinal implants, cochlear-adjacent work, some Indiveri-group projects." }
+      ]
+    },
+    {
+      "id": "maturity",
+      "label": "Maturity",
+      "description": "How close the entry is to being a real thing people use. For people and organizations, the maturity of their most prominent output.",
+      "values": [
+        { "id": "theoretical",  "label": "Theoretical",  "color": "#868e96", "description": "On paper or in simulation only. No silicon, no demo." },
+        { "id": "lab_demo",     "label": "Lab demo",     "color": "#1971c2", "description": "Working in a single lab, on a single chip, for a single benchmark. Not reproducible outside the group." },
+        { "id": "prototype",    "label": "Prototype",    "color": "#7048e8", "description": "Hardware or software available to outside collaborators. Multiple groups have used it. Still pre-product." },
+        { "id": "commercial",   "label": "Commercial",   "color": "#f08c00", "description": "A product is being sold or licensed. May or may not have real users at scale." },
+        { "id": "deployed",     "label": "Deployed",     "color": "#2f9e44", "description": "In a shipping device or running workload that someone depends on. Rare in this field — that's the point." },
+        { "id": "abandoned",    "label": "Abandoned",    "color": "#495057", "description": "Discontinued, defunded, or quietly shelved. The graveyard cells: IBM TrueNorth, Qualcomm Zeroth, various startups." }
+      ]
+    },
+    {
+      "id": "region",
+      "label": "Region",
+      "description": "Where the work is centered. The EU, US, and Asia funded neuromorphic on different terms and the lineages stayed somewhat separate.",
+      "values": [
+        { "id": "us",       "label": "US",        "description": "United States. DARPA SyNAPSE, Intel, IBM, Stanford, academic labs across the country." },
+        { "id": "eu",       "label": "EU",        "description": "Continental Europe. Human Brain Project, BrainScaleS (Heidelberg), Manchester-adjacent collaborations, ETH Zurich's Institute of Neuroinformatics." },
+        { "id": "uk",       "label": "UK",        "description": "United Kingdom. SpiNNaker (Manchester), Cambridge, Sussex." },
+        { "id": "asia",     "label": "Asia",      "description": "China, Japan, Korea, Singapore, India. Tianjic, Darwin, growing commercial activity." },
+        { "id": "other",    "label": "Other",     "description": "Australia, Canada, Israel, anywhere else." }
+      ]
+    }
+  ]
+}

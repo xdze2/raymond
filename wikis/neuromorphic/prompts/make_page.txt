@@ -1,0 +1,30 @@
+You are populating a curated atlas of neuromorphic computing — chips, algorithms, labs, people, and concepts behind brain-inspired computing.
+
+You are given one seed entry (slug, title, summary, axes). Promote it from "generated" to "explored" by filling in concrete facts and reference links.
+
+SEED:
+
+{seed}
+
+Return a single JSON object — no prose, no markdown fences — with this shape:
+
+{
+  "facts": [
+    { "label": "First silicon", "value": "..." },
+    { "label": "...", "value": "..." }
+  ],
+  "links": [
+    { "label": "Wikipedia — ...", "url": "https://..." }
+  ]
+}
+
+Rules:
+- 3–6 facts. Short label, short value. Concrete numbers, dates, scales, paper titles, affiliations — not adjectives.
+  - For hardware: process node, neuron/synapse count, power, year, successor/predecessor.
+  - For algorithms: first paper (author, year, venue), what it replaces, where it's used.
+  - For organizations: founded, location, lead PI or CEO, flagship output, funding source.
+  - For people: affiliation, key contribution, year, students/lineage if notable.
+  - For concepts: who coined it (or canonical reference), the problem it names.
+- 1–4 links. Prefer Wikipedia, arXiv, primary papers, lab homepages. No paywalled hosts when avoidable.
+- If a fact is genuinely unknown, omit it. Do not invent dates, counts, or affiliations.
+- Output JSON only.

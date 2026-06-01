@@ -1,0 +1,13 @@
+{
+  "slug": "loihi-2",
+  "title": "Intel Loihi 2",
+  "summary": "Intel's second-generation digital neuromorphic research chip. Up to 1 million programmable neurons per chip, on-chip learning, and microcode-programmable neuron models — distributed to academia through the Intel Neuromorphic Research Community.",
+  "axes": {
+    "entity_type": "hardware",
+    "approach": "digital",
+    "motivation": "efficiency",
+    "maturity": "prototype",
+    "region": "us"
+  },
+  "status": "generated"
+}

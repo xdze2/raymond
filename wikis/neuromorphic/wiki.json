@@ -1,0 +1,20 @@
+{
+  "id": "neuromorphic",
+  "title": "Neuromorphic Computing",
+  "wordmark": ["NEURO", "MORPHIC"],
+  "tagline": "Chips that pretend to be brains — the labs, the silicon, the spikes, and the long road from demo to deployment.",
+  "placeholder_hint": "Pick an axis combination above, or click any card.",
+  "gen_axes": [
+    "entity_type",
+    "approach",
+    "motivation",
+    "maturity",
+    "region"
+  ],
+  "freeform_axes": [],
+  "status_axis": "maturity",
+  "models": {
+    "make_list": "mistral:mistral-medium-latest",
+    "make_page": "mistral:mistral-medium-latest"
+  }
+}
