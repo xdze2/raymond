@@ -30,6 +30,28 @@ design with strong rules produces more interesting output than
 permissive design with weak ones. Every design choice below should be
 read in that light.
 
+## Who the tool serves
+
+In the end, Raymond is doing the job a **university professor or
+researcher** does:
+
+- **Explore a domain** — map the field, see how the pieces relate.
+- **Find new interesting approaches** — surface what's underexplored,
+  what contradicts, what's emerging.
+- **Teach students about the domain** — turn the map into something a
+  newcomer can walk and absorb.
+
+This frames the design decisions. The atlas isn't a wiki, it isn't a
+game, it isn't a feed. It's a **curatorial-research instrument**, and
+the features should be judged by whether a researcher / educator would
+actually find them useful. Storytelling, interlinks, verification, and
+later agent-based discovery are all in service of that single goal.
+
+Practical consequence: features that help *curate well at scale*
+(verification, missing-entry detection, tension-finding) are worth
+investing in even if they're invisible to a casual reader. They are
+what makes the atlas trustworthy enough to teach from.
+
 ## The framing
 
 - Axes are the **space** — the field to explore.
@@ -291,6 +313,126 @@ isn't metadata — it's the grammar of every story the atlas will ever
 tell. Choose it like Queneau chose his sonnet form: tightly, on
 purpose, knowing every later combinatorial move depends on it.
 
+## Agents — when the LLM orchestrates, not just answers
+
+Open question: should the LLM be a **tool inside a pipeline** (what
+we have today) or an **agent that uses tools to reach a goal**?
+
+Answer: **mostly the first, selectively the second.** The distinction
+matters more than picking a side.
+
+### Pipeline shape (what we have)
+
+```
+fetch wiki → ddg search → render prompt → LLM call → parse → merge → write
+```
+
+Fixed steps, deterministic glue, LLM only does the constrained
+transform it's best at. Debuggable, testable, cheap. Grounding rules
+are enforceable because we control inputs and prompt.
+
+### Agent shape (loop where the LLM picks next move)
+
+The model calls tools, sees results, calls more tools, until it
+decides it's done. Trade: flexibility for control. Right when the
+**plan genuinely depends on what's discovered along the way**;
+wrong when the plan is knowable in advance.
+
+### Decision rule
+
+- Can you write down the steps? → pipeline.
+- Does step N depend on step N-1's content? → agent.
+- Is it on the user's read path? → pipeline (latency, cost,
+  determinism).
+- Is it a curatorial / discovery pass? → agent is viable.
+
+### Walking the candidates
+
+- **"Find interesting stories"** → *pipeline.* Sounds agentic but the
+  plan is fully knowable (sample walks → score → narrate). Already
+  designed as a two-tier pipeline. An agent would just re-discover it
+  worse, every time.
+- **"Verify information"** → ✅ *good agent fit.* Plan genuinely
+  depends on results. A claim might need Wikipedia → then arXiv →
+  then primary source → then community check. Each step depends on
+  the last. **This is the one to build first.**
+- **"Summarize information"** → *pipeline.* Canonical LLM task.
+- **"Explore ideas"** → *agent fit, but only if tightly scoped.* Bad:
+  "explore neuromorphic computing." Good: "given the catalogue,
+  propose 5 entries that are conspicuously missing — concepts or
+  people the existing entries reference but don't have their own
+  card." Same agent shape works for missing edges.
+- **"Find contradictions / tensions across entries"** → *agent fit,
+  high payoff for the storytelling layer.* Tensions are the seeds of
+  stories. Output goes into a `tensions.jsonl` file; the story ranker
+  later treats crossing-a-known-tension as bonus signal.
+
+### `verify_facts.py` — the one to build first
+
+User flagged this as the most interesting. Concrete shape:
+
+- CLI: `tools/verify_facts.py <wiki> <slug>` (or `--all` for a pass).
+- Iterates `entry.facts[]`. For each fact, a small agent (Claude or
+  Mistral with tool use) tries to corroborate or refute it.
+- Available tools: `wiki_search`, `wiki_summary` (already in
+  `fetch_wiki.py`), `ddg_search` (already in `ddg.py`), maybe
+  `arxiv_search` later.
+- Hard budget: ≤5 tool calls per fact, ≤2k tokens of context per
+  call.
+- Output per fact: `{status: verified|unverified|disputed, sources:
+  [...], note: "..."}`.
+- Writes to `wikis/<wiki>/verifications/<slug>.json` — *separate* from
+  the catalogue. Never mutates `facts[]` directly.
+- `dry-run` mode prints what it would write.
+- Frontend (edit mode) shows a small badge per fact: green tick =
+  verified, yellow = unverified, red = disputed. Click → see citations.
+
+Why separate file: keeps the catalogue clean and human-curated, makes
+re-running verification cheap, gives an audit trail.
+
+### The architectural pattern
+
+```
+agents/
+  verify_facts.py         # audits facts[] against web sources
+  find_missing_entries.py # proposes new slugs to generate
+  find_missing_edges.py   # proposes new related[] entries
+  find_tensions.py        # surfaces contradictions for storytelling
+```
+
+Each is a small, strictly-budgeted agent that produces **structured
+suggestions to a review queue**. The user approves before anything
+lands in the catalogue. The user-facing read path stays a pipeline;
+agents do back-office curation work.
+
+Direct parallel to a research lab: pipelines are the published paper;
+agents are the grad students checking references and drafting next
+directions.
+
+### Discipline for agents (Queneau again)
+
+Constraint is generative for agents too. Free-form "explore the
+catalogue and tell me what's interesting" produces slop. Tight
+constraints produce useful output:
+
+- Strict tool-call budgets.
+- Structured output schemas (refuse free-text returns).
+- Token budgets per call.
+- Human review before catalogue write.
+- `dry-run` always available.
+- Graceful "couldn't verify" instead of fabricating.
+
+### Order of operations
+
+1. Edges first — agents are a force multiplier on a well-structured
+   catalogue, not a substitute for one. Most interesting agent tasks
+   (missing edges, tensions, walks) need the graph as substrate.
+2. Then `verify_facts.py` as the pilot agent. Small, well-defined,
+   immediately useful for the "teach from this" goal.
+3. Then evaluate: if the suggestions are actually useful, expand to
+   `find_missing_entries.py` and `find_tensions.py`. Otherwise the
+   pipeline core is unchanged — cheap experiment.
+
 ## Dependency chain
 
 ```
@@ -300,13 +442,22 @@ inbound-edge computation in build_index
   ↓
 connections section in modal  ← shippable here, real value
   ↓
-walk generator (combinatorial)
-  ↓
-story ranker (LLM-as-critic)
-  ↓
-narrator + /stories UI
+  ├─→ verify_facts.py agent       ← pilot agent, parallel track
+  │       ↓
+  │   verification badges in UI
+  │
+  └─→ walk generator (combinatorial)
+        ↓
+      story ranker (LLM-as-critic)
+        ↓
+      narrator + /stories UI
+        ↓
+      voice-lens variants (Exercices de style)
+        ↓
+      find_tensions.py agent feeds bonus signal back into ranker
 ```
 
 Every step before the story generator is independently valuable. The
 story feature is the payoff, but even if it never ships the wiki is
-dramatically better with edges in place.
+dramatically better with edges + verification in place — and that's
+precisely the substrate a researcher or educator would actually use.
