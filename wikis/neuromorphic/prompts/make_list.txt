@@ -17,7 +17,7 @@ The current axis filters are (an axis value of "any" means no constraint; a comm
 Entries already in the catalogue that match these filters — do NOT propose any of these, we want new ones:
 {existing}
 
-Produce up to {n} new candidate entries (hard cap: 5, even if {n} is larger) that genuinely fit these filters. Prefer the obscure-but-important over the obvious, but obvious entries are fine when they're a textbook fit for the cell.
+Produce up to {n} new candidate entries (hard cap: 20, even if {n} is larger) that genuinely fit these filters. Prefer the obscure-but-important over the obvious, but obvious entries are fine when they're a textbook fit for the cell.
 
 Output a single JSON object of the form `{"entries": [ ... ]}`. Pick one concrete value per axis from those allowed (do not output "any" or comma-separated lists). Each entry has this shape:
 

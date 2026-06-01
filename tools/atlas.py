@@ -15,6 +15,8 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 
 import click
@@ -40,6 +42,56 @@ def _wiki_dir(name: str) -> Path:
         return resolve_wiki(name)
     except SystemExit as e:
         raise click.BadParameter(str(e), param_hint="--wiki")
+
+
+class _Tee:
+    """File-like wrapper that writes to two streams (terminal + log file)."""
+
+    def __init__(self, a, b):
+        self._a, self._b = a, b
+
+    def write(self, s: str) -> int:
+        self._a.write(s)
+        self._b.write(s)
+        return len(s)
+
+    def flush(self) -> None:
+        self._a.flush()
+        self._b.flush()
+
+
+@contextmanager
+def _tee_log(wiki_dir: Path, cmd: str):
+    """Duplicate stdout/stderr into wikis/<wiki>/logs/<cmd>-<UTC>.log.
+
+    The terminal still sees everything; the log file gets a stable copy
+    plus a header (command, args, start/end timestamps, exit reason).
+    """
+    logs_dir = wiki_dir / "logs"
+    logs_dir.mkdir(exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    log_path = logs_dir / f"{cmd}-{stamp}.log"
+    started = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    orig_out, orig_err = sys.stdout, sys.stderr
+    with log_path.open("w") as fh:
+        fh.write(f"# atlas {cmd}\n# argv: {' '.join(sys.argv)}\n# start: {started}\n\n")
+        fh.flush()
+        sys.stdout = _Tee(orig_out, fh)
+        sys.stderr = _Tee(orig_err, fh)
+        status = "ok"
+        try:
+            yield log_path
+        except SystemExit as e:
+            status = f"exit={e.code}"
+            raise
+        except BaseException as e:
+            status = f"error={type(e).__name__}: {e}"
+            raise
+        finally:
+            sys.stdout, sys.stderr = orig_out, orig_err
+            ended = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            fh.write(f"\n# end: {ended}  status: {status}\n")
+            click.echo(f"[atlas] log: {log_path}", err=True)
 
 
 def _refresh_index(wiki_dir: Path) -> None:
@@ -71,21 +123,22 @@ def cli() -> None:
 def explore_cmd(wiki: str, slug: str, query: str | None,
                 skip_fetch: bool, dry_run: bool) -> None:
     wiki_dir = _wiki_dir(wiki)
-    try:
-        entry = explore_entry(
-            wiki_dir, slug,
-            fetch=not skip_fetch, query=query, write=not dry_run,
-            log=click.echo,
-        )
-    except ExploreError as e:
-        click.echo(f"error ({e.kind}): {e}", err=True)
-        sys.exit(_EXIT_CODES.get(e.kind, 1))
+    with _tee_log(wiki_dir, f"explore-{slug}"):
+        try:
+            entry = explore_entry(
+                wiki_dir, slug,
+                fetch=not skip_fetch, query=query, write=not dry_run,
+                log=click.echo,
+            )
+        except ExploreError as e:
+            click.echo(f"error ({e.kind}): {e}", err=True)
+            sys.exit(_EXIT_CODES.get(e.kind, 1))
 
-    if dry_run:
-        click.echo("--- dry run, would write: ---")
-        click.echo(json.dumps(entry, indent=2, ensure_ascii=False))
-    else:
-        _refresh_index(wiki_dir)
+        if dry_run:
+            click.echo("--- dry run, would write: ---")
+            click.echo(json.dumps(entry, indent=2, ensure_ascii=False))
+        else:
+            _refresh_index(wiki_dir)
 
 
 # ── fetch ──────────────────────────────────────────────────────────────────────
@@ -152,21 +205,23 @@ def _parse_axis(ctx, param, values):
 def generate_cmd(wiki: str, n: int, axes: dict, existing: tuple[str, ...],
                  dry_run: bool) -> None:
     wiki_dir = _wiki_dir(wiki)
-    try:
-        result = generate_entries(
-            wiki_dir,
-            axes=axes,
-            n=n,
-            existing=list(existing),
-            write=not dry_run,
-        )
-    except GenerateError as e:
-        click.echo(f"error ({e.kind}): {e}", err=True)
-        sys.exit(_EXIT_CODES.get(e.kind, 1))
+    with _tee_log(wiki_dir, "generate"):
+        try:
+            result = generate_entries(
+                wiki_dir,
+                axes=axes,
+                n=n,
+                existing=list(existing),
+                write=not dry_run,
+                log=click.echo,
+            )
+        except GenerateError as e:
+            click.echo(f"error ({e.kind}): {e}", err=True)
+            sys.exit(_EXIT_CODES.get(e.kind, 1))
 
-    click.echo(json.dumps(result, indent=2, ensure_ascii=False))
-    if not dry_run and result.get("written"):
-        _refresh_index(wiki_dir)
+        click.echo(json.dumps(result, indent=2, ensure_ascii=False))
+        if not dry_run and result.get("written"):
+            _refresh_index(wiki_dir)
 
 
 # ── reindex ────────────────────────────────────────────────────────────────────
@@ -175,7 +230,9 @@ def generate_cmd(wiki: str, n: int, axes: dict, existing: tuple[str, ...],
 @cli.command("reindex", help="Rebuild wikis/<wiki>/index.jsonl from catalogue/.")
 @click.option("--wiki", required=True, help="Wiki name under wikis/.")
 def reindex_cmd(wiki: str) -> None:
-    _refresh_index(_wiki_dir(wiki))
+    wiki_dir = _wiki_dir(wiki)
+    with _tee_log(wiki_dir, "reindex"):
+        _refresh_index(wiki_dir)
 
 
 # ── serve ──────────────────────────────────────────────────────────────────────
