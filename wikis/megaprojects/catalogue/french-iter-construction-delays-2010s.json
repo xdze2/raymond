@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "semi-presidential_republic",
-    "failure_mode": "technical_delay",
-    "current_state": "zombie"
+    "current_state": "zombie",
+    "outcome": "technical_delay"
   },
   "status": "generated",
   "created": {

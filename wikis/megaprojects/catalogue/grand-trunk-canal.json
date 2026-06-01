@@ -1,0 +1,16 @@
+{
+  "slug": "grand-trunk-canal",
+  "title": "Grand Trunk Canal",
+  "summary": "An ambitious 18th-century project to connect the North Sea with the Baltic Sea via a canal across Denmark. The project was abandoned due to financial difficulties and lack of technical feasibility.",
+  "axes": {
+    "domain": "transport",
+    "era": "pre_1900",
+    "region": "europe",
+    "outcome": "economic_failure"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

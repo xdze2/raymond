@@ -1,0 +1,15 @@
+{
+  "slug": "mozyr-refinery-modernization",
+  "title": "Mozyr Refinery Modernization",
+  "summary": "The Mozyr Refinery Modernization in Belarus, aimed at upgrading Soviet-era infrastructure, has faced numerous setbacks and continues to operate ineffectively.",
+  "axes": {
+    "domain": "transport",
+    "region": "europe",
+    "current_state": "operating_zombie"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

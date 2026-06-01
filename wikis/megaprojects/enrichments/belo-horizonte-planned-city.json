@@ -1,0 +1,75 @@
+{
+  "slug": "belo-horizonte-planned-city",
+  "query": "Belo Horizonte Planned City",
+  "wikipedia": {
+    "title": "Belo Horizonte",
+    "url": "https://en.wikipedia.org/wiki/Belo_Horizonte",
+    "extract": "Belo Horizonte is the sixth-largest city in Brazil, with a population of around 2.4 million, and the third largest metropolitan area, containing a population of 6 million. It is the 13th-largest city in South America and the 18th-largest in the Americas. The city anchors the Belo Horizonte metropolitan area, the third most populous metropolitan area in Brazil and the 17th most populous in the Americas. Belo Horizonte is the capital of the state of Minas Gerais, Brazil's second-most populous state. It is the first planned modern city in Brazil."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Praca_do_Papa%2C_Belo_Horizonte_%28cropped%292.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/belo-horizonte-planned-city/web_praca-do-papa-belo-horizonte-cropped-2.jpg",
+    "filename": "Praca_do_Papa,_Belo_Horizonte_(cropped)2.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Praca_do_Papa%2C_Belo_Horizonte_%28cropped%292.jpg",
+    "mime": "image/jpeg",
+    "width": 923,
+    "height": 523,
+    "license_short": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/39806191@N00\">Marina Campos Vinhal</a>",
+    "credit": "<p><a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/39806191@N00/410144700/\">Do alto</a>\n</p>\nDate= 2007-03-04",
+    "description": "<a href=\"https://pt.wikipedia.org/wiki/Pra%C3%A7a_do_Papa\" class=\"extiw\" title=\"pt:Praça do Papa\">Praça do Papa</a>, com Belo Horizonte ao fundo - Minas Gerais - Brasil. **Foto tirada do alto da Serra do Curral em 2006"
+  },
+  "wikidata": {
+    "qid": "Q42800",
+    "url": "https://www.wikidata.org/wiki/Q42800",
+    "label": "Belo Horizonte",
+    "description": "municipality of Minas Gerais state, Brazil",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 3184121,
+          "id": "Q3184121"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 515,
+          "id": "Q515"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 155,
+          "id": "Q155"
+        }
+      ],
+      "inception": [
+        {
+          "time": "+1701-00-00T00:00:00Z",
+          "timezone": 0,
+          "before": 0,
+          "after": 0,
+          "precision": 9,
+          "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+        }
+      ],
+      "official_website": [
+        "http://www.pbh.gov.br/",
+        "https://prefeitura.pbh.gov.br/",
+        "https://portalbelohorizonte.com.br/"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": -19.928055555555556,
+          "longitude": -43.941944444444445,
+          "altitude": null,
+          "precision": 0.0002777777777777778,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

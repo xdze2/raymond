@@ -1,0 +1,57 @@
+{
+  "slug": "caledonian-canal",
+  "title": "Caledonian Canal",
+  "summary": "A 19th-century canal project in Scotland aimed at providing a safe route for ships traveling along the coast. The project faced numerous financial and engineering challenges, ultimately failing to achieve its economic goals.",
+  "axes": {
+    "domain": "transport",
+    "era": "pre_1900",
+    "region": "europe",
+    "outcome": "economic_failure"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "1804"
+    },
+    {
+      "label": "Completed",
+      "value": "1822"
+    },
+    {
+      "label": "Length",
+      "value": "97 km"
+    },
+    {
+      "label": "Engineer",
+      "value": "Thomas Telford"
+    },
+    {
+      "label": "Lochs",
+      "value": "Loch Dochfour, Loch Ness, Loch Oich, Loch Lochy"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Caledonian Canal",
+      "url": "https://en.wikipedia.org/wiki/Caledonian_Canal"
+    },
+    {
+      "label": "Scottish Canals — Caledonian Canal",
+      "url": "https://www.scottishcanals.co.uk/visit/canals/visit-the-caledonian-canal"
+    },
+    {
+      "label": "Wikidata — Caledonian Canal",
+      "url": "https://www.wikidata.org/wiki/Q909073"
+    }
+  ],
+  "image": "media/caledonian-canal/web_caledonian-canal.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

@@ -7,8 +7,8 @@
     "era": "cold_war",
     "region": "eurasia",
     "political_system": "communist",
-    "failure_mode": "economic_collapse",
-    "current_state": "derelict"
+    "current_state": "derelict",
+    "outcome": "economic_collapse"
   },
   "status": "generated",
   "created": {

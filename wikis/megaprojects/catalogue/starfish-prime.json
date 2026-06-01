@@ -7,8 +7,8 @@
     "era": "cold_war",
     "region": "north_america",
     "political_system": "democracy",
-    "failure_mode": "unintended_consequences",
-    "current_state": "abandoned"
+    "current_state": "abandoned",
+    "outcome": "unintended_consequences"
   },
   "status": "generated",
   "created": {

@@ -7,8 +7,8 @@
     "era": "cold_war",
     "region": "siberia",
     "political_system": "communist_state",
-    "failure_mode": "ecological",
-    "current_state": "operational"
+    "current_state": "operational",
+    "outcome": "ecological_failure"
   },
   "status": "generated",
   "created": {

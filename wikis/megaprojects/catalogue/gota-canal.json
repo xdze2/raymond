@@ -1,0 +1,57 @@
+{
+  "slug": "gota-canal",
+  "title": "Göta Canal",
+  "summary": "A major canal project in Sweden initiated in the early 19th century to create a waterway across the country. Despite its eventual completion, the project faced significant economic challenges and nearly bankrupted the state.",
+  "axes": {
+    "domain": "transport",
+    "era": "pre_1900",
+    "region": "europe",
+    "outcome": "economic_failure"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "1810"
+    },
+    {
+      "label": "Completed",
+      "value": "1832"
+    },
+    {
+      "label": "Length",
+      "value": "190 km"
+    },
+    {
+      "label": "Locks",
+      "value": "58"
+    },
+    {
+      "label": "Depth",
+      "value": "3 m"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Göta Canal",
+      "url": "https://en.wikipedia.org/wiki/Göta_Canal"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://www.gotakanal.se/en"
+    },
+    {
+      "label": "Visit Sweden — Göta Canal",
+      "url": "https://visitsweden.com/where-to-go/southern-sweden/gota-canal/"
+    }
+  ],
+  "image": "media/gota-canal/Göta_kanal_-_KMB_-_16001000013273.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

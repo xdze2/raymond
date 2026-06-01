@@ -1,0 +1,67 @@
+{
+  "slug": "manhattan-project",
+  "title": "Manhattan Project",
+  "summary": "Developed during World War II, the Manhattan Project successfully created the first atomic bombs, despite the immense scientific and logistical challenges.",
+  "axes": {
+    "domain": "military",
+    "era": "pre_1900",
+    "region": "n_america",
+    "political_system": "federal_republic",
+    "outcome": "against_all_odds",
+    "current_state": "completed"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "1939"
+    },
+    {
+      "label": "Peak Employment",
+      "value": "130,000 people"
+    },
+    {
+      "label": "Cost",
+      "value": "US$2 billion"
+    },
+    {
+      "label": "First Test",
+      "value": "July 16, 1945"
+    },
+    {
+      "label": "Bombings",
+      "value": "August 6 and 9, 1945"
+    },
+    {
+      "label": "Locations",
+      "value": "Over 30 sites in the US, UK, and Canada"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Manhattan Project",
+      "url": "https://en.wikipedia.org/wiki/Manhattan_Project"
+    },
+    {
+      "label": "Britannica — Manhattan Project",
+      "url": "https://www.britannica.com/event/Manhattan-Project"
+    },
+    {
+      "label": "National Park Service — Manhattan Project",
+      "url": "https://www.nps.gov/mapr/learn/manhattan-project.htm"
+    },
+    {
+      "label": "Wikidata — Manhattan Project",
+      "url": "https://www.wikidata.org/wiki/Q127050"
+    }
+  ],
+  "image": "media/manhattan-project/web_time-3-22-p-m-december-2-1942-place-racquets-court-under-west-stands-of-stagg-field-university-of-chicago-nara-542144.png",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

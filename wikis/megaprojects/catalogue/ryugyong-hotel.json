@@ -7,19 +7,53 @@
     "era": "1946_1989",
     "region": "china_e_asia",
     "political_system": "communist_state",
-    "failure_mode": "economic",
-    "current_state": "operating_zombie"
+    "current_state": "operating_zombie",
+    "outcome": "economic_failure"
   },
   "status": "explored",
   "facts": [
-    { "label": "Height", "value": "330 m, 105 floors" },
-    { "label": "Started", "value": "1987" },
-    { "label": "Halted", "value": "1992 (Soviet collapse cut funding)" },
-    { "label": "Glass cladding", "value": "added 2008–2011" },
-    { "label": "Guest rooms opened", "value": "Zero" }
+    {
+      "label": "Started",
+      "value": "1987"
+    },
+    {
+      "label": "Height",
+      "value": "330 m"
+    },
+    {
+      "label": "Floors",
+      "value": "105"
+    },
+    {
+      "label": "Halted",
+      "value": "1992"
+    },
+    {
+      "label": "Glass cladding",
+      "value": "2008–2011"
+    }
   ],
   "links": [
-    { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Ryugyong_Hotel" }
+    {
+      "label": "Wikipedia — Ryugyong Hotel",
+      "url": "https://en.wikipedia.org/wiki/Ryugyong_Hotel"
+    },
+    {
+      "label": "ArchDaily — Ryugyong Hotel",
+      "url": "https://www.archdaily.com/tag/ryugyong-hotel"
+    },
+    {
+      "label": "Google Sightseeing — Ryugyong Hotel",
+      "url": "https://www.googlesightseeing.com/2006/02/ryugyong-hotel/"
+    }
   ],
-  "created": { "at": "2026-05-31", "by": "user" }
+  "created": {
+    "at": "2026-05-31",
+    "by": "user"
+  },
+  "image": "media/ryugyong-hotel/Prázdné_slnice_a_rozestavěný_hotel_Ryugyong_-_panoramio.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
 }

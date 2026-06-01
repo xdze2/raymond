@@ -7,8 +7,8 @@
     "era": "1990_2010",
     "region": "europe",
     "political_system": "democracy",
-    "failure_mode": "economic",
-    "current_state": "cancelled"
+    "current_state": "cancelled",
+    "outcome": "economic_failure"
   },
   "status": "generated",
   "created": {

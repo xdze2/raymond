@@ -7,8 +7,8 @@
     "era": "1946_1989",
     "region": "n_america",
     "political_system": "corporate",
-    "failure_mode": "technical",
-    "current_state": "repurposed"
+    "current_state": "repurposed",
+    "outcome": "technical_failure"
   },
   "status": "explored",
   "facts": [

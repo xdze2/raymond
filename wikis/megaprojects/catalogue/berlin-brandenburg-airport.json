@@ -1,0 +1,17 @@
+{
+  "slug": "berlin-brandenburg-airport",
+  "title": "Berlin Brandenburg Airport",
+  "summary": "Berlin Brandenburg Airport, intended to replace Tegel and Schönefeld, faced repeated delays and technical failures, becoming a symbol of mismanagement and inefficiency.",
+  "axes": {
+    "domain": "transport",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "outcome": "technical_failure"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

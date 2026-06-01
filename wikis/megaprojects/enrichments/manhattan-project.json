@@ -1,0 +1,76 @@
+{
+  "slug": "manhattan-project",
+  "query": "Manhattan Project",
+  "wikipedia": {
+    "title": "Manhattan Project",
+    "url": "https://en.wikipedia.org/wiki/Manhattan_Project",
+    "extract": "The Manhattan Project was a research and development program undertaken during World War II to produce the first nuclear weapons. It was led by the United States in collaboration with the United Kingdom and Canada. The Manhattan Project employed nearly 130,000 people at its peak and cost nearly US$2 billion."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Time%2C_3-22_p.m%2C_December_2%2C_1942._Place%2C_Racquets_Court_under_West_Stands_of_Stagg_Field%2C_University_of_Chicago...._-_NARA_-_542144.tif/lossy-page1-1920px-Time%2C_3-22_p.m%2C_December_2%2C_1942._Place%2C_Racquets_Court_under_West_Stands_of_Stagg_Field%2C_University_of_Chicago...._-_NARA_-_542144.tif.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/manhattan-project/web_time-3-22-p-m-december-2-1942-place-racquets-court-under-west-stands-of-stagg-field-university-of-chicago-nara-542144.png",
+    "filename": "Time,_3-22_p.m,_December_2,_1942._Place,_Racquets_Court_under_West_Stands_of_Stagg_Field,_University_of_Chicago...._-_NARA_-_542144.tif",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Time%2C_3-22_p.m%2C_December_2%2C_1942._Place%2C_Racquets_Court_under_West_Stands_of_Stagg_Field%2C_University_of_Chicago...._-_NARA_-_542144.tif",
+    "mime": "image/tiff",
+    "width": 3000,
+    "height": 1628,
+    "license_short": "Public domain",
+    "license_url": null,
+    "artist": "<div class=\"fn value\">\nUnknown author<span style=\"display: none;\">Unknown author</span> or not provided</div>",
+    "credit": "<a href=\"https://en.wikipedia.org/wiki/U.S._National_Archives_and_Records_Administration\" class=\"extiw\" title=\"en:U.S. National Archives and Records Administration\">U.S. National Archives and Records Administration</a>",
+    "description": null
+  },
+  "wikidata": {
+    "qid": "Q127050",
+    "url": "https://www.wikidata.org/wiki/Q127050",
+    "label": "Manhattan Project",
+    "description": "World War II American R&D program that produced the first nuclear weapons",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 27665152,
+          "id": "Q27665152"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 759676,
+          "id": "Q759676"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 16334295,
+          "id": "Q16334295"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 101965,
+          "id": "Q101965"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 2475641,
+          "id": "Q2475641"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 30,
+          "id": "Q30"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 145,
+          "id": "Q145"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 16,
+          "id": "Q16"
+        }
+      ]
+    }
+  }
+}

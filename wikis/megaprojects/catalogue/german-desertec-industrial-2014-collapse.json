@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "parliamentary_democracy",
-    "failure_mode": "political_dispute",
-    "current_state": "abandoned"
+    "current_state": "abandoned",
+    "outcome": "political_dispute"
   },
   "status": "explored",
   "created": {

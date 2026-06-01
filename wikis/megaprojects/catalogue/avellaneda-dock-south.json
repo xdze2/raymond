@@ -1,0 +1,15 @@
+{
+  "slug": "avellaneda-dock-south",
+  "title": "Avellaneda Dock Sud",
+  "summary": "A major port development project in Argentina initiated in the late 19th century, which transformed the region into a significant industrial and economic hub despite initial financial struggles.",
+  "axes": {
+    "domain": "habitat",
+    "era": "pre_1900",
+    "region": "s_america"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

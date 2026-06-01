@@ -1,0 +1,15 @@
+{
+  "slug": "channel-tunnel",
+  "title": "Channel Tunnel",
+  "summary": "The Channel Tunnel, connecting the UK and France, was a monumental engineering feat that succeeded against financial and technical odds but now operates at a financial loss.",
+  "axes": {
+    "domain": "transport",
+    "region": "europe",
+    "current_state": "operating_zombie"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

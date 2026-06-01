@@ -1,0 +1,16 @@
+{
+  "slug": "ludwig-canal",
+  "title": "Ludwig Canal",
+  "summary": "A canal project in Germany initiated in the 19th century to connect the Danube and the Rhine rivers. The project faced significant financial difficulties and was eventually abandoned due to economic failure.",
+  "axes": {
+    "domain": "transport",
+    "era": "pre_1900",
+    "region": "europe",
+    "outcome": "economic_failure"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

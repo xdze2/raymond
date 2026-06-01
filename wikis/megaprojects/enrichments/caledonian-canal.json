@@ -1,0 +1,58 @@
+{
+  "slug": "caledonian-canal",
+  "query": "Caledonian Canal",
+  "wikipedia": {
+    "title": "Caledonian Canal",
+    "url": "https://en.wikipedia.org/wiki/Caledonian_Canal",
+    "extract": "The Caledonian Canal connects the Scottish east coast at Inverness with the west coast at Corpach near Fort William in Scotland. The canal was constructed in the early nineteenth century by Scottish engineer Thomas Telford."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Caledonian_canal.jpg",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/caledonian-canal/web_caledonian-canal.jpg",
+    "filename": "Caledonian_canal.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Caledonian_canal.jpg",
+    "mime": "image/jpeg",
+    "width": 800,
+    "height": 600,
+    "license_short": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Kkonstan\" title=\"User:Kkonstan\">Kkonstan</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "description": "Aberchalder Swing Bridge, over the Caledonian Canal, Scotland. Looking south towards Loch Oich."
+  },
+  "wikidata": {
+    "qid": "Q909073",
+    "url": "https://www.wikidata.org/wiki/Q909073",
+    "label": "Caledonian Canal",
+    "description": "canal in Scotland, UK",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 12284,
+          "id": "Q12284"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 145,
+          "id": "Q145"
+        }
+      ],
+      "official_website": [
+        "http://www.scottishcanals.co.uk/our-canals/caledonian-canal"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 57.112478,
+          "longitude": -4.738541,
+          "altitude": null,
+          "precision": null,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

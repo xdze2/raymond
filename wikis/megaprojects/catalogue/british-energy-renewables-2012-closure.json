@@ -7,12 +7,53 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "parliamentary_democracy",
-    "failure_mode": "funding_withdrawal",
-    "current_state": "cancelled"
+    "current_state": "cancelled",
+    "outcome": "funding_withdrawal"
   },
-  "status": "generated",
+  "status": "explored",
   "created": {
     "at": "2026-05-31",
     "by": "llm:mistral:mistral-small-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "2010"
+    },
+    {
+      "label": "Cancelled",
+      "value": "2012"
+    },
+    {
+      "label": "Turbines (Atlantic Array)",
+      "value": "97"
+    },
+    {
+      "label": "Turbines (Norfolk Array)",
+      "value": "63"
+    },
+    {
+      "label": "Renewables share of UK electricity (2012)",
+      "value": "11%"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Renewable energy",
+      "url": "https://en.wikipedia.org/wiki/Renewable_energy"
+    },
+    {
+      "label": "The Guardian — London Array",
+      "url": "https://www.theguardian.com/environment/2013/apr/09/london-array-world-largest-windfarm"
+    },
+    {
+      "label": "BBC — Hornsea 4 windfarm cancellation",
+      "url": "https://www.bbc.com/news/articles/ce848g8l8vro"
+    }
+  ],
+  "image": "media/british-energy-renewables-2012-closure/web_canada-electricity-generation-by-source.png",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
   }
 }

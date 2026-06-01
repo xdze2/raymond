@@ -7,8 +7,8 @@
     "era": "cold_war",
     "region": "eastern_europe",
     "political_system": "communist_state",
-    "failure_mode": "ecological",
-    "current_state": "erased"
+    "current_state": "erased",
+    "outcome": "ecological_failure"
   },
   "status": "generated",
   "created": {

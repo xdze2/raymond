@@ -1,0 +1,65 @@
+{
+  "slug": "ryugyong-hotel",
+  "query": "Ryugyong Hotel",
+  "wikipedia": {
+    "title": "Ryugyong Hotel",
+    "url": "https://en.wikipedia.org/wiki/Ryugyong_Hotel",
+    "extract": "The Ryugyong Hotel, or Yu-Kyung Hotel, is a 330 m (1,080 ft) tall unfinished pyramid-shaped skyscraper in Pyongyang, North Korea. Its name is also one of the historical names for Pyongyang. The building has been planned as a mixed-use development, which would include a hotel."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Pr%C3%A1zdn%C3%A9_slnice_a_rozestav%C4%9Bn%C3%BD_hotel_Ryugyong_-_panoramio.jpg",
+    "local_path": "wikis/megaprojects/media/ryugyong-hotel/Prázdné_slnice_a_rozestavěný_hotel_Ryugyong_-_panoramio.jpg",
+    "web_path": null,
+    "filename": "Prázdné_slnice_a_rozestavěný_hotel_Ryugyong_-_panoramio.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Pr%C3%A1zdn%C3%A9_slnice_a_rozestav%C4%9Bn%C3%BD_hotel_Ryugyong_-_panoramio.jpg",
+    "mime": "image/jpeg",
+    "width": 2878,
+    "height": 3840,
+    "license_short": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://web.archive.org/web/20161102153302/http://www.panoramio.com/user/7863635?with_photo_id=95509185\">Martin Cígler</a>",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://web.archive.org/web/20161102153301/http://www.panoramio.com/photo/95509185\">https://web.archive.org/web/20161102153301/http://www.panoramio.com/photo/95509185</a>",
+    "description": "Empty roads and Ryugyong Hotel under construction"
+  },
+  "wikidata": {
+    "qid": "Q29272",
+    "url": "https://www.wikidata.org/wiki/Q29272",
+    "label": "Ryugyong Hotel",
+    "description": "unfinished pyramid-shaped skyscraper in North Korea",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 11303,
+          "id": "Q11303"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 27686,
+          "id": "Q27686"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 4298922,
+          "id": "Q4298922"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 423,
+          "id": "Q423"
+        }
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 39.03666666666667,
+          "longitude": 125.73083333333334,
+          "altitude": null,
+          "precision": 0.0002777777777777778,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

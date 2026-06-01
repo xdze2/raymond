@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "parliamentary_republic",
-    "failure_mode": "corruption",
-    "current_state": "abandoned"
+    "current_state": "abandoned",
+    "outcome": "corruption"
   },
   "status": "explored",
   "created": {

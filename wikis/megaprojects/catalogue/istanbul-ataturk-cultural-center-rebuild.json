@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "autocracy",
-    "failure_mode": "political",
-    "current_state": "demolished"
+    "current_state": "demolished",
+    "outcome": "political_failure"
   },
   "status": "generated",
   "created": {

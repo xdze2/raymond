@@ -7,8 +7,8 @@
     "era": "industrial_age",
     "region": "africa",
     "political_system": "empire",
-    "failure_mode": "war_defeat",
-    "current_state": "never_built"
+    "current_state": "never_built",
+    "outcome": "war_defeat"
   },
   "status": "generated",
   "created": {

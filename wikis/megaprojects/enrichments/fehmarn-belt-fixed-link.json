@@ -1,0 +1,78 @@
+{
+  "slug": "fehmarn-belt-fixed-link",
+  "query": "Fehmarn Belt Fixed Link",
+  "wikipedia": {
+    "title": "Fehmarn Belt fixed link",
+    "url": "https://en.wikipedia.org/wiki/Fehmarn_Belt_fixed_link",
+    "extract": "The Fehmarn Belt fixed link or Fehmarn Belt tunnel is an under-construction immersed tunnel, which will connect the Danish island of Lolland with the German island of Fehmarn, crossing the 18-kilometre-wide (11 mi) Fehmarn Belt in the Baltic Sea. The tunnel is intended to be a major wider connection between mainland Europe and Scandinavia."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Fehmarn-bridge.svg/500px-Fehmarn-bridge.svg.png",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/fehmarn-belt-fixed-link/web_fehmarn-bridge.png",
+    "filename": "Fehmarn-bridge.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Fehmarn-bridge.svg",
+    "mime": "image/svg+xml",
+    "width": 428,
+    "height": 306,
+    "license_short": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Bowzer~commonswiki\" title=\"User:Bowzer~commonswiki\">Bowzer</a>",
+    "credit": "<p>Own work by uploader, created with GMT, using street data from other images in commons:\n</p>\n<pre>   * <a class=\"external free\" data-mw-original-href=\"http://commons.wikimedia.org/wiki/Image:Autobahnen_in_Deutschland.svg\" href=\"https://commons.wikimedia.org/wiki/Image:Autobahnen_in_Deutschland.svg\">http://commons.wikimedia.org/wiki/Image:Autobahnen_in_Deutschland.svg</a>\n</pre>\n    * <a class=\"external free\" data-mw-original-href=\"http://commons.wikimedia.org/wiki/Image:E39_-_Denmark.svg\" href=\"https://commons.wikimedia.org/wiki/Image:E39_-_Denmark.svg\">http://commons.wikimedia.org/wiki/Image:E39_-_Denmark.svg</a>",
+    "description": "Map showing the route of the Fehmarn Belt bridge"
+  },
+  "wikidata": {
+    "qid": "Q18541",
+    "url": "https://www.wikidata.org/wiki/Q18541",
+    "label": "Fehmarn Belt fixed link",
+    "description": "immersed tunnel under construction between Denmark and Germany",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 26263224,
+          "id": "Q26263224"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 12377751,
+          "id": "Q12377751"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 1311958,
+          "id": "Q1311958"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 2354973,
+          "id": "Q2354973"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 35,
+          "id": "Q35"
+        },
+        {
+          "entity-type": "item",
+          "numeric-id": 183,
+          "id": "Q183"
+        }
+      ],
+      "official_website": [
+        "http://www.femern.com"
+      ],
+      "coordinate_location": [
+        {
+          "latitude": 54.575833333333335,
+          "longitude": 11.305555555555555,
+          "altitude": null,
+          "precision": 0.0002777777777777778,
+          "globe": "http://www.wikidata.org/entity/Q2"
+        }
+      ]
+    }
+  }
+}

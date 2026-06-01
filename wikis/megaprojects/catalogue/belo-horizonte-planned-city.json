@@ -1,0 +1,56 @@
+{
+  "slug": "belo-horizonte-planned-city",
+  "title": "Belo Horizonte Planned City",
+  "summary": "A meticulously planned city in Brazil, constructed in the 1890s to replace the old capital of Minas Gerais, showcasing innovative urban planning and architectural design.",
+  "axes": {
+    "domain": "habitat",
+    "era": "pre_1900",
+    "region": "s_america"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "1894"
+    },
+    {
+      "label": "Population",
+      "value": "2.4 million"
+    },
+    {
+      "label": "Metro Population",
+      "value": "6 million"
+    },
+    {
+      "label": "Location",
+      "value": "Minas Gerais, Brazil"
+    },
+    {
+      "label": "First Planned City",
+      "value": "Yes"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Belo Horizonte",
+      "url": "https://en.wikipedia.org/wiki/Belo_Horizonte"
+    },
+    {
+      "label": "Britannica — Belo Horizonte",
+      "url": "https://www.britannica.com/place/Belo-Horizonte"
+    },
+    {
+      "label": "Official Website",
+      "url": "http://www.pbh.gov.br/"
+    }
+  ],
+  "image": "media/belo-horizonte-planned-city/web_praca-do-papa-belo-horizonte-cropped-2.jpg",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

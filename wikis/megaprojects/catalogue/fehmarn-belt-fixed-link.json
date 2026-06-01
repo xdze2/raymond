@@ -1,0 +1,66 @@
+{
+  "slug": "fehmarn-belt-fixed-link",
+  "title": "Fehmarn Belt Fixed Link",
+  "summary": "The Fehmarn Belt Fixed Link, an immersed tunnel connecting Denmark and Germany, has faced technical difficulties and political disputes, leading to delays and uncertainty.",
+  "axes": {
+    "domain": "transport",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "outcome": "technical_failure"
+  },
+  "status": "explored",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  },
+  "facts": [
+    {
+      "label": "Started",
+      "value": "2020"
+    },
+    {
+      "label": "Expected completion",
+      "value": "2029"
+    },
+    {
+      "label": "Length",
+      "value": "18 km"
+    },
+    {
+      "label": "Type",
+      "value": "Immersed tunnel"
+    },
+    {
+      "label": "Connects",
+      "value": "Denmark and Germany"
+    },
+    {
+      "label": "Cost",
+      "value": "€7.4 billion"
+    }
+  ],
+  "links": [
+    {
+      "label": "Wikipedia — Fehmarn Belt fixed link",
+      "url": "https://en.wikipedia.org/wiki/Fehmarn_Belt_fixed_link"
+    },
+    {
+      "label": "Official website",
+      "url": "http://www.femern.com"
+    },
+    {
+      "label": "Arup — Fehmarnbelt Fixed Link",
+      "url": "https://www.arup.com/projects/fehmarnbelt-fixed-link"
+    },
+    {
+      "label": "Euronews — Fehmarn Belt Link",
+      "url": "https://www.euronews.com/next/2024/06/27/fehmarn-belt-link-are-the-benefits-of-the-worlds-longest-underwater-rail-tunnel-worth-the-"
+    }
+  ],
+  "image": "media/fehmarn-belt-fixed-link/web_fehmarn-bridge.png",
+  "updated": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

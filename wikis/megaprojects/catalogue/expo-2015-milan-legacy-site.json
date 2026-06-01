@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "democracy",
-    "failure_mode": "political",
-    "current_state": "zombie"
+    "current_state": "zombie",
+    "outcome": "political_failure"
   },
   "status": "generated",
   "created": {

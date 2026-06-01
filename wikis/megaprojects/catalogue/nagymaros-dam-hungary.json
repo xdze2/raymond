@@ -7,8 +7,8 @@
     "era": "1990_2010",
     "region": "europe",
     "political_system": "democracy",
-    "failure_mode": "political",
-    "current_state": "abandoned"
+    "current_state": "abandoned",
+    "outcome": "political_failure"
   },
   "status": "generated",
   "created": {

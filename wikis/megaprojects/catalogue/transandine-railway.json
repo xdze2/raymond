@@ -1,0 +1,15 @@
+{
+  "slug": "transandine-railway",
+  "title": "Transandine Railway",
+  "summary": "An ambitious railway project that aimed to connect Chile and Argentina through the Andes, completed in 1910 after overcoming immense geographical and financial challenges.",
+  "axes": {
+    "domain": "habitat",
+    "era": "pre_1900",
+    "region": "s_america"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "slug": "hs2-uk",
+  "title": "High Speed 2 (HS2)",
+  "summary": "HS2, the UK's high-speed rail project, has faced significant technical challenges, cost overruns, and delays, casting doubt on its feasibility and future completion.",
+  "axes": {
+    "domain": "transport",
+    "era": "post_2010",
+    "region": "europe",
+    "political_system": "democracy",
+    "outcome": "technical_failure"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

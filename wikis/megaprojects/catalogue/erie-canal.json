@@ -1,0 +1,18 @@
+{
+  "slug": "erie-canal",
+  "title": "Erie Canal",
+  "summary": "Completed in 1825, the Erie Canal connected the Great Lakes to the Atlantic Ocean, transforming New York into a commercial powerhouse despite skepticism and financial hurdles.",
+  "axes": {
+    "domain": "science",
+    "era": "pre_1900",
+    "region": "n_america",
+    "political_system": "federal_republic",
+    "outcome": "against_all_odds",
+    "current_state": "operational"
+  },
+  "status": "generated",
+  "created": {
+    "at": "2026-06-01",
+    "by": "llm:mistral:mistral-medium-latest"
+  }
+}

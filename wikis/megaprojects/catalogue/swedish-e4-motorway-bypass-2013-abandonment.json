@@ -7,8 +7,8 @@
     "era": "post_2010",
     "region": "europe",
     "political_system": "parliamentary_democracy",
-    "failure_mode": "public_opposition",
-    "current_state": "cancelled"
+    "current_state": "cancelled",
+    "outcome": "public_opposition"
   },
   "status": "generated",
   "created": {

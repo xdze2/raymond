@@ -1,0 +1,46 @@
+{
+  "slug": "british-energy-renewables-2012-closure",
+  "query": "British Energy Renewables' 2012 Offshore Wind Farm Cancellations",
+  "wikipedia": {
+    "title": "Renewable energy in Canada",
+    "url": "https://en.wikipedia.org/wiki/Renewable_energy_in_Canada",
+    "extract": "Renewable energy in Canada represented 17.3% of the Total Energy Supply (TES) in 2020, following natural gas at 39.1% and oil at 32.7% of the TES."
+  },
+  "image": {
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Canada_electricity_generation_by_source.png",
+    "local_path": null,
+    "web_path": "wikis/megaprojects/media/british-energy-renewables-2012-closure/web_canada-electricity-generation-by-source.png",
+    "filename": "Canada_electricity_generation_by_source.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Canada_electricity_generation_by_source.png",
+    "mime": "image/png",
+    "width": 850,
+    "height": 522,
+    "license_short": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0",
+    "artist": "EMBER",
+    "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://ember-energy.org/data/electricity-data-explorer/\">https://ember-energy.org/data/electricity-data-explorer/</a>",
+    "description": "Share of electricity generation in Canada - percentage share"
+  },
+  "wikidata": {
+    "qid": "Q7313095",
+    "url": "https://www.wikidata.org/wiki/Q7313095",
+    "label": "renewable energy in Canada",
+    "description": "all about utilization of renewable resources in Canada",
+    "claims": {
+      "instance_of": [
+        {
+          "entity-type": "item",
+          "numeric-id": 74817647,
+          "id": "Q74817647"
+        }
+      ],
+      "country": [
+        {
+          "entity-type": "item",
+          "numeric-id": 16,
+          "id": "Q16"
+        }
+      ]
+    }
+  }
+}
