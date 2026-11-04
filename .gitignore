@@ -16,3 +16,16 @@ dist/
 
 # frontend test deps
 node_modules/
+
+# --- wiki data (generated / curated content; kept locally, not versioned) ---
+# Wiki *definitions* stay tracked: wiki.json, axis.json, prompts/, scripts.
+wikis/*/catalogue/
+wikis/*/enrichments/
+wikis/*/media/
+wikis/*/pages/
+archive/*/catalogue/
+archive/*/enrichments/
+archive/*/media/
+archive/*/pages/
+
+.pytest_cache/
